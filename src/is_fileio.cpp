@@ -174,7 +174,7 @@ void ik_print_log(const char *ln, ...)
 		d = d + 1 - months[m].sd;
 		y = 4580 + (date/365);
 		sprintf(text1, "Captain %s of the %s", player.captname, player.shipname);
-		sprintf(text2, "\n%s%%%ds %%02d %%s %%d\n", text1, 52-strlen(text1));
+		sprintf(text2, "\n%s%%%ds %%02d %%s %%d\n", text1, (int)(52-strlen(text1)));
 		fprintf(logfile, text2, "Date:", d, months[m].name, y);
 		fprintf(logfile, "================================================================\n");
 		last_logdate = date;
