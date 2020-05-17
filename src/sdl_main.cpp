@@ -1,6 +1,6 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
-
+#include <physfs.h>
 
 #include "Typedefs.h"
 #include "gfx.h"
@@ -20,6 +20,16 @@ int main(int argc, char *argv[]) {
     c_miny = 0;
     c_maxx = gfx_width;
     c_maxy = gfx_height;
+
+    if (!PHYSFS_init(argv[0])) {
+        SDL_Log("PhysFS failed to initialise: %s", PHYSFS_getLastError());
+        return 1;
+    }
+    if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 1)) {
+        SDL_Log("PhysFS failed to set default env: %s", PHYSFS_getLastError());
+        return 1;
+    }
+
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_EVENTS) < 0) {
         SDL_Log("Failed to initialise SDL: %s", SDL_GetError());

@@ -1,13 +1,17 @@
 #ifndef DEMO_VERSION
 
-#include <stdio.h>
-#include <io.h>
-#include <malloc.h>
-#include <memory.h>
-#include <string.h>
+#include <string>
+
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
+
+#include <SDL.h>
+#include <physfs.h>
 
 
-#include "typedefs.h"
+
+#include "Typedefs.h"
 #include "is_fileio.h"
 #include "iface_globals.h"
 #include "gfx.h"
@@ -27,14 +31,34 @@ typedef struct _t_moddir
 t_moddir *moddirs;
 int n_moddirs;
 
+
+static PHYSFS_EnumerateCallbackResult
+modconfig_enumerate_cb(void *data, const char *origdir, const char *fname) {
+    if (n_moddirs >= MAX_MODDIRS) {
+        // we can't handle any more, so report stop success.
+        return PHYSFS_ENUM_STOP;
+    }
+    SDL_Log("Found possible mod: %s", fname);
+    std::string fullFilename = std::string(origdir) + "/" + std::string(fname);
+
+    if (PHYSFS_isDirectory(fullFilename.c_str())) {
+        // copies are 1 byte short to prevent overwriting of the terminal NUL
+        strncpy(moddirs[n_moddirs].dir, fullFilename.c_str(), 223);
+        strncpy(moddirs[n_moddirs].name, fname, 31);
+        n_moddirs++;
+    }
+    return (n_moddirs >= MAX_MODDIRS)?PHYSFS_ENUM_STOP:PHYSFS_ENUM_OK;
+}
+
 void modconfig_init()
 {
 	int x;
 	int y;
 	int handle;
-	_finddata_t find;
+	const char **modPaths = nullptr;
+
 	char tmps[256];
-	FILE *fil;
+    IS_FileHdl fil;
 
 	moddir[0] = 0;
 
@@ -43,29 +67,11 @@ void modconfig_init()
 	n_moddirs = 0;
 
 	// read mod names
-	handle = _findfirst("mods/*.*", &find);
-	if (handle != -1)
-	{
-		x = handle;
-		while (x != -1)
-		{
-			if (n_moddirs < MAX_MODDIRS)
-			if (find.attrib & _A_SUBDIR)
-			{
-				if (strcmp(find.name, ".") && strcmp(find.name, ".."))
-				{
-					sprintf(moddirs[n_moddirs].dir, "mods/%s/", find.name);
-					sprintf(moddirs[n_moddirs].name, find.name);
-					n_moddirs++;
-				}
-			}
-			x = _findnext(handle, &find);
-		}
-		_findclose(handle);
-	}
+    PHYSFS_enumerate("mods", modconfig_enumerate_cb, nullptr);
 
 	if (n_moddirs > 1)
 	{
+	    // and sort the modnames...
 		for (x = 1; x < n_moddirs; x++)
 		{
 			y = x;
@@ -157,6 +163,9 @@ int modconfig_main()
 					c = (my-(by+36))/24;
 					if (c == 0)
 					{
+					    if (strlen(moddir) > 0) {
+					        PHYSFS_unmount(moddir);
+					    }
 						moddir[0] = 0;
 						end = 1;
 						Play_SoundFX(0, 0, 100);
@@ -197,9 +206,13 @@ int modconfig_main()
 					Play_SoundFX(0, 0, 100);
 				}
 				if (mx > bx+176 && mx < bx+240 && my > by+h-32 && my < by+h-16)
-				if (strcmp(moddir, moddirs[msel].dir))
-				{	
-					sprintf(moddir, moddirs[msel].dir);
+				if (strcmp(moddir, moddirs[msel].dir) != 0)
+				{
+				    if (strlen(moddir) > 0) {
+				        PHYSFS_unmount(moddir);
+				    }
+					strcpy(moddir, moddirs[msel].dir);
+				    PHYSFS_mount("/", moddir, 0);
 					Play_SoundFX(0, 0, 100);
 					end = 1; 
 				}

@@ -524,7 +524,7 @@ void starmap_deinitsprites()
 
 void starmap_initplanettypes()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
@@ -705,7 +705,7 @@ void starmap_initplanettypes()
 
 void starmap_inititems()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
@@ -1765,7 +1765,7 @@ void starmap_create_klakars(int32 num)
 
 void starmap_initshipnames()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64];
 	char end;
 	int num;
@@ -1807,7 +1807,7 @@ void starmap_initshipnames()
 
 void starmap_initracefleets()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;

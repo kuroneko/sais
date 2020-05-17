@@ -226,7 +226,7 @@ int32 get_rgb_color(int32 r, int32 g, int32 b)
 void calc_color_tables(uint8 *pal)
 {
 	int32 x,y;
-	FILE *colormap;
+    IS_FileHdl colormap;
 
 	gfx_addbuffer=(unsigned char*)malloc(65536);
 	gfx_transbuffer=(unsigned char*)malloc(65536);
@@ -324,7 +324,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal)
 	uint8 *buffer;
 	uint8 *line;
 
-	FILE *img;
+    IS_FileHdl  img;
 
 	img=myopen(fname, "rb");
 	if (!img)
@@ -431,7 +431,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal)
 t_ik_image *ik_load_tga(char *fname, uint8 *pal) 
 {
 	t_ik_image *img;
-	FILE *fil;
+    IS_FileHdl fil;
 	int p;
 	uint8 hdr[18];
 	
@@ -485,7 +485,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal)
 void ik_save_screenshot(t_ik_image *img, uint8 *pal)
 {
 	int n;
-	FILE *fil;
+    IS_FileHdl fil;
 	char fname[32];
 	
 	wants_screenshot = 0;
@@ -525,7 +525,7 @@ void ik_save_tga(char *fname, t_ik_image *img, uint8 *pal)
 		img->h&255, img->h>>8,	// height
 		8, 8										// bpp, des_bits
 		};
-	FILE *fil;
+    IS_FileHdl fil;
 
 	fil = myopen(fname, "wb");
 	if (!fil)

@@ -13,7 +13,7 @@ char *textstring[STR_MAX];
 
 void textstrings_init()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[1024];
 	char end;
 	int num;

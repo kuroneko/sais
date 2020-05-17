@@ -503,7 +503,7 @@ int32 main_menu()
 void main_init()
 {
 	int x;
-	FILE *fil;
+    IS_FileHdl fil;
 	must_quit=0;
 	wants_screenshot=0;
 

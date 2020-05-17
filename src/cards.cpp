@@ -48,7 +48,7 @@ int32						num_ecards;
 
 void cards_init()
 {
-	FILE* ini;
+	IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;

@@ -395,7 +395,7 @@ int32 waitclick(int left, int top, int right, int bottom)
 
 void loadconfig()
 {
-	FILE *cfg;
+    IS_FileHdl cfg;
 
 	cfg = myopen("settings.dat", "rb");
 	if (!cfg)
@@ -424,7 +424,7 @@ void loadconfig()
 
 void saveconfig()
 {
-	FILE *cfg;
+    IS_FileHdl cfg;
 
 	cfg = myopen("settings.dat", "wb");
 	if (!cfg)

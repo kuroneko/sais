@@ -153,7 +153,7 @@ t_ik_spritepak *load_sprites(const char *fname)
 	t_ik_image *img;
 	uint8 *buffu;
 
-	FILE *fil;
+    IS_FileHdl fil;
 	t_ik_spritepak *pak;
 	int32 x,num;
 	int32 w,h,c;
@@ -250,7 +250,7 @@ and mark them in the replacement array.
 
 void save_sprites(const char *fname, t_ik_spritepak *pak)
 {
-	FILE *fil;
+    IS_FileHdl fil;
 	int32 x;
 	int32 num = pak->num;
 

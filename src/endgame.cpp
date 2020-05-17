@@ -435,7 +435,7 @@ void checkhiscore(int32 score)
 
 void endgame_init()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
@@ -499,7 +499,7 @@ void endgame_deinit()
 
 void load_scores()
 {
-	FILE* fil;
+    IS_FileHdl fil;
 	char scorefile[256];
 	sprintf(scorefile, "%s%s", moddir, "scores.dat");
 
@@ -521,7 +521,7 @@ void load_scores()
 
 void save_scores()
 {
-	FILE* fil;
+    IS_FileHdl fil;
 	char scorefile[256];
 	sprintf(scorefile, "%s%s", moddir, "scores.dat");
 

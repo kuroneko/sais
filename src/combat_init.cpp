@@ -186,7 +186,7 @@ void combat_deinit()
 
 void combat_inithulls()
 {
-	FILE* ini;
+	IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
@@ -297,7 +297,7 @@ void combat_deinithulls()
 
 void combat_initshiptypes()
 {
-	FILE* ini;
+	IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
@@ -445,7 +445,7 @@ void combat_deinitshiptypes()
 
 void combat_initshipweapons()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
@@ -585,7 +585,7 @@ void combat_deinitshipweapons()
 
 void combat_initshipsystems()
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
@@ -837,7 +837,7 @@ void combat_deinitsprites()
 
 void initraces(void)
 {
-	FILE* ini;
+    IS_FileHdl ini;
 	char s1[64], s2[256];
 	char end;
 	int num;
