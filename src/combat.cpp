@@ -533,7 +533,7 @@ void combat_start(int32 flt)
 	int nc, rc, nf;
 	int32 angle;
 
-	srand( (unsigned)time( NULL ) );
+	srand( (unsigned int)time( nullptr ) );
 
 	retreat = 0;
 
@@ -561,11 +561,11 @@ void combat_start(int32 flt)
 		cships[t].flee = 0;
 	}
 	for (t = 0; t < MAX_COMBAT_PROJECTILES; t++)
-		cprojs[t].wep = NULL;
+		cprojs[t].wep = nullptr;
 	for (t = 0; t < MAX_COMBAT_BEAMS; t++)
-		cbeams[t].wep = NULL;
+		cbeams[t].wep = nullptr;
 	for (t = 0; t < MAX_COMBAT_EXPLOS; t++)
-		cexplo[t].spr = NULL;
+		cexplo[t].spr = nullptr;
 	camera.x = 0;
 	camera.y = 0;
 	camera.z = 4096;
@@ -853,7 +853,7 @@ void combat_sim_end()
 		return;
 
 	Stop_All_Sounds();
-	bg = ik_load_pcx("graphics/starback.pcx", NULL);
+	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
 
 	Play_SoundFX(WAV_ENDSIMULATION);
 
@@ -1548,7 +1548,7 @@ void combat_movement(int32 t)
 		}
 		if (t > cbeams[c].end)
 		{
-			cbeams[c].wep = NULL;
+			cbeams[c].wep = nullptr;
 		}
 	}
 
@@ -1557,7 +1557,7 @@ void combat_movement(int32 t)
 	{
 		if ( cprojs[c].wep->flags & wpfHoming)
 		{
-			if (cprojs[c].dst!=NULL)
+			if (cprojs[c].dst!=nullptr)
 			{
 				a = get_direction ( (cprojs[c].dst->x>>10)-(cprojs[c].x>>10), (cprojs[c].dst->y>>10)-(cprojs[c].y>>10) );
 				a = (a + 1024 - cprojs[c].a) & 1023;
@@ -1593,11 +1593,11 @@ void combat_movement(int32 t)
 				{
 					a = shipsystems[cprojs[c].dst->ecm_type].par[0];
 					if (rand()%300 < a)
-						cprojs[c].dst = NULL;
+						cprojs[c].dst = nullptr;
 				}*/
-				if (cprojs[c].dst != NULL)
+				if (cprojs[c].dst != nullptr)
 					if (cprojs[c].dst->cloaked)
-						cprojs[c].dst = NULL;
+						cprojs[c].dst = nullptr;
 			}
 			
 			cprojs[c].vx = (cprojs[c].vx * 15 + ((sin1k[cprojs[c].a] * cprojs[c].wep->speed / COMBAT_FRAMERATE) >> 6)) >> 4;
@@ -1686,7 +1686,7 @@ void combat_movement(int32 t)
 													cships[p].y + ((rand()%(a*2) - a)<<8), 
 													spr_explode1, 5, 32, 0, t, t+32);
 					if (cprojs[c].hits <= 0)
-					{	cprojs[c].wep = NULL; break; }
+					{	cprojs[c].wep = nullptr; break; }
 				}
 				else
 				{
@@ -1714,13 +1714,13 @@ void combat_movement(int32 t)
 						if (cships[p].hits <= 0)
 							cships[p].hits = 1 - hulls[shiptypes[cships[p].type].hull].hits;
 					}
-					cprojs[c].wep = NULL;
+					cprojs[c].wep = nullptr;
 					break;
 				}
 			}
 		}
 
-		if (t > cprojs[c].end && cprojs[c].wep != NULL)
+		if (t > cprojs[c].end && cprojs[c].wep != nullptr)
 		{
 			if (cprojs[c].wep->flags & wpfSplit)	// end split ("flak")
 				if (!(cprojs[c].wep->flags & wpfHoming))
@@ -1736,7 +1736,7 @@ void combat_movement(int32 t)
 						combat_launchstages(c, 3, t);
 				}
 			
-			cprojs[c].wep = NULL;
+			cprojs[c].wep = nullptr;
 		}
 	}
 }
@@ -2275,7 +2275,7 @@ void combat_help_screen()
 	int32 x, y;
 	t_ik_image *bg;
 
-	bg = ik_load_pcx("graphics/helpc.pcx", NULL);
+	bg = ik_load_pcx("graphics/helpc.pcx", nullptr);
 
 	prep_screen();
 	ik_copybox(bg, screen, 0, 0, 640, 480, 0,0);

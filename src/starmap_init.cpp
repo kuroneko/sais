@@ -249,7 +249,7 @@ void starmap_create()
 #endif
 
 #ifdef DEMO_VERSION
-	srand( (unsigned)time( NULL ) );
+	srand( (unsigned)time( nullptr ) );
 #endif
 
 	prep_screen(); ik_print(screen, font_6x8, 8, y+=8, 0, "discoveries..."); ik_blit();
@@ -424,11 +424,11 @@ void starmap_initsprites()
 	spr_SMnebula	= load_sprites("graphics/smnebula.spr");
 	spr_SMraces		= load_sprites("graphics/smraces.spr");
 	
-	pcx = NULL;
+	pcx = nullptr;
 
 	if (!spr_SMstars)
 	{
-		pcx = ik_load_pcx("starmap.pcx", NULL);
+		pcx = ik_load_pcx("starmap.pcx", nullptr);
 		spr_SMstars = new_spritepak(9);
 		for (n=0;n<8;n++)
 		{
@@ -441,7 +441,7 @@ void starmap_initsprites()
 	if (!spr_SMplanet)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("starmap.pcx", NULL);
+			pcx = ik_load_pcx("starmap.pcx", nullptr);
 		spr_SMplanet = new_spritepak(11);
 		for (n=0;n<11;n++)
 		{
@@ -454,7 +454,7 @@ void starmap_initsprites()
 	if (!spr_SMnebula)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("starmap.pcx", NULL);
+			pcx = ik_load_pcx("starmap.pcx", nullptr);
 		spr_SMnebula = new_spritepak(9);
 		for (n=0;n<8;n++)
 		{
@@ -470,7 +470,7 @@ void starmap_initsprites()
 
 	if (!spr_SMplanet2)
 	{
-		pcx = ik_load_pcx("planets.pcx", NULL);
+		pcx = ik_load_pcx("planets.pcx", nullptr);
 		spr_SMplanet2 = new_spritepak(23);
 		for (n=0;n<23;n++)
 		{
@@ -482,7 +482,7 @@ void starmap_initsprites()
 	}
 	if (!spr_SMstars2)
 	{
-		pcx = ik_load_pcx("suns.pcx", NULL);
+		pcx = ik_load_pcx("suns.pcx", nullptr);
 		spr_SMstars2 = new_spritepak(8);
 		for (n=0;n<8;n++)
 		{
@@ -495,11 +495,11 @@ void starmap_initsprites()
 	if (!spr_SMraces)
 	{
 #ifndef DEMO_VERSION
-		pcx = ik_load_pcx("races.pcx", NULL);
+		pcx = ik_load_pcx("races.pcx", nullptr);
 		spr_SMraces = new_spritepak(15);
 		for (n=0;n<15;n++)
 #else
-		pcx = ik_load_pcx("../demogfx/races.pcx", NULL);
+		pcx = ik_load_pcx("../demogfx/races.pcx", nullptr);
 		spr_SMraces = new_spritepak(8);
 		for (n=0;n<8;n++)
 #endif
@@ -1052,8 +1052,8 @@ void starmap_createnebula(int n)
 	sm_nebula = (t_nebula *)calloc(num_nebula, sizeof(t_nebula));
 
 	sm_nebulamap = (uint8 *)calloc(512*480, 1);
-	sm_nebulagfx = ik_load_pcx("graphics/backgrnd.pcx", NULL); //new_image(480,480);
-	sm_starfield = ik_load_pcx("graphics/backgrnd.pcx", NULL); //new_image(480,480);
+	sm_nebulagfx = ik_load_pcx("graphics/backgrnd.pcx", nullptr); //new_image(480,480);
+	sm_starfield = ik_load_pcx("graphics/backgrnd.pcx", nullptr); //new_image(480,480);
 
 	for (c = 0; c < num_groups; c++)
 	{

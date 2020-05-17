@@ -591,7 +591,7 @@ void combat_display(int32 t)
 		{
 			if (!cprojs[cbeams[c].stg].wep)
 			{
-				cbeams[c].wep = NULL;
+				cbeams[c].wep = nullptr;
 				continue;
 			}
 			sx = cprojs[cbeams[c].stg].x; 
@@ -684,7 +684,7 @@ void combat_display(int32 t)
 									spr_shockwave->spr[4], a);
 
 //		if (t > cprojs[c].end)
-//			cprojs[c].wep = NULL;
+//			cprojs[c].wep = nullptr;
 	}
 
 	// check for fiery furies (gong)
@@ -742,7 +742,7 @@ void combat_display(int32 t)
 								cexplo[c].spr->spr[p], 
 								5+(l<<8));
 		if (t > cexplo[c].end)
-			cexplo[c].spr = NULL;
+			cexplo[c].spr = nullptr;
 	}
 
 	if (camera.ship_sel > -1)

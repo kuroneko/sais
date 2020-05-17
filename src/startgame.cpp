@@ -59,7 +59,7 @@ int32 startgame()
 	if (settings.random_names & 2)
 		strcpy(settings.shipname, shipnames[rand()%num_shipnames]);
 
-	bg = ik_load_pcx("graphics/starback.pcx", NULL);
+	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
 
 	end = 0; ti = get_ik_timer(2);
 	while (!end && !must_quit)

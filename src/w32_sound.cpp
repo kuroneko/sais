@@ -32,7 +32,7 @@ int sound_init()
 	for (int index=0; index<WAV_MAX; index++)
 	{
 		wavesnd[index].name[0] = 0;
-		wavesnd[index].wave = NULL;
+		wavesnd[index].wave = nullptr;
 	} 
 
 	// return sucess
@@ -218,7 +218,7 @@ int Delete_Sound(int id)
 	if (wavesnd[id].wave)
 	{
 		Mix_FreeChunk((Mix_Chunk*)wavesnd[id].wave);
-		wavesnd[id].wave = NULL;
+		wavesnd[id].wave = nullptr;
 		return(1);
   } 
 	

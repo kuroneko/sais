@@ -130,7 +130,7 @@ void ik_start_log()
 	FILE *fil;
 	char fname[32];
 	
-	logfile = NULL;
+	logfile = nullptr;
 
 	n=0;
 	while (n<1000)

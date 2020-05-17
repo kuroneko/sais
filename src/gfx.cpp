@@ -232,7 +232,7 @@ void calc_color_tables(uint8 *pal)
 	gfx_transbuffer=(unsigned char*)malloc(65536);
 	gfx_lightbuffer=(unsigned char*)malloc(65536);
 
-	if (gfx_transbuffer==NULL || gfx_lightbuffer==NULL || gfx_addbuffer==NULL)
+	if (gfx_transbuffer==nullptr || gfx_lightbuffer==nullptr || gfx_addbuffer==nullptr)
 		return;  // fail
 
 	colormap=myopen("graphics/colormap.dat", "rb");
@@ -284,7 +284,7 @@ t_ik_image *new_image(int32 w, int32 h)
 	img=(t_ik_image*)calloc(1, sizeof(t_ik_image));
 	if (!img)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	img->w=w;
@@ -296,7 +296,7 @@ t_ik_image *new_image(int32 w, int32 h)
 	if (!img->data)
 	{
 		free(img);
-		return NULL;
+		return nullptr;
 	}
 
 	return img;
@@ -328,7 +328,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal)
 
 	img=myopen(fname, "rb");
 	if (!img)
-		return NULL;
+		return nullptr;
 
 	// load header
 	fgetc(img);  // manuf. id
@@ -371,7 +371,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal)
 	if (bpp!=8)  // can't load non-8bit pcx files ... use tga
 	{
 		fclose(img);
-		return NULL;
+		return nullptr;
 	}
 
 	// read palette from the end
@@ -386,7 +386,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal)
 	if (!image)
 	{
 		fclose(img);	
-		return NULL;
+		return nullptr;
 	}
 
 	buffer=image->data;
@@ -436,7 +436,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal)
 	uint8 hdr[18];
 	
 	fil = fopen(fname, "rb");
-	if (!fil) return NULL;
+	if (!fil) return nullptr;
 
 	fread(hdr, 1, 18, fil);
 	p = 1;
@@ -450,7 +450,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal)
 	{
 		fclose(fil);
 		printf("ERROR: Bad TGA format %s", fname);
-		return NULL;
+		return nullptr;
 	}
 
 	// read palette
@@ -469,7 +469,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal)
 	// read image data
 	img = new_image(hdr[13]*256+hdr[12], hdr[15]*256+hdr[14]);
 	if (!img)
-	{ fclose(fil);	return NULL; }
+	{ fclose(fil);	return nullptr; }
 
 	for (p = img->h; p > 0; p--)
 	{
@@ -623,7 +623,7 @@ void reshalfbritescreen()
 	num_dims--;
 	ik_copybox(dims[num_dims], screen, 0, 0, screen->w, screen->h, 0, 0);
 	del_image(dims[num_dims]);
-	dims[num_dims]=NULL;
+	dims[num_dims]=nullptr;
 
 	free_screen();
 }
@@ -640,7 +640,7 @@ void resallhalfbritescreens()
 		num_dims--;
 		ik_copybox(dims[num_dims], screen, 0, 0, screen->w, screen->h, 0, 0);
 		del_image(dims[num_dims]);
-		dims[num_dims]=NULL;
+		dims[num_dims]=nullptr;
 	}
 	free_screen();
 }

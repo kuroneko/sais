@@ -185,7 +185,7 @@ int32 cs_setupbattle()
 	int32 f = 0;
 	t_ik_image *bg;
 
-	bg = ik_load_pcx("graphics/starback.pcx", NULL);
+	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
 
 	if (player.ships[0]>0 && player.ships[0]<4)
 		pship = player.ships[0]-1;

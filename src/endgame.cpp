@@ -74,7 +74,7 @@ void game_over()
 	};
 	t_ik_sprite *deathpic;
 
-	bg = ik_load_pcx("graphics/starback.pcx", NULL);
+	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
 
 	Stop_All_Sounds();
 

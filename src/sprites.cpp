@@ -27,7 +27,7 @@ t_ik_sprite *new_sprite(int32 w, int32 h)
 
 	spr=(t_ik_sprite *)malloc(sizeof(t_ik_sprite));
 	if (!spr)
-		return NULL;
+		return nullptr;
 
 	spr->data=(uint8 *)malloc(w*h);
 	spr->w=w;
@@ -74,11 +74,11 @@ t_ik_sprite *get_sprite(t_ik_image *img, int32 x, int32 y, int32 w, int32 h)
 	int32 x1,y1;
 
 	if (!img)
-		return NULL;
+		return nullptr;
 
 	spr=new_sprite(w,h);
 	if (!spr)
-		return NULL;
+		return nullptr;
 
 	for (y1=0;y1<h;y1++)
 		for (x1=0;x1<w;x1++)
@@ -115,7 +115,7 @@ t_ik_spritepak *new_spritepak(int32 num)
 
 	pak = (t_ik_spritepak*)calloc(1, sizeof(t_ik_spritepak));
 	if (!pak)
-		return NULL;
+		return nullptr;
 
 	pak->num = num;
 	pak->spr = (t_ik_sprite**)calloc(num, sizeof(t_ik_sprite*));
@@ -133,7 +133,7 @@ void free_spritepak(t_ik_spritepak *pak)
 	for (x = 0; x < pak->num; x++)
 	{
 		free_sprite(pak->spr[x]);
-		pak->spr[x]=NULL;
+		pak->spr[x]=nullptr;
 	}
 	free(pak->spr);
 	free(pak);
@@ -192,7 +192,7 @@ and mark them in the replacement array.
 
 	fil=fopen(fname,"rb");	// don't use myopen here
 	if (!fil)
-		return NULL;
+		return nullptr;
 
 	num=fgetc(fil);
 	num+=fgetc(fil)*256;
@@ -202,7 +202,7 @@ and mark them in the replacement array.
 
 	pak = new_spritepak(max);
 	if (!pak)
-	{ fclose(fil); return NULL; }
+	{ fclose(fil); return nullptr; }
 
 	for (x=0;x<max;x++)
 	{
@@ -234,7 +234,7 @@ and mark them in the replacement array.
 		if (rep[x])
 		{
 			sprintf(framename, "%sframe%03d.tga", spritedir, x);
-			img = ik_load_tga(framename, NULL);
+			img = ik_load_tga(framename, nullptr);
 			if (img)
 			{
 				pak->spr[x]=get_sprite(img, 0, 0, img->w, img->h);

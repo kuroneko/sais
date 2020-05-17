@@ -17,15 +17,15 @@ t_ik_font *ik_load_font(const char *fname, uint8 w, uint8 h)
 	t_ik_image *pic;
 	int32 x, y, x2, y2, tmp;
 
-	pic=ik_load_pcx(fname, NULL);
+	pic=ik_load_pcx(fname, nullptr);
 	if (!pic)
-		return NULL;
+		return nullptr;
 
 	fnt=(t_ik_font *)malloc(sizeof(t_ik_font));
 	if (!fnt)
 	{
 		del_image(pic);
-		return NULL;
+		return nullptr;
 	}
 
 	fnt->w=w;
@@ -35,7 +35,7 @@ t_ik_font *ik_load_font(const char *fname, uint8 w, uint8 h)
 	{
 		free(fnt);
 		del_image(pic);
-		return NULL;
+		return nullptr;
 	}
 
 	for (y=0; y<4; y++)

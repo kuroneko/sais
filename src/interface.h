@@ -71,7 +71,7 @@ int32 interface_popup(t_ik_font *fnt,
 										 int32 left, int32 top, int32 w, int32 h,
 										 int32 co1, int32 co2, 
 										 char *label, char *text,
-										 char *button1 = NULL, char *button2 = NULL, char *button3 = NULL);
+										 char *button1 = nullptr, char *button2 = nullptr, char *button3 = nullptr);
 void interface_drawslider(t_ik_image *img, int32 left, int32 top, int32 a, int32 l, int32 rng, int32 val, int32 color);
 void interface_drawbutton(t_ik_image *img, int32 left, int32 top, int32 l, int32 color, const char *text);
 

@@ -121,7 +121,7 @@ int modconfig_main()
 	}
 
 	msel = 0; mscr = 0; mode = 0;
-	backy = ik_load_pcx("graphics/starback.pcx", NULL);
+	backy = ik_load_pcx("graphics/starback.pcx", nullptr);
 
 	start_ik_timer(0, 20); t = 0;
 	end = 0;

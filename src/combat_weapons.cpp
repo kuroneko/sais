@@ -144,7 +144,7 @@ int32 combat_addbeam(t_shipweapon *wep, t_ship *src, int32 hdp, t_ship *trg, int
 	}
 	else
 	{
-		cbeams[b].dst = NULL;
+		cbeams[b].dst = nullptr;
 		cbeams[b].ang = get_direction( trg->x - src->x, trg->y - src->y );
 		cbeams[b].len = wep->range;
 	}
@@ -311,7 +311,7 @@ int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 			if (rand()%30 < a)
 			{
 				//Play_SoundFX(WAV_SYSFIXED);
-				cprojs[b].dst = NULL;
+				cprojs[b].dst = nullptr;
 				cprojs[b].va = (rand()%4) + 1;
 				if (rand()&1) cprojs[b].va = -cprojs[b].va;
 			}
@@ -428,7 +428,7 @@ void combat_launchstages(int32 p, int32 num, int32 start)
 				if (rand()%30 < a)
 				{
 					Play_SoundFX(WAV_SYSFIXED, get_ik_timer(1));
-					cprojs[b].dst = NULL;
+					cprojs[b].dst = nullptr;
 					cprojs[b].va = (rand()%5 + 4)*((rand()&1)*2-1);
 				}
 			}
@@ -580,20 +580,20 @@ void combat_killship(int32 s, int32 t, int32 quiet)
 	}
 
 	for (c = 0; c < MAX_COMBAT_PROJECTILES; c++)
-	if (cprojs[c].wep != NULL)
+	if (cprojs[c].wep != nullptr)
 	{
 		if (cprojs[c].wep->flags & wpfHoming)
 			if (cprojs[c].dst == &cships[s])
-				cprojs[c].dst = NULL;
+				cprojs[c].dst = nullptr;
 	}
 
 	for (c = 0; c < MAX_COMBAT_BEAMS; c++)
-	if (cbeams[c].wep != NULL)
+	if (cbeams[c].wep != nullptr)
 	{
 		if (cbeams[c].dst == &cships[s])
-			cbeams[c].wep = NULL;
+			cbeams[c].wep = nullptr;
 		if (cbeams[c].src == &cships[s])
-			cbeams[c].wep = NULL;
+			cbeams[c].wep = nullptr;
 	}
 
 

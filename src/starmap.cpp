@@ -2330,7 +2330,7 @@ void help_screen()
 	int32 x, y;
 	t_ik_image *bg;
 
-	bg = ik_load_pcx("graphics/help.pcx", NULL);
+	bg = ik_load_pcx("graphics/help.pcx", nullptr);
 
 	prep_screen();
 	ik_copybox(bg, screen, 0, 0, 640, 480, 0,0);

@@ -29,8 +29,8 @@ extern t_gamesettings settings;
 
 int my_main();
 int ik_eventhandler();
-int Game_Init(void *parms=NULL);
-int Game_Shutdown(void *parms=NULL);
+int Game_Init(void *parms=nullptr);
+int Game_Shutdown(void *parms=nullptr);
 
 // inputs
 int key_pressed(int vk_code);  // FIXME: GET RID OF VK CODES!

@@ -707,18 +707,18 @@ void combat_initsprites()
 	spr_shockwave = load_sprites("graphics/shockwav.spr");
 	spr_shield = load_sprites("graphics/shield.spr");
 
-	combatbg1 = ik_load_pcx("graphics/combtbg1.pcx", NULL);
-	combatbg2 = ik_load_pcx("graphics/combtbg2.pcx", NULL);
+	combatbg1 = ik_load_pcx("graphics/combtbg1.pcx", nullptr);
+	combatbg2 = ik_load_pcx("graphics/combtbg2.pcx", nullptr);
 
 	if (!spr_ships)
 	{
 #ifndef DEMO_VERSION
 		spr_ships = new_spritepak(24);
-		pcx = ik_load_pcx("ships.pcx", NULL);
+		pcx = ik_load_pcx("ships.pcx", nullptr);
 		for (n=0;n<24;n++)
 #else
 		spr_ships = new_spritepak(11);
-		pcx = ik_load_pcx("../demogfx/ships.pcx", NULL);
+		pcx = ik_load_pcx("../demogfx/ships.pcx", nullptr);
 		for (n=0;n<11;n++)
 #endif
 		{
@@ -734,11 +734,11 @@ void combat_initsprites()
 	{
 #ifndef DEMO_VERSION
 		spr_shipsilu = new_spritepak(24);
-		pcx = ik_load_pcx("silu.pcx", NULL);
+		pcx = ik_load_pcx("silu.pcx", nullptr);
 		for (n=0;n<24;n++)
 #else
 		spr_shipsilu = new_spritepak(11);
-		pcx = ik_load_pcx("../demogfx/silu.pcx", NULL);
+		pcx = ik_load_pcx("../demogfx/silu.pcx", nullptr);
 		for (n=0;n<11;n++)
 #endif
 		{
@@ -753,7 +753,7 @@ void combat_initsprites()
 	if (!spr_weapons)
 	{
 		spr_weapons = new_spritepak(19);
-		pcx = ik_load_pcx("weaponfx.pcx", NULL);
+		pcx = ik_load_pcx("weaponfx.pcx", nullptr);
 
 		for (n=0;n<5;n++)
 		{
@@ -780,7 +780,7 @@ void combat_initsprites()
 	if (!spr_explode1)
 	{
 		spr_explode1 = new_spritepak(10);
-		pcx = ik_load_pcx("xplosion.pcx", NULL);
+		pcx = ik_load_pcx("xplosion.pcx", nullptr);
 		
 		for (n=0; n<10; n++)
 		{
@@ -795,7 +795,7 @@ void combat_initsprites()
 	if (!spr_shockwave)
 	{
 		spr_shockwave = new_spritepak(5);
-		pcx = ik_load_pcx("shock.pcx", NULL);
+		pcx = ik_load_pcx("shock.pcx", nullptr);
 		
 		for (n=0; n<5; n++)
 		{
@@ -809,7 +809,7 @@ void combat_initsprites()
 	if (!spr_shield)
 	{
 		spr_shield = new_spritepak(5);
-		pcx = ik_load_pcx("shields.pcx", NULL);
+		pcx = ik_load_pcx("shields.pcx", nullptr);
 		
 		for (n=0; n<5; n++)
 		{

@@ -113,9 +113,9 @@ void splash_screen()
 	t_ik_image *bg[3];
 	int32 zap;
 
-	bg[0] = ik_load_pcx("graphics/cheapass.pcx", NULL);
-	bg[1] = ik_load_pcx("graphics/digieel.pcx", NULL);
-	bg[2] = ik_load_pcx("graphics/title.pcx", NULL);
+	bg[0] = ik_load_pcx("graphics/cheapass.pcx", nullptr);
+	bg[1] = ik_load_pcx("graphics/digieel.pcx", nullptr);
+	bg[2] = ik_load_pcx("graphics/title.pcx", nullptr);
 
 	prep_screen();
 	ik_drawbox(screen, 0, 0, 640, 480, 0);
@@ -348,9 +348,9 @@ void credits_screen()
 
 	must_quit = 0;
 
-	bg[0] = ik_load_pcx("graphics/credits1.pcx", NULL);
-	bg[1] = ik_load_pcx("graphics/credits2.pcx", NULL);
-	bg[2] = ik_load_pcx("graphics/credits3.pcx", NULL);
+	bg[0] = ik_load_pcx("graphics/credits1.pcx", nullptr);
+	bg[1] = ik_load_pcx("graphics/credits2.pcx", nullptr);
+	bg[2] = ik_load_pcx("graphics/credits3.pcx", nullptr);
 
 	prep_screen();
 	ik_drawbox(screen, 0, 0, 640, 480, 0);
@@ -534,7 +534,7 @@ void main_init()
 	endgame_init();
 	gfx_initmagnifier();
 
-	srand( (unsigned)time( NULL ) );
+	srand( (unsigned)time( nullptr ) );
 
 	//s_volume = 85;
 	got_hiscore = -2;
@@ -614,7 +614,7 @@ int32 intro_screen()
 	else
 		Play_Sound(WAV_MUS_THEME, 15, 1);
 
-	backy = ik_load_pcx("graphics/titback.pcx", NULL);
+	backy = ik_load_pcx("graphics/titback.pcx", nullptr);
 	
 
 	nebby = new_image(640, 480);
