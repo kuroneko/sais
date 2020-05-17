@@ -13,7 +13,7 @@ All DIRECTDRAW stuff here
 
 #include <SDL.h>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "iface_globals.h"
 #include "gfx.h"
 

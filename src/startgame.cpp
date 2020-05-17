@@ -8,7 +8,7 @@
 #include <time.h>
 #include <math.h>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "is_fileio.h"
 
 #include "textstr.h"

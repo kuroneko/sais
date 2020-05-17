@@ -1731,7 +1731,7 @@ int32 eledras_bauble(char *title)
 			if (strlen(itname) <= strlen(itemtypes[c].name))
 			{
 				for (x = 0; x <= (int)(strlen(itemtypes[c].name)-strlen(itname)); x++)
-				if (!_strnicmp(itname, itemtypes[c].name + x, strlen(itname)))
+				if (!strnicmp(itname, itemtypes[c].name + x, strlen(itname)))
 				{	
 					it = c;		
 					break;

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "iface_globals.h"
 #include "is_fileio.h"
 

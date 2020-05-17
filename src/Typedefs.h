@@ -13,3 +13,8 @@ typedef unsigned int uint32;
 typedef float float32;
 typedef double float64;
 
+#ifndef _WIN32
+#define strnicmp(x,y,c) strncasecmp(x,y,c)
+#define stricmp(x,y) strcasecmp(x,y)
+#endif
+
