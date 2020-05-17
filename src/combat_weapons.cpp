@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <cmath>
 
 #include "Typedefs.h"
 #include "iface_globals.h"

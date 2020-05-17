@@ -1,8 +1,21 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.13)
 project(strange LANGUAGES C CXX)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+option(USE_CONAN "Use conan for dependencies" OFF)
+
+if(USE_CONAN)
+  include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+  conan_basic_setup(TARGETS)
+  set(SAIS_LIBS CONAN_PKG::sdl2 CONAN_PKG::sdl2_mixer CONAN_PKG::physfs)
+else()
+  include(FindPkgConfig)
+  pkg_check_modules(SDL2 REQUIRED sdl2)
+  pkg_check_modules(SDL2MIXER REQUIRED SDL2_mixer)
+  find_library(PHYSFS NAMES physfs)
+
+  set(SAIS_LIBS ${SDL2_LIBRARIES} ${SDL2MIXER_LIBRARIES} ${PHYSFS})
+  set(SAIS_INCLUDES ${SDL2_INCLUDE_DIRS} ${SDL2MIXER_INCLUDE_DIRS})
+endif()
 
 set(SAIS_SRC
         src/cards.cpp
@@ -36,16 +49,15 @@ set(SAIS_SRC
 add_executable(strangedemo WIN32 ${SAIS_SRC})
 target_link_libraries(strangedemo
         PRIVATE
-        CONAN_PKG::sdl2
-        CONAN_PKG::sdl2_mixer
-        CONAN_PKG::physfs)
+	${SAIS_LIBS})
+target_include_directories(strangedemo PRIVATE ${SAIS_INCLUDES})
 target_compile_definitions(strangedemo PRIVATE DEMO_VERSION=1)
+
 add_executable(strange WIN32 ${SAIS_SRC})
 target_link_libraries(strange
         PRIVATE
-        CONAN_PKG::sdl2
-        CONAN_PKG::sdl2_mixer
-        CONAN_PKG::physfs)
+	${SAIS_LIBS})
+target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
 
 if(MSVC)
     target_sources(strangedemo PRIVATE
