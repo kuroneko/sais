@@ -40,6 +40,7 @@ extern int movrecord;
 
 // GLOBALS ////////////////////////////////////////////////
 
+SDL_Window *sdlWind;
 SDL_Surface *sdlsurf;
 extern t_paletteentry pe[256];
 
@@ -55,17 +56,17 @@ int ik_mouse_c;
 int must_quit;
 int wants_screenshot;
 
-int key_left=SDLK_LEFT;
-int key_right=SDLK_RIGHT;
-int key_up=SDLK_UP;
-int key_down=SDLK_DOWN;
+int key_left=SDL_SCANCODE_LEFT;
+int key_right=SDL_SCANCODE_RIGHT;
+int key_up=SDL_SCANCODE_UP;
+int key_down=SDL_SCANCODE_DOWN;
 int key_f[10];
-int key_fire1=SDLK_TAB;
-int key_fire2=SDLK_RETURN;
-int key_fire2b=SDLK_SPACE;
+int key_fire1=SDL_SCANCODE_TAB;
+int key_fire2=SDL_SCANCODE_RETURN;
+int key_fire2b=SDL_SCANCODE_SPACE;
 
 char ik_inchar;
-uint8 *keystate;
+const uint8 *keystate;
 
 t_ik_timer ik_timer[10];
 
@@ -76,7 +77,7 @@ void eventhandler()
 	SDL_Event event;
 	int b;
 
-	keystate = SDL_GetKeyState(NULL);
+	keystate = SDL_GetKeyboardState(nullptr);
 
 	while ( SDL_PollEvent(&event) ) 
 	{
@@ -98,7 +99,7 @@ void eventhandler()
 					break;
 			}
 
-			ik_inchar = event.key.keysym.unicode & 0xff;
+			ik_inchar = event.key.keysym.sym & 0xff;
 			break;
 
 			case SDL_MOUSEBUTTONDOWN:
@@ -118,19 +119,19 @@ void eventhandler()
 						4*(event.button.button == SDL_BUTTON_MIDDLE);
 				ik_mouse_b &= (7-b);
 				break;
-
-			case SDL_ACTIVEEVENT:
-			ActiveApp = event.active.gain;
-			if (ActiveApp)
-			{
-				gfx_redraw = 1;
-			}
-			break;
-
-			case SDL_VIDEOEXPOSE:
-			case SDL_VIDEORESIZE:
-				ActiveApp = 1;
-				break;
+		    case SDL_WINDOWEVENT:
+		        switch (event.window.event) {
+                case SDL_WINDOWEVENT_CLOSE:
+                    must_quit = 1;
+                    break;
+                case SDL_WINDOWEVENT_FOCUS_GAINED:
+                    ActiveApp = 1;
+                    break;
+                case SDL_WINDOWEVENT_FOCUS_LOST:
+                    ActiveApp = 0;
+                    break;
+		        }
+		        break;
 			case SDL_QUIT:
 				must_quit = 1;
 				break;
@@ -148,7 +149,7 @@ int Game_Init(void *parms)
 	int x;
 
 	for (x=0;x<10;x++)
-		key_f[x]=SDLK_F1+x;
+		key_f[x]=SDL_SCANCODE_F1+x;
 
 	return(1);
 }

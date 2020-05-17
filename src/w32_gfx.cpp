@@ -22,7 +22,7 @@ All DIRECTDRAW stuff here
 #define SCREEN_BPP    8                // bits per pixel
 
 // GLOBALS
-
+extern SDL_Window  *sdlWind;
 extern SDL_Surface *sdlsurf;
 
 #ifdef MOVIE
@@ -67,9 +67,17 @@ void ik_blit()
 #ifdef DEMO_VERSION
 		gfx_blarg();
 #endif
+	free_screen();
 
-	SDL_UpdateRect(sdlsurf, 0, 0, 640, 480);
-	SDL_Flip(sdlsurf);
+	auto *realsurf = SDL_GetWindowSurface(sdlWind);
+    if (SDL_BlitSurface(sdlsurf, nullptr, realsurf, nullptr)) {
+        SDL_Log("Blit Failed?: %s", SDL_GetError());
+        abort();
+    }
+    if (SDL_UpdateWindowSurface(sdlWind)) {
+        SDL_Log("Update Surface Failed: %s", SDL_GetError());
+        abort();
+    }
 
 	if ((settings.opt_mousemode&5)==0)
 	{
@@ -100,7 +108,8 @@ void update_palette()
 		spal[i].g = currentpal[i*3+1];
 		spal[i].b = currentpal[i*3+2];
 	}
-	SDL_SetColors(sdlsurf, spal, 0, 256);
+
+	SDL_SetPaletteColors(sdlsurf->format->palette, spal, 0, 256);
 }
 
 void set_palette_entry(int n, int r, int g, int b)
