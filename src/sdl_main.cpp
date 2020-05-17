@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <physfs.h>
+#include <string>
 
 #include "Typedefs.h"
 #include "gfx.h"
@@ -10,6 +11,11 @@ int sound_init();
 
 extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
+
+// directory paths for our core.
+
+std::string     fsBaseDir;
+std::string     fsPreferencesDir;
 
 int main(int argc, char *argv[]) {
     gfx_width = 640;
@@ -25,7 +31,7 @@ int main(int argc, char *argv[]) {
         SDL_Log("PhysFS failed to initialise: %s", PHYSFS_getLastError());
         return 1;
     }
-    if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 1)) {
+    if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 0)) {
         SDL_Log("PhysFS failed to set default env: %s", PHYSFS_getLastError());
         return 1;
     }

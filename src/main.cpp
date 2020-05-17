@@ -80,6 +80,13 @@ int my_main()
 	ik_hidecursor();
 	if (!modconfig_main())
 		must_quit = 1;
+
+	SDL_Log("PHYSFS Search Path");
+	auto **searchPath = PHYSFS_getSearchPath();
+    for (auto **sIter = searchPath; *sIter != nullptr; sIter++) {
+        SDL_Log("* %s", *sIter);
+    }
+	PHYSFS_freeList(searchPath);
 #endif
 
 #ifdef MOVIE
