@@ -4,9 +4,6 @@ The basic datatypes
 
 */
 
-#define DEMO_VERSION
-
-
 typedef signed char int8;
 typedef unsigned char uint8;
 typedef signed short int16;
