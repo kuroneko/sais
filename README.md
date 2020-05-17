@@ -1,3 +1,45 @@
+# Strange Adventures in Infinte Space (GPL)
+
+This is an unofficial port and update.
+
+## Changes over the Original 1.5 Release
+
+* Update from SDL1.x to SDL2
+
+* Switch from OS Native file handling to PHYSFS.
+
+  * Support loading gamedata and mods from zipfiles.
+
+  * Make use of writable local directories for scores and config
+
+It has a few internal behavioural changes (mostly around mod handling), but
+should play exactly the same as the 1.5 release.
+
+## Building on Windows
+
+I suggest using conan and setting `USE_CONAN` in the cmake options.
+
+## Building on Linux
+
+I suggest NOT using conan and relying on your shipping SDL2+physfs.  This
+has been tested on Raspbian and works fine.
+
+You'll need:
+ * SDL2
+ * SDL2_mixer
+ * PHYSFS
+
+## Getting the RETAIL Data
+
+For now, I cannot ship the retail data in this repository despite it being
+released for free.  (I'm waiting to hear back from Digital Eel for permission).
+
+Until I get confirmation, please download the game from
+http://www.digital-eel.com/sais/buy.htm (see the links at the top for the
+free download).
+
+# Original Readme File
+```
 -----------------------------------------
 Strange Adventures in Infinite Space v1.5
           source code release
@@ -110,6 +152,4 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-
-
+```
