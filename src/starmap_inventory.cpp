@@ -1001,7 +1001,7 @@ int32 use_vacuum_collapser(char *title)
 	int32 mc, c;
 	int32 end = 0;
 	int32 bl = 0;
-	int32 t;
+	int32 t = 0;
 	t_ik_sprite *bg;
 	int32 bx = SM_MAP_X + 144, by = SM_MAP_Y + 200 + (1-2*(sm_stars[player.system].y < 0))*80;
 
@@ -1424,7 +1424,7 @@ void probe_exploreplanet(int32 probe)
 	int32 it = -1;
 	int32 bx = 224, by = 112;
 	int32 tof = 0;
-	int32 t;
+	int32 t = 0;
 	char name[32];
 	char texty[256];
 
@@ -1689,7 +1689,7 @@ int32 eledras_bauble(char *title)
 	int32 tof = 0;
 	int32 it;
 	int32 mc, c, x;
-	int32 t;
+	int32 t = 0;
 	char itname[256];
 	char texty[256];
 

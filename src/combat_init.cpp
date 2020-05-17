@@ -302,7 +302,7 @@ void combat_initshiptypes()
 	char end;
 	int num;
 	int flag;
-	int n, com;
+	int n = 0, com;
 	int wep;
 
 	ini = IS_Open_Read("gamedata/ships.ini");

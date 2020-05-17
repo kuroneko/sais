@@ -1098,7 +1098,7 @@ void starmap_display(int32 t)
 	char lne[128];
 	char cal[128];
 	int bu[3], nbu;
-	int nl;
+	int nl = 0;
 	int ti2 = get_ik_timer(2);
 	t_ik_sprite *fs1, *fs2;
 	t_ik_sprite *ssp;

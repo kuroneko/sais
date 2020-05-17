@@ -192,7 +192,7 @@ int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 {
 	int32 c;
 	int32 b;
-	int32 a;
+	int32 a = 0;
 	int32 a1, a2, a3;
 	int32 r;
 	int32 eta;
