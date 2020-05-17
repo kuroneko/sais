@@ -905,7 +905,7 @@ void starmap_mantle(int32 flt)
 	int32 bx = 216, by = 152, h = 112;
 	int32 mx, my;
 	int32 r = sm_fleets[flt].race;
-	int32 t;
+	int32 t = 0;
 	char texty[256];
 
 	int32 bab = 0;

@@ -186,7 +186,7 @@ int32 select_weaponpoint()
 	int32 bx = 240, by = 152;
 	int32 mx, my;
 	int32 upd = 1;
-	int32 t;
+	int32 t = 0;
 
 	for (n = 0; n < hulls[shiptypes[0].hull].numh; n++)
 	if (hulls[shiptypes[0].hull].hardpts[n].type == hdpWeapon &&
