@@ -12,6 +12,8 @@
 #include "snd.h"
 #include "gfx.h"
 
+#include "is_fileio.h"
+#include "physfsrwops.h"
 
 
 
@@ -46,8 +48,13 @@ Mix_Chunk *lsnd(int32 name)
 	wave = (Mix_Chunk*)wavesnd[name].wave;
 	if (!wave)
 	{
-		wavesnd[name].wave = Mix_LoadWAV(wavesnd[name].name);
-		wave = (Mix_Chunk*)wavesnd[name].wave;
+	    auto wavOps = PHYSFSRWOPS_openRead(wavesnd[name].name);
+        if (wavOps == nullptr) {
+            SDL_Log("Failed to find WAV %s: %s", wavesnd[name].name, PHYSFS_getLastError());
+            return nullptr;
+        }
+        wavesnd[name].wave = Mix_LoadWAV_RW(wavOps, 1);
+        wave = (Mix_Chunk*)wavesnd[name].wave;
 	}
 
 	return wave;

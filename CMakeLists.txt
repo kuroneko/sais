@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(strange LANGUAGES CXX)
+project(strange LANGUAGES C CXX)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
@@ -18,6 +18,7 @@ set(SAIS_SRC
         src/is_fileio.cpp
         src/main.cpp
         src/modconfig.cpp
+        src/physfsrwops.c
         src/sdl_iface.cpp
         src/sdl_main.cpp
         src/sound.cpp
