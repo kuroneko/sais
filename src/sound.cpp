@@ -1,6 +1,4 @@
-#include <stdio.h>
-
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "iface_globals.h"
 #include "snd.h"
 

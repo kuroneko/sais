@@ -2,12 +2,11 @@
 //     INCLUDES
 // ----------------
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdarg.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdarg>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "gfx.h"
 #include "is_fileio.h"
 #include "combat.h"

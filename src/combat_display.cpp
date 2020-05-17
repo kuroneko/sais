@@ -2,15 +2,11 @@
 //     INCLUDES
 // ----------------
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "iface_globals.h"
-#include "is_fileio.h"
 #include "gfx.h"
 #include "snd.h"
 #include "interface.h"

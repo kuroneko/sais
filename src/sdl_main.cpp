@@ -2,7 +2,7 @@
 #include <SDL_mixer.h>
 
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "gfx.h"
 
 int my_main();

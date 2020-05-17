@@ -2,13 +2,12 @@
 //     INCLUDES
 // ----------------
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "is_fileio.h"
 
 #include "textstr.h"

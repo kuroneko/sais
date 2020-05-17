@@ -5,25 +5,13 @@ All DIRECTDRAW stuff here
 
 */
 
-#define WIN32_LEAN_AND_MEAN  
+#include <cstdlib>
+#include <cstring>
+#include <cstdarg>
+#include <cstdio>
+#include <cmath>
 
-#include <windows.h>   // include important windows stuff
-#include <windowsx.h> 
-#include <mmsystem.h>
-#include <iostream.h> // include important C/C++ stuff
-#include <conio.h>
-#include <stdlib.h>
-#include <malloc.h>
-#include <memory.h>
-#include <string.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <math.h>
-#include <io.h>
-#include <fcntl.h>
 #include <SDL.h>
-
-//#include <ddraw.h>  // directX includes
 
 #include "typedefs.h"
 #include "iface_globals.h"
@@ -36,8 +24,6 @@ All DIRECTDRAW stuff here
 // GLOBALS
 
 extern SDL_Surface *sdlsurf;
-UCHAR *drawbuffer;  // video buffer
-int drawpitch;      // line pitch
 
 #ifdef MOVIE
 int when = 0;

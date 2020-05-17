@@ -1,13 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <memory.h>
-#include <math.h>
-#include <time.h>
-#include <string.h>
-#include <malloc.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "iface_globals.h"
 #include "gfx.h"
 #include "snd.h"

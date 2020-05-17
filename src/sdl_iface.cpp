@@ -6,25 +6,9 @@ code to handle all/most of the interaction with the win32 system
 */
 
 // INCLUDES ///////////////////////////////////////////////
-#define WIN32_LEAN_AND_MEAN  
-
-#include <windows.h>   // include important windows stuff
-#include <windowsx.h> 
-#include <mmsystem.h>
-#include <iostream.h> // include important C/C++ stuff
-#include <conio.h>
-#include <stdlib.h>
-#include <malloc.h>
-#include <memory.h>
-#include <string.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <math.h>
-#include <io.h>
-#include <fcntl.h>
 #include <SDL.h>
 
-#include "typedefs.h"
+#include "Typedefs.h"
 #include "iface_globals.h"
 #include "gfx.h"
 #include "snd.h"
