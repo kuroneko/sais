@@ -155,8 +155,9 @@ t_ik_spritepak *load_sprites(const char *fname)
 
     IS_FileHdl fil;
 	t_ik_spritepak *pak;
-	int32 x,num;
-	int32 w,h,c;
+	int32 x,c;
+	int16 num;
+	int16 w,h;
 
 /*
 if loading a mod, look at the folder for new frames
@@ -190,35 +191,29 @@ and mark them in the replacement array.
 		}
 	}
 
-	fil=fopen(fname,"rb");	// don't use myopen here
-	if (!fil)
-		return nullptr;
-
-	num=fgetc(fil);
-	num+=fgetc(fil)*256;
+	fil = IS_Open_Read(fname);
+	if (fil == nullptr) {
+	    return nullptr;
+	}
+	PHYSFS_readSLE16(fil, &num);
 
 	if (num > max)
 		max = num;
 
 	pak = new_spritepak(max);
 	if (!pak)
-	{ fclose(fil); return nullptr; }
+	{ IS_Close(fil); return nullptr; }
 
 	for (x=0;x<max;x++)
 	{
 		// header
 		if (x < num)
 		{
-			w=fgetc(fil);
-			w+=fgetc(fil)*256;
-			h=fgetc(fil);
-			h+=fgetc(fil)*256;
-			c = fgetc(fil);
-			fgetc(fil);
-			fgetc(fil);
-			fgetc(fil);
+		    PHYSFS_readSLE16(fil, &w);
+		    PHYSFS_readSLE16(fil, &h);
+		    PHYSFS_readSLE32(fil, &c);
 			buffu = (uint8*)malloc(w * h);
-			fread(buffu,1,w*h,fil);
+			IS_Read(buffu, 1, w*h, fil);
 
 			if (!rep[x])
 			{
@@ -243,7 +238,7 @@ and mark them in the replacement array.
 		}
 	}
 
-	fclose(fil);
+	IS_Close(fil);
 
 	return pak;
 }
@@ -252,29 +247,19 @@ void save_sprites(const char *fname, t_ik_spritepak *pak)
 {
     IS_FileHdl fil;
 	int32 x;
-	int32 num = pak->num;
+	int16 num = pak->num;
 
-	fil=myopen(fname,"wb");
+	fil = IS_Open_Write(fname);
 	if (!fil)
 		return;
-
-	fputc(num&255, fil);
-	fputc(num>>8, fil);
-
-	for (x=0;x<num;x++)
-	{
+    PHYSFS_writeSLE16(fil, num);
+	for (x=0;x<num;x++)	{
 		// header
-		fputc(pak->spr[x]->w & 255,fil);
-		fputc(pak->spr[x]->w >> 8,fil);
-		fputc(pak->spr[x]->h & 255,fil);
-		fputc(pak->spr[x]->h >> 8,fil);
-		fputc(pak->spr[x]->co,fil);
-		// filler
-		fputc(0,fil);
-		fputc(0,fil);
-		fputc(0,fil);
+		PHYSFS_writeSLE16(fil, pak->spr[x]->w);
+		PHYSFS_writeSLE16(fil, pak->spr[x]->h);
+		PHYSFS_writeSLE32(fil, pak->spr[x]->co);
 		// data
-		fwrite(pak->spr[x]->data,1,pak->spr[x]->w*pak->spr[x]->h,fil);
+		IS_Write(pak->spr[x]->data,1,pak->spr[x]->w*pak->spr[x]->h,fil);
 	}
 }
 

@@ -88,9 +88,9 @@ void modconfig_init()
 		}
 	}
 
-	fil = myopen("graphics/palette.dat", "rb");
-	fread(globalpal, 1, 768, fil);
-	fclose(fil);
+	fil = IS_Open_Read("graphics/palette.dat");
+	IS_Read(globalpal, 1, 768, fil);
+	IS_Close(fil);
 	memcpy(currentpal, globalpal, 768);
 
 	Load_WAV("sounds/beep_wait.wav",0);

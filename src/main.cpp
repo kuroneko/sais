@@ -481,7 +481,7 @@ int32 main_menu()
 				ik_print_log("launching game...\n");
 				starmap();
 				if (logfile)
-					fclose(logfile);
+					IS_Close(logfile);
 			}
 		}
 		else	// combat sim
@@ -507,9 +507,9 @@ void main_init()
 	must_quit=0;
 	wants_screenshot=0;
 
-	fil = myopen("graphics/palette.dat", "rb");
-	fread(globalpal, 1, 768, fil);
-	fclose(fil);
+	fil = IS_Open_Read("graphics/palette.dat");
+	IS_Read(globalpal, 1, 768, fil);
+	IS_Close(fil);
 	memcpy(currentpal, globalpal, 768);
 
 	for (x=0;x<1024;x++)
@@ -544,7 +544,7 @@ void main_init()
 
 //	if (strlen(moddir))	// loading a mod, check for new frames
 //	{
-//		fclose(loggy);
+//		IS_Close(loggy);
 //	}
 
 	if (!(settings.opt_mousemode & 1))

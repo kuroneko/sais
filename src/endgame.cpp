@@ -443,7 +443,7 @@ void endgame_init()
 	int n;
 	int tv1;
 	
-	ini = myopen("gamedata/jobs.ini", "rb");
+	ini = IS_Open_Read("gamedata/jobs.ini");
 	if (!ini)
 		return;
 
@@ -458,14 +458,14 @@ void endgame_init()
 		else if (flag)
 			num++;
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	jobs = (t_job*)calloc(num, sizeof(t_job));
 	if (!jobs)
 		return;
 	num_jobs = num;
 
-	ini = myopen("gamedata/jobs.ini", "rb");
+	ini = IS_Open_Read("gamedata/jobs.ini");
 	end = 0; flag = 0;
 	while (!end)
 	{
@@ -485,7 +485,7 @@ void endgame_init()
 			}
 		}
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	load_scores();
 }
@@ -503,20 +503,18 @@ void load_scores()
 	char scorefile[256];
 	sprintf(scorefile, "%s%s", moddir, "scores.dat");
 
-	fil = myopen(scorefile, "rb");
+	fil = IS_Open_Read(scorefile);
 	if (!fil)
 	{
 		num_scores = 0;
 		return;
 	}
 
-	num_scores = fgetc(fil);
-	fgetc(fil); fgetc(fil);	fgetc(fil);
-
+	//FIXME: needs better abstraction.
+	PHYSFS_readSLE32(fil, &num_scores);
 	if (num_scores>20) num_scores=20;
-
-	fread(scores, sizeof(t_score), num_scores, fil);
-	fclose(fil);
+	IS_Read(scores, sizeof(t_score), num_scores, fil);
+	IS_Close(fil);
 }
 
 void save_scores()
@@ -524,15 +522,13 @@ void save_scores()
     IS_FileHdl fil;
 	char scorefile[256];
 	sprintf(scorefile, "%s%s", moddir, "scores.dat");
-
-	fil = myopen(scorefile, "wb");
+	fil = IS_Open_Write(scorefile);
 	if (!fil)
 	{
 		return;
 	}
-
-	fputc(num_scores, fil);
-	fputc(0, fil); fputc(0, fil); fputc(0, fil);
-	fwrite(scores, sizeof(t_score), num_scores, fil);
-	fclose(fil);
+    //FIXME: needs better abstraction.
+    PHYSFS_writeSLE32(fil, num_scores);
+	IS_Write(scores, sizeof(t_score), num_scores, fil);
+	IS_Close(fil);
 }

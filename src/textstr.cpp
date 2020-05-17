@@ -20,7 +20,7 @@ void textstrings_init()
 	int flag;
 	char *str;
 
-	ini = myopen("gamedata/strings.ini", "rb");
+	ini = IS_Open_Read("gamedata/strings.ini");
 	if (!ini)
 		return;
 
@@ -43,7 +43,7 @@ void textstrings_init()
 			num++;
 		}
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 }
 

@@ -533,7 +533,7 @@ void starmap_initplanettypes()
 	int com;
 	int tv1;
 
-	ini = myopen("gamedata/planets.ini", "rb");
+	ini = IS_Open_Read("gamedata/planets.ini");
 	if (!ini)
 		return;
 
@@ -546,7 +546,7 @@ void starmap_initplanettypes()
 		if (!strcmp(s1, star_keywords[stkBegin]))
 			n++;
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	platypes = (t_planettype*)calloc(num, sizeof(t_planettype));
 	if (!platypes)
@@ -558,7 +558,7 @@ void starmap_initplanettypes()
 		return;
 	num_startypes = n;
 
-	ini = myopen("gamedata/planets.ini", "rb");
+	ini = IS_Open_Read("gamedata/planets.ini");
 	end = 0; num = 0; flag = 0;
 	while (!end)
 	{
@@ -598,9 +598,9 @@ void starmap_initplanettypes()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 
-	ini = myopen("gamedata/planets.ini", "rb");
+	ini = IS_Open_Read("gamedata/planets.ini");
 	end = 0; num = 0; flag = 0;
 	while (!end)
 	{
@@ -635,9 +635,9 @@ void starmap_initplanettypes()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 
-	ini = myopen("gamedata/planets.ini", "rb");
+	ini = IS_Open_Read("gamedata/planets.ini");
 	if (!ini)
 		return;
 
@@ -700,7 +700,7 @@ void starmap_initplanettypes()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void starmap_inititems()
@@ -716,7 +716,7 @@ void starmap_inititems()
 	char itemtype[8][32];
 	int32 num_types;
 
-	ini = myopen("gamedata/items.ini", "rb");
+	ini = IS_Open_Read("gamedata/items.ini");
 	if (!ini)
 		return;
 
@@ -738,14 +738,14 @@ void starmap_inititems()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	itemtypes = (t_itemtype*)calloc(num, sizeof(t_itemtype));
 	if (!itemtypes)
 		return;
 	num_itemtypes = num;
 
-	ini = myopen("gamedata/items.ini", "rb");
+	ini = IS_Open_Read("gamedata/items.ini");
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -827,7 +827,7 @@ void starmap_inititems()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void starmap_deinititems()
@@ -1772,7 +1772,7 @@ void starmap_initshipnames()
 	int flag;
 	int n;
 
-	ini = myopen("gamedata/names.ini", "rb");
+	ini = IS_Open_Read("gamedata/names.ini");
 	if (!ini)
 		return;
 
@@ -1801,7 +1801,7 @@ void starmap_initshipnames()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 	
 }
 
@@ -1815,7 +1815,7 @@ void starmap_initracefleets()
 	int n, com;
 	int tv1, tv2, tv3;
 
-	ini = myopen("gamedata/fleets.ini", "rb");
+	ini = IS_Open_Read("gamedata/fleets.ini");
 	if (!ini)
 		return;
 
@@ -1827,7 +1827,7 @@ void starmap_initracefleets()
 		if (!strcmp(s1, item_keywords[rflBegin]))
 			num++;
 	}
-	fclose(ini);
+	IS_Close(ini);
 /*
 	racefleets = (t_racefleet*)calloc(num, sizeof(t_racefleet));
 	if (!racefleets)
@@ -1835,7 +1835,7 @@ void starmap_initracefleets()
 	*/
 	num_racefleets = num;
 
-	ini = myopen("gamedata/fleets.ini", "rb");
+	ini = IS_Open_Read("gamedata/fleets.ini");
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -1896,7 +1896,7 @@ void starmap_initracefleets()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void starmap_deinitracefleets()

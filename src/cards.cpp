@@ -57,7 +57,7 @@ void cards_init()
 	int numtypes = 0;
 	char cardtypenames[16][32];
 
-	ini = myopen("gamedata/cards.ini", "rb");
+	ini = IS_Open_Read("gamedata/cards.ini");
 	if (!ini)
 		return;
  
@@ -79,14 +79,14 @@ void cards_init()
 				strcpy(cardtypenames[n++], s1);
 		}
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	ecards = (t_eventcard*)calloc(num, sizeof(t_eventcard));
 	if (!ecards)
 		return;
 	num_ecards = num;
 
-	ini = myopen("gamedata/cards.ini", "rb");
+	ini = IS_Open_Read("gamedata/cards.ini");
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -158,7 +158,7 @@ void cards_init()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void cards_deinit()

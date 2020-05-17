@@ -397,7 +397,7 @@ void loadconfig()
 {
     IS_FileHdl cfg;
 
-	cfg = myopen("settings.dat", "rb");
+	cfg = IS_Open_Read("settings.dat");
 	if (!cfg)
 	{
 		settings.dif_enemies = 0;
@@ -415,9 +415,8 @@ void loadconfig()
 
 		return;
 	}
-
-	fread(&settings, sizeof(t_gamesettings), 1, cfg);
-	fclose(cfg);
+	IS_Read(&settings, sizeof(t_gamesettings), 1, cfg);
+	IS_Close(cfg);
 	s_volume = settings.opt_volume * 10;
 	settings.opt_mousemode &= 1;
 }
@@ -426,9 +425,9 @@ void saveconfig()
 {
     IS_FileHdl cfg;
 
-	cfg = myopen("settings.dat", "wb");
+	cfg = IS_Open_Write("settings.dat");
 	if (!cfg)
 		return;
-	fwrite(&settings, sizeof(t_gamesettings), 1, cfg);
-	fclose(cfg);
+    IS_Write(&settings, sizeof(t_gamesettings), 1, cfg);
+    IS_Close(cfg);
 }

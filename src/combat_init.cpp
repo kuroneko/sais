@@ -196,7 +196,7 @@ void combat_inithulls()
 	char ts1[64];
 	int tv1, tv2, tv3, tv4, tv5;
 
-	ini = myopen("gamedata/hulls.ini", "rb");
+	ini = IS_Open_Read("gamedata/hulls.ini");
 	if (!ini)
 		return;
 
@@ -207,14 +207,14 @@ void combat_inithulls()
 		if (!strcmp(s1, hull_keywords[hlkBegin]))
 			num++;
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	hulls = (t_hull*)calloc(num, sizeof(t_hull));
 	if (!hulls)
 		return;
 	num_hulls = num;
 
-	ini = myopen("gamedata/hulls.ini", "rb");
+	ini = IS_Open_Read("gamedata/hulls.ini");
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -286,7 +286,7 @@ void combat_inithulls()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void combat_deinithulls()
@@ -305,7 +305,7 @@ void combat_initshiptypes()
 	int n, com;
 	int wep;
 
-	ini = myopen("gamedata/ships.ini", "rb");
+	ini = IS_Open_Read("gamedata/ships.ini");
 	if (!ini)
 		return;
 
@@ -335,14 +335,14 @@ void combat_initshiptypes()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	shiptypes = (t_shiptype*)calloc(num, sizeof(t_shiptype));
 	if (!shiptypes)
 		return;
 	num_shiptypes = num;
 
-	ini = myopen("gamedata/ships.ini", "rb");
+	ini = IS_Open_Read("gamedata/ships.ini");
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -434,7 +434,7 @@ void combat_initshiptypes()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void combat_deinitshiptypes()
@@ -456,7 +456,7 @@ void combat_initshipweapons()
 	char ts[4][64];
 	int tv1, tv2;
 
-	ini = myopen("gamedata/weapons.ini", "rb");
+	ini = IS_Open_Read("gamedata/weapons.ini");
 	if (!ini)
 		return;
 
@@ -467,14 +467,14 @@ void combat_initshipweapons()
 		if (!strcmp(s1, shipweapon_keywords[wpkBegin]))
 			num++;
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	shipweapons = (t_shipweapon*)calloc(num, sizeof(t_shipweapon));
 	if (!shipweapons)
 		return;
 	num_shipweapons = num;
 
-	ini = myopen("gamedata/weapons.ini", "rb");
+	ini = IS_Open_Read("gamedata/weapons.ini");
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -574,7 +574,7 @@ void combat_initshipweapons()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void combat_deinitshipweapons()
@@ -596,7 +596,7 @@ void combat_initshipsystems()
 	char systype[16][32];
 	int32 num_systypes;
 
-	ini = myopen("gamedata/systems.ini", "rb");
+	ini = IS_Open_Read("gamedata/systems.ini");
 	if (!ini)
 		return;
 
@@ -619,14 +619,14 @@ void combat_initshipsystems()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 
 	shipsystems = (t_shipsystem*)calloc(num, sizeof(t_shipsystem));
 	if (!shipsystems)
 		return;
 	num_shipsystems = num;
 
-	ini = myopen("gamedata/systems.ini", "rb");
+	ini = IS_Open_Read("gamedata/systems.ini");
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -686,7 +686,7 @@ void combat_initshipsystems()
 		}
 
 	}
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void combat_deinitshipsystems()
@@ -844,7 +844,7 @@ void initraces(void)
 	int flag;
 	int n, com;
 
-	ini = myopen("gamedata/races.ini", "rb");
+	ini = IS_Open_Read("gamedata/races.ini");
 	if (!ini)
 		return;
 
@@ -888,7 +888,7 @@ void initraces(void)
 
 	}
 	num_races = num;
-	fclose(ini);
+	IS_Close(ini);
 }
 
 void sort_shiptype_systems(int32 num)

@@ -621,7 +621,7 @@ int32 pay_item(char *title, char *text, int r, char klak)
 	int32 y, y1;
 	int32 ploog[64];
 	int32 num_ploog=0;
-	int32 ti, clt, ot;
+	int32 ti = 0, clt, ot;
 
 	for (y = 0; y < player.num_items + shiptypes[0].num_systems; y++)
 	{
