@@ -33,7 +33,7 @@ int movrecord = 1;
 // blit screen
 void ik_blit()
 {
-	t_ik_sprite *cs;
+	t_ik_sprite *cs = nullptr;
 
 	// take screenshots here (!)
 #ifdef MOVIE

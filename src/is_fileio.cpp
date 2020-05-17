@@ -154,7 +154,7 @@ void ik_print_log(const char *ln, ...)
 {
 	char dlin[256], *dl=dlin;
 	char text1[256], text2[256];
-	int d, m, y;
+	int d = 0, m = 0, y = 0;
 	int date = player.stardate;
 
 	if (!logfile)

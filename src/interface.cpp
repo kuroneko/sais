@@ -304,7 +304,7 @@ int32 interface_popup(t_ik_font *fnt,
 	int32 mc, c;
 	int32 end = 0;
 	int32 bl = 0;
-	int32 t;
+	int32 t = 0;
 	t_ik_sprite *bg;
 	int bc[3];
 

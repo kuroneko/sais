@@ -108,7 +108,7 @@ void splash_screen()
 {
 	int32 end;
 	int32 c, mc;
-	int32 t, s, l, z;
+	int32 t = 0, s, l, z;
 	int32 x, y, co;
 	t_ik_image *bg[3];
 	int32 zap;
@@ -342,7 +342,7 @@ void credits_screen()
 {
 	int32 end;
 	int32 c, mc;
-	int32 t, s, l, r;
+	int32 t = 0, s, l, r;
 	int32 x, y, co;
 	t_ik_image *bg[3];
 
@@ -587,7 +587,7 @@ int32 intro_screen()
 	uint8 *gp[4];
 	int32 x, y;
 	int32 fr, fc = 0;
-	int32 bx, by, h;
+	int32 bx = 0, by = 0, h = 0;
 	int32 nebn = 4, starn = 32;
 	uint8 *dr, *bk;
 	int8 mode = 0;

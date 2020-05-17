@@ -114,7 +114,7 @@ int32 starmap_entersystem()
 
 void starmap_exploreplanet()
 {
-	int32 mc, c, ti, ot;
+	int32 mc, c, ti = 0, ot;
 	int32 h, n;
 	int32 s, sh;
 	int32 end = 0;
@@ -840,7 +840,7 @@ void starmap_meetrace(int32 r)
 {
 	int32 mc, c;
 	int32 end = 0;
-	int32 t;
+	int32 t = 0;
 	int32 bx = 216, by = 152;
 	int32 mx, my;
 
@@ -997,7 +997,7 @@ void enemy_encounter(int32 r)
 	int32 end = 0;
 	int32 bx = 216, by = 152;
 	int32 mx, my;
-	int32 t;
+	int32 t = 0;
 	char texty[256];
 
 #ifndef DEMO_VERSION
@@ -1226,7 +1226,7 @@ void klakar_encounter()
 	int32 end = 0;
 	int32 bx = 216, by = 152;
 	int32 mx, my;
-	int32 r, t;
+	int32 r, t = 0;
 //	t_ik_sprite *bg;
 
 	halfbritescreen();

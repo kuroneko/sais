@@ -53,7 +53,7 @@ void cards_init()
 	char end;
 	int num;
 	int flag;
-	int n, com;
+	int n = 0, com;
 	int numtypes = 0;
 	char cardtypenames[16][32];
 

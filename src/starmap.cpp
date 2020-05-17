@@ -1091,7 +1091,7 @@ void starmap_display(int32 t)
 {
 	int c, a;
 	int cx, cy;
-	int x, y;
+	int x = 0, y = 0;
 	int l, d;
 	int sp1, sp2;
 	char top[128];
@@ -2326,7 +2326,7 @@ void help_screen()
 {
 	int32 end;
 	int32 c, mc;
-	int32 t;
+	int32 t = 0;
 	int32 x, y;
 	t_ik_image *bg;
 

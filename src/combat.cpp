@@ -778,7 +778,7 @@ void klakar_pissoff()
 	int32 end = 0;
 	int32 bx = 216, by = 152;
 	int32 mx, my;
-	int32 r, t;
+	int32 r, t = 0;
 	char str[256];
 
 	r = race_klakar;
@@ -1076,10 +1076,10 @@ void combat_movement(int32 t)
 	int32 c;
 	int32 d;
 	int32 p;
-	int32 a;
+	int32 a = 0;
 	int32 sys, lsys;
 	int32 r, rm;
-	int32 tg, wx, wy;
+	int32 tg, wx = 0, wy = 0;
 	int32 sp, sx, sy;
 	t_hull *hull;
 
@@ -2271,7 +2271,7 @@ void combat_help_screen()
 {
 	int32 end;
 	int32 c, mc;
-	int32 t;
+	int32 t = 0;
 	int32 x, y;
 	t_ik_image *bg;
 

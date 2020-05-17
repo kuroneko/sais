@@ -52,7 +52,7 @@ void game_over()
 	int32 c, mc;
 	int32 y, h;
 	int32 job;
-	int32 t;
+	int32 t = 0;
 	int32 val, v;
 	int32 w;
 	int32 bx, by;
