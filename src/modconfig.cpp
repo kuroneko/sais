@@ -71,8 +71,13 @@ static PHYSFS_EnumerateCallbackResult
 modconfig_enumerate_cb(void *data, const char *origdir, const char *fname) {
     SDL_Log("Found possible mod: %s", fname);
     std::string fullFilename = std::string(origdir) + "/" + std::string(fname);
+    std::string sfName = fname;
+    // is it a directory or an archive?
     if (PHYSFS_isDirectory(fullFilename.c_str())) {
         allModDirectories.emplace_back(std::make_shared<modDirectory>(fname, fullFilename));
+    } else if ((sfName.length() >= 5 && sfName.substr(sfName.length()-4) == ".zip")) {
+      std::string displayName = sfName.substr(0, sfName.length()-4);
+      allModDirectories.emplace_back(std::make_shared<modDirectory>(displayName.c_str(), fullFilename));
     }
     if (allModDirectories.size() >= MAX_MODDIRS) {
         return PHYSFS_ENUM_STOP;
