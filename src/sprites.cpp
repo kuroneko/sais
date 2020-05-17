@@ -139,7 +139,7 @@ void free_spritepak(t_ik_spritepak *pak)
 	free(pak);
 }
 
-t_ik_spritepak *load_sprites(char *fname)
+t_ik_spritepak *load_sprites(const char *fname)
 {
 	// NOTE: load_sprites loads default .SPR, and FRAMES from the mod
 	struct _finddata_t find;
@@ -248,7 +248,7 @@ and mark them in the replacement array.
 	return pak;
 }
 
-void save_sprites(char *fname, t_ik_spritepak *pak)
+void save_sprites(const char *fname, t_ik_spritepak *pak)
 {
 	FILE *fil;
 	int32 x;

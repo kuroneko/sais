@@ -18,7 +18,7 @@
 //     CONSTANTS
 // ----------------
 
-char *hull_keywords[hlkMax] =
+const char *hull_keywords[hlkMax] =
 {
 	"HULL",
 	"NAME",
@@ -34,7 +34,7 @@ char *hull_keywords[hlkMax] =
 	"END",
 };
 
-char *shiptype_keywords[shkMax] =
+const char *shiptype_keywords[shkMax] =
 {
 	"STYP",
 	"NAME",
@@ -49,7 +49,7 @@ char *shiptype_keywords[shkMax] =
 	"END",
 };
 
-char *shipweapon_keywords[wpkMax] = 
+const char *shipweapon_keywords[wpkMax] =
 {
 	"WEAP",
 	"NAME",
@@ -67,7 +67,7 @@ char *shipweapon_keywords[wpkMax] =
 	"END",
 };
 
-char *shipweapon_flagwords[wpfMax] =
+const char *shipweapon_flagwords[wpfMax] =
 {
 	"trans",
 	"spin",
@@ -83,7 +83,7 @@ char *shipweapon_flagwords[wpfMax] =
 	"noclip",
 };
 
-char *shipsystem_keywords[sykMax] = 
+const char *shipsystem_keywords[sykMax] =
 {
 	"SYST",
 	"NAME",
@@ -96,7 +96,7 @@ char *shipsystem_keywords[sykMax] =
 	"END",
 };
 
-char *race_keywords[rckMax] =
+const char *race_keywords[rckMax] =
 {
 	"RACE",
 	"NAME",

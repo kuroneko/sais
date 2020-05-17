@@ -11,7 +11,7 @@
 void ik_drawfont(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, uint8 c);
 
 // LOAD FONT FROM PCX
-t_ik_font *ik_load_font(char *fname, uint8 w,  uint8 h)
+t_ik_font *ik_load_font(const char *fname, uint8 w, uint8 h)
 {
 	t_ik_font *fnt;
 	t_ik_image *pic;
@@ -114,7 +114,7 @@ void ik_drawfontbig(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co,
 }
 
 // PRINT A LINE
-void ik_print(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, char *ln, ...)
+void ik_print(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, const char *ln, ...)
 {
 	char dlin[256], *dl=dlin;
   va_list ap;
@@ -134,7 +134,7 @@ void ik_print(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, char 
   }
 }
 
-void ik_printbig(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, char *ln, ...)
+void ik_printbig(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, const char *ln, ...)
 {
 	char dlin[256], *dl=dlin;
   va_list ap;
@@ -154,7 +154,7 @@ void ik_printbig(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, ch
   }
 }
 
-void ik_text_input(int x, int y, int l, t_ik_font *fnt, char *pmt, char *tx, int bg, int co)
+void ik_text_input(int x, int y, int l, t_ik_font *fnt, const char *pmt, char *tx, int bg, int co)
 {
 	int end=0,n,upd=1;
 	char c;

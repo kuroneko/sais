@@ -313,7 +313,7 @@ void del_image(t_ik_image *img)
 	free(img);
 }
 
-t_ik_image *ik_load_pcx(char *fname, uint8 *pal)
+t_ik_image *ik_load_pcx(const char *fname, uint8 *pal)
 {
 	int32 x,y,po;
 	int32 c,ch;

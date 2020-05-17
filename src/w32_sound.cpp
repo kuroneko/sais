@@ -53,7 +53,7 @@ Mix_Chunk *lsnd(int32 name)
 	return wave;
 }
 
-int Load_WAV(char *filename, int id)
+int Load_WAV(const char *filename, int id)
 {
 	sprintf(wavesnd[id].name, filename);
 	lsnd(id);

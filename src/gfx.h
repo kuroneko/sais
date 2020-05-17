@@ -54,7 +54,7 @@ extern int32 cos1k[1024];
 // load, generate or delete images
 t_ik_image *new_image(int32 w, int32 h);
 void del_image(t_ik_image *img);
-t_ik_image *ik_load_pcx(char *fname, uint8 *pal);
+t_ik_image *ik_load_pcx(const char *fname, uint8 *pal);
 t_ik_image *ik_load_tga(char *fname, uint8 *pal);
 void ik_save_screenshot(t_ik_image *img, uint8 *pal);
 void ik_save_tga(char *fname, t_ik_image *img, uint8 *pal);
@@ -102,13 +102,13 @@ void gfx_deinitmagnifier();
 //         FONT.CPP
 // ------------------------
 
-t_ik_font *ik_load_font(char *fname, uint8 w,  uint8 h);
+t_ik_font *ik_load_font(const char *fname, uint8 w, uint8 h);
 void ik_del_font(t_ik_font *fnt);
 
-void ik_print(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, char *ln, ...);
-void ik_printbig(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, char *ln, ...);
+void ik_print(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, const char *ln, ...);
+void ik_printbig(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, const char *ln, ...);
 //void ik_text_input(int x, int y, int l, t_ik_font *fnt, char *tx);
-void ik_text_input(int x, int y, int l, t_ik_font *fnt, char *pmt, char *tx, int bg=0, int co=0);
+void ik_text_input(int x, int y, int l, t_ik_font *fnt, const char *pmt, char *tx, int bg= 0, int co= 0);
 void ik_hiscore_input(int x, int y, int l, t_ik_font *fnt, char *tx);
 
 // ------------------------
@@ -125,8 +125,8 @@ int32							calc_sprite_color(t_ik_sprite *spr);
 t_ik_spritepak *	new_spritepak(int32 num);
 void							free_spritepak(t_ik_spritepak *pak);
 
-t_ik_spritepak *	load_sprites(char *fname);
-void							save_sprites(char *fname, t_ik_spritepak *pak);
+t_ik_spritepak *	load_sprites(const char *fname);
+void							save_sprites(const char *fname, t_ik_spritepak *pak);
 
 
 // sprite drawing

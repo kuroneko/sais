@@ -280,7 +280,7 @@ extern t_wavesound wavesnd[WAV_MAX];
 
 // ******** SOUND *********
 
-int Load_WAV(char *filename, int id);
+int Load_WAV(const char *filename, int id);
 void load_all_sfx(void);
 int Delete_Sound(int id);
 int Delete_All_Sounds(void);

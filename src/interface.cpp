@@ -57,10 +57,10 @@ void interface_deinit()
 	interface_deinitsprites();
 }
 
-void interface_drawborder(t_ik_image *img, 
-													int32 left, int32 top, int32 right, int32 bottom,
-													int32 fill, int32 color,
-													char *title)
+void interface_drawborder(t_ik_image *img,
+                          int32 left, int32 top, int32 right, int32 bottom,
+                          int32 fill, int32 color,
+                          const char *title)
 {
 	int32 x, y;
 	int32 flag;
@@ -160,7 +160,7 @@ void interface_drawslider(t_ik_image *img, int32 left, int32 top, int32 a, int32
 
 }
 
-void interface_drawbutton(t_ik_image *img, int32 left, int32 top, int32 l, int32 color, char *text)
+void interface_drawbutton(t_ik_image *img, int32 left, int32 top, int32 l, int32 color, const char *text)
 {
 	int32 x;
 

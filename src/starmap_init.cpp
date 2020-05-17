@@ -30,7 +30,7 @@
 
 
 
-char *planet_keywords[plkMax] = 
+const char *planet_keywords[plkMax] =
 {
 	"PLNT",
 	"NAME",
@@ -39,7 +39,7 @@ char *planet_keywords[plkMax] =
 	"END",
 };
 
-char *star_keywords[stkMax] = 
+const char *star_keywords[stkMax] =
 {
 	"STAR",
 	"NAME",
@@ -47,7 +47,7 @@ char *star_keywords[stkMax] =
 	"END",
 };
 
-char *item_keywords[itkMax] = 
+const char *item_keywords[itkMax] =
 {
 	"ITEM",
 	"NAME",
@@ -60,7 +60,7 @@ char *item_keywords[itkMax] =
 	"END",
 };
 
-char *raceflt_keywords[rflMax] = 
+const char *raceflt_keywords[rflMax] =
 {
 	"FSET",
 	"RACE",
