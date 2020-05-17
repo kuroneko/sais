@@ -1,6 +1,7 @@
 #ifndef DEMO_VERSION
 
 #include <string>
+#include <algorithm>
 
 #include <cstdlib>
 #include <cstring>
@@ -91,7 +92,12 @@ void modconfig_init() {
     // read mod names
     PHYSFS_enumerate("mods", modconfig_enumerate_cb, nullptr);
 
-    //FIXME: sort allMods
+    // sort the mod directories into order
+    std::sort(allModDirectories.begin(),
+	      allModDirectories.end(),
+	      [](std::shared_ptr<modDirectory> a, std::shared_ptr<modDirectory> b) {
+		return a->name < b->name;
+	      });
 
     fil = IS_Open_Read("graphics/palette.dat");
     IS_Read(globalpal, 1, 768, fil);
