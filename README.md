@@ -2,7 +2,9 @@
 
 This is an unofficial port and update.
 
-![Screenshot](screenshot.png)
+The official website and release are available at http://digital-eel.com/sais/
+
+![Screenshot on Raspian (ARM Linux)](screenshot.png)
 
 
 ## Changes over the Original 1.5 Release
