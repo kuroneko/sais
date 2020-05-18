@@ -3,6 +3,7 @@ cmake_policy(SET CMP0091 NEW)
 project(strange LANGUAGES C CXX)
 
 option(USE_CONAN "Use conan for dependencies" OFF)
+option(BUILD_DEMO "Build the Demo Version of SAIS" OFF)
 
 if(USE_CONAN)
   include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -46,37 +47,43 @@ set(SAIS_SRC
         src/w32_gfx.cpp
         src/w32_sound.cpp)
 
-add_executable(strangedemo WIN32 ${SAIS_SRC})
-target_link_libraries(strangedemo
-        PRIVATE
-	${SAIS_LIBS})
-target_include_directories(strangedemo PRIVATE ${SAIS_INCLUDES})
-target_compile_definitions(strangedemo PRIVATE DEMO_VERSION=1)
-set_property(TARGET strangedemo PROPERTY
-        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+if(BUILD_DEMO)
+    add_executable(strangedemo WIN32 ${SAIS_SRC})
+    target_link_libraries(strangedemo
+            PRIVATE
+        ${SAIS_LIBS})
+    target_include_directories(strangedemo PRIVATE ${SAIS_INCLUDES})
+    target_compile_definitions(strangedemo PRIVATE DEMO_VERSION=1)
+
+    install(TARGETS strangedemo RUNTIME DESTINATION sais_demo)
+    install(DIRECTORY demo/ DESTINATION sais_demo)
+
+    add_subdirectory(demo-data)
+endif()
 
 add_executable(strange WIN32 ${SAIS_SRC})
 target_link_libraries(strange
         PRIVATE
 	${SAIS_LIBS})
 target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
-set_property(TARGET strange PROPERTY
-        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
 
 install(TARGETS strange RUNTIME DESTINATION sais_full)
 install(DIRECTORY full/ DESTINATION sais_full)
 
-install(TARGETS strange RUNTIME DESTINATION sais_demo)
-install(DIRECTORY demo/ DESTINATION sais_demo)
-
 add_subdirectory(full-data)
-add_subdirectory(demo-data)
 
 if(MSVC)
-    target_sources(strangedemo PRIVATE
-            src/Script1.rc)
+    if(BUILD_DEMO)
+        target_sources(strangedemo PRIVATE
+                src/Script1.rc)
+        set_property(TARGET strangedemo PROPERTY
+                MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif()
+
     target_sources(strange PRIVATE
         src/Script1.rc)
+    set_property(TARGET strange PROPERTY
+            MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS=1)
 endif()
