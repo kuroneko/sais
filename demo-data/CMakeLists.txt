@@ -189,4 +189,4 @@ add_custom_command(OUTPUT saisdemo.zip
         COMMAND ${CMAKE_COMMAND} -E tar cvf ${CMAKE_CURRENT_BINARY_DIR}/saisdemo.zip --format=zip -- ${DEMO_DATA_FILES}
         COMMENT "Building Demo Data File"
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/saisdemo.zip DESTINATION sais_demo)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/saisdemo.zip DESTINATION .)

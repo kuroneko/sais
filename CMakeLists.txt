@@ -1,9 +1,26 @@
 cmake_minimum_required(VERSION 3.15)
 cmake_policy(SET CMP0091 NEW)
-project(strange LANGUAGES C CXX)
+project(strange VERSION 1.6.0 LANGUAGES C CXX)
 
 option(USE_CONAN "Use conan for dependencies" OFF)
 option(BUILD_DEMO "Build the Demo Version of SAIS" OFF)
+
+if(NOT BUILD_DEMO)
+  if(CMAKE_SYSTEM_NAME MATCHES Linux)
+    set(CPACK_SYSTEM_NAME Linux-${CMAKE_SYSTEM_PROCESSOR})
+    set(CPACK_GENERATOR TGZ) 
+  elseif(CMAKE_SYSTEM_NAME MATCHES Windows)
+    set(CPACK_GENERATOR ZIP;NSIS)
+  endif()
+  set(CPACK_PACKAGE_NAME "SAIS-GPL")
+  set(CPACK_PACKAGE_VENDOR "FreeSAIS")
+  set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/kuroneko/sais/")
+  set(CPACK_PACKAGE_INSTALL_DIRECTORY "SAIS-GPL")
+  set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/full/README1st.txt)
+  set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/full/LICENSES.txt)
+  set(CPACK_PACKAGE_EXECUTABLES "strange;Strange Adventures in Infinite Space GPL")
+  include(CPack)
+endif()
 
 if(USE_CONAN)
   include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -55,22 +72,23 @@ if(BUILD_DEMO)
     target_include_directories(strangedemo PRIVATE ${SAIS_INCLUDES})
     target_compile_definitions(strangedemo PRIVATE DEMO_VERSION=1)
 
-    install(TARGETS strangedemo RUNTIME DESTINATION sais_demo)
-    install(DIRECTORY demo/ DESTINATION sais_demo)
+    install(TARGETS strangedemo RUNTIME DESTINATION .)
+    install(DIRECTORY demo/ DESTINATION .)
 
     add_subdirectory(demo-data)
+else()
+    add_executable(strange WIN32 ${SAIS_SRC})
+    target_link_libraries(strange
+            PRIVATE
+            ${SAIS_LIBS})
+    target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
+
+    install(TARGETS strange RUNTIME DESTINATION .)
+    install(DIRECTORY full/ DESTINATION .)
+
+    add_subdirectory(full-data)
 endif()
 
-add_executable(strange WIN32 ${SAIS_SRC})
-target_link_libraries(strange
-        PRIVATE
-	${SAIS_LIBS})
-target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
-
-install(TARGETS strange RUNTIME DESTINATION sais_full)
-install(DIRECTORY full/ DESTINATION sais_full)
-
-add_subdirectory(full-data)
 
 if(MSVC)
     if(BUILD_DEMO)
@@ -78,12 +96,12 @@ if(MSVC)
                 src/Script1.rc)
         set_property(TARGET strangedemo PROPERTY
                 MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    else()
+        target_sources(strange PRIVATE
+            src/Script1.rc)
+        set_property(TARGET strange PROPERTY
+                MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     endif()
-
-    target_sources(strange PRIVATE
-        src/Script1.rc)
-    set_property(TARGET strange PROPERTY
-            MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS=1)
 endif()
