@@ -35,7 +35,6 @@ set(SAIS_SRC
         src/sdl_iface.cpp
         src/sdl_main.cpp
         src/sound.cpp
-        src/sprite_init.cpp
         src/sprites.cpp
         src/starmap.cpp
         src/starmap_encounters.cpp
@@ -58,6 +57,16 @@ target_link_libraries(strange
         PRIVATE
 	${SAIS_LIBS})
 target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
+
+
+install(TARGETS strange RUNTIME DESTINATION sais_full)
+install(DIRECTORY full/ DESTINATION sais_full)
+
+install(TARGETS strange RUNTIME DESTINATION sais_demo)
+install(DIRECTORY demo/ DESTINATION sais_demo)
+
+add_subdirectory(full-data)
+add_subdirectory(demo-data)
 
 if(MSVC)
     target_sources(strangedemo PRIVATE

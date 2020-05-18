@@ -1,13 +1,34 @@
 # Strange Adventures in Infinte Space (GPL)
 
-This is an unofficial port and update.
-
-The official website and release are available at http://digital-eel.com/sais/
-
 ![Screenshot on Raspian (ARM Linux)](screenshot.png)
 
+(herein "SAIS GPL" since "Strange Adventures in Infinite Space" is a mouthful)
+
+This is an unofficial port and update of SAIS GPL to modern systems.
+
+The official website and last official release are available at 
+http://digital-eel.com/sais/.
+
+More about the Infinite Space games can be found and their official website, 
+http://www.infinitespacegames.com/.
+
+If you like SAIS GPL, please consider supporting Digital Eel by buying one 
+(or more!) of their newer games as this release would not have been possible
+without their generosity.
+
+If you don't like SAIS GPL, it's possibly my fault and you should leave 
+Digital Eel alone - this version of SAIS is unofficial - they have not had any
+input in it, and they have no responsibility for any problems it may have.
+
+Likewise, there are no warranties explicit or implied for this software
+(per the License).
 
 ## Changes over the Original 1.5 Release
+
+SAIS GPL has few internal behavioural changes (mostly around mod handling), but
+should play exactly the same as the 1.5 release.
+
+Key changes to the game source include:
 
 * Update from SDL1.x to SDL2
 
@@ -17,33 +38,105 @@ The official website and release are available at http://digital-eel.com/sais/
 
   * Make use of writable local directories for scores and config
 
-It has a few internal behavioural changes (mostly around mod handling), but
-should play exactly the same as the 1.5 release.
+* Inclusion of the Retail Data (see below for information about the license)
 
 ## Building on Windows
 
-I suggest using conan and setting `USE_CONAN` in the cmake options.
+If you're using MSVC, I strongly recommend using [Conan](https://conan.io/) to
+install the dependencies.  (see the notes on using Conan below).
+
+SAIS GPL has been tested as an x64 binary on Windows 10, built using the
+Visual Studio 2019 C++ compilers, using Conan to source and build the
+dependencies.
 
 ## Building on Linux
 
-I suggest NOT using conan and relying on your shipping SDL2+physfs.  This
-has been tested on Raspbian and works fine.
+I suggest NOT using Conan and relying on your distributions shipped SDL2+physfs.
+  
+This has been tested with SDL 2.0.10 and PhysFS 3.0.1 on Raspbian (armhf) and
+has worked without issue.
 
-You'll need:
- * SDL2
- * SDL2_mixer
- * PHYSFS
+## Using Conan
 
-## Getting the RETAIL Data
+You will need the [bincrafters](https://bincrafters.github.io/) repository
+enabled to get the SDL2 and PhysFS packages in use.
 
-For now, I cannot ship the retail data in this repository despite it being
-released for free.  (I'm waiting to hear back from Digital Eel for permission).
+You can do this by using the command:
 
-Until I get confirmation, please download the game from
-http://www.digital-eel.com/sais/buy.htm (see the links at the top for the
-free download).
+    conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan 
+
+Which will add the remote to your conan configuration.
+
+You need to set the `USE_CONAN` option to `ON` (`-DUSE_CONAN=ON` via the command
+line) to make the CMake project consider the Conan package data during build,
+otherwise it will search your system paths for the libraries required. 
+
+# Licensing
+
+## The Game Source
+
+<a rel="license" href="https://www.gnu.org/licenses/gpl-3.0.html"><img alt="GPLv3" style="border-width:0" src="https://www.gnu.org/graphics/gplv3-with-text-84x42.png"></a>
+
+The Game Source code is provided under the GNU Public License version 3.
+
+Please see [`COPYING.md`](COPYING.md) for the full text of the license.
+
+    Strange Adventures in Infinite Space
+    Copyright (C) 2005 Richard Carlson, Iikka Keranen and William Sears
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+## The Game Data
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
+
+Digital Eel have graciously provided permission to redistribute the original 
+retail game data along-side the source code, with the game data licensed under a
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+The game data is everything in the `full`, `full-data`, `demo` and `demo-data` 
+directories of this repository.
+
+In summary:
+
+You are free to:
+
+* Share — copy and redistribute the material in any medium or format
+
+* Adapt — remix, transform, and build upon the material
+
+As long as you:
+
+* give appropriate credit, provide a link to the license, and indicate if
+  changes were made. You may do so in any reasonable manner, but not in any way
+  that suggests the licensor (Digital Eel) endorses you or your use.
+  
+* do not use the material for commercial purposes.
+
+(Thanks to the Creative Commons website for the explanatory text)
+
+As suggested by the original README (below), There is nothing preventing you 
+from producing a completely original dataset for SAIS GPL and doing with that 
+as you will.
 
 # Original Readme File
+
+The original README makes references to licensing of content under the GPLv2,
+which has been replaced with the GPLv3 as permitted by the license, and to the
+game data, which has since been released under CC-BY-NC 4.0.  Please bear this 
+in mind when reading it.
+
 ```
 -----------------------------------------
 Strange Adventures in Infinite Space v1.5
