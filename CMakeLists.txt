@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
+cmake_policy(SET CMP0091 NEW)
 project(strange LANGUAGES C CXX)
 
 option(USE_CONAN "Use conan for dependencies" OFF)
@@ -51,12 +52,16 @@ target_link_libraries(strangedemo
 	${SAIS_LIBS})
 target_include_directories(strangedemo PRIVATE ${SAIS_INCLUDES})
 target_compile_definitions(strangedemo PRIVATE DEMO_VERSION=1)
+set_property(TARGET strangedemo PROPERTY
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 add_executable(strange WIN32 ${SAIS_SRC})
 target_link_libraries(strange
         PRIVATE
 	${SAIS_LIBS})
 target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
+set_property(TARGET strange PROPERTY
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 
 install(TARGETS strange RUNTIME DESTINATION sais_full)
