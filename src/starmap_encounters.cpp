@@ -204,8 +204,8 @@ void starmap_exploreplanet()
 
 	sprintf(texty, ecards[c].text, "A", "B");
 	if (ecards[c].type == card_event)
-	{	
-		sprintf(name, textstring[STR_CARD_EVENT]);
+	{
+        strcpy(name, textstring[STR_CARD_EVENT]);
 #ifndef DEMO_VERSION
 		if (!strcmp(ecards[c].name, textstring[STR_EVENT_DEVA]))
 		{
@@ -457,7 +457,7 @@ void starmap_exploreplanet()
 	}
 	else if (ecards[c].type == card_ally)
 	{
-		sprintf(name, textstring[STR_CARD_ALLY]);
+        strcpy(name, textstring[STR_CARD_ALLY]);
 	}
 	else
 	{	
@@ -566,9 +566,9 @@ void starmap_exploreplanet()
 #endif
 		{
 			if (shiptypes[ecards[c].parm].flag & 64)
-				sprintf(hisher, textstring[STR_MERC_HER]);
+                strcpy(hisher, textstring[STR_MERC_HER]);
 			else
-				sprintf(hisher, textstring[STR_MERC_HIS]);
+                strcpy(hisher, textstring[STR_MERC_HIS]);
 
 			sprintf(texty, textstring[STR_MERC_PAYMENT], 
 							hulls[shiptypes[ecards[c].parm].hull].name,
@@ -780,9 +780,9 @@ int32 fleet_encounter(int32 flt, int32 inc)
 			upd = 0;
 			prep_screen();
 			if (!inc)
-				sprintf(texty, textstring[STR_SCANNER_ALIENS]);
+                strcpy(texty, textstring[STR_SCANNER_ALIENS]);
 			else
-				sprintf(texty, textstring[STR_SCANNER_INCOMING]);
+                strcpy(texty, textstring[STR_SCANNER_INCOMING]);
 			interface_drawborder(screen,
 													 bx, by, bx+160, by+184,
 													 1, STARMAP_INTERFACE_COLOR, texty);
@@ -1020,10 +1020,10 @@ void enemy_encounter(int32 r)
 	ik_print(screen, font_6x8, bx+16, by+26, 3, textstring[STR_VIDCAST2]);
 
 	if (r == race_garthan)
-		sprintf(texty, textstring[STR_GARTHAN_WARN1+rand()%3]);
+        strcpy(texty, textstring[STR_GARTHAN_WARN1+rand()%3]);
 #ifndef DEMO_VERSION
 	else if (r == race_urluquai)
-		sprintf(texty, textstring[STR_URLUQUAI_WARN1+rand()%3]);
+		strcpy(texty, textstring[STR_URLUQUAI_WARN1+rand()%3]);
 	else // tan ru
 	{
 		// generate random tan ru message
@@ -1383,13 +1383,13 @@ void kawangi_message(int32 flt, int32 m)
 
 		if (sm_fleets[flt].explored < 2)	// don't know it's the kawangi
 		{
-			sprintf(texty, textstring[STR_KAWANGI_KILLED1]);
-			sprintf(topic, textstring[STR_KAWANGI_KILLED]);
+            strcpy(texty, textstring[STR_KAWANGI_KILLED1]);
+            strcpy(topic, textstring[STR_KAWANGI_KILLED]);
 		}
 		else
 		{
-			sprintf(texty, textstring[STR_KAWANGI_KILLED2]);
-			sprintf(topic, races[race_kawangi].name);
+            strcpy(texty, textstring[STR_KAWANGI_KILLED2]);
+            strcpy(topic, races[race_kawangi].name);
 		}
 		break;
 
@@ -1399,13 +1399,13 @@ void kawangi_message(int32 flt, int32 m)
 		if (kawangi_score == 0)
 		{
 			sprintf(texty, textstring[STR_KAWANGI_EXPLO1], sm_stars[sm_fleets[flt].system].starname);
-			sprintf(topic, textstring[STR_KAWANGI_EXPLO]);
+            strcpy(topic, textstring[STR_KAWANGI_EXPLO]);
 			kawangi_score++;
 		}
 		else
 		{
 			sprintf(texty, textstring[STR_KAWANGI_EXPLO2], sm_stars[sm_fleets[flt].system].starname);
-			sprintf(topic, textstring[STR_KAWANGI_EXPLO]);
+            strcpy(topic, textstring[STR_KAWANGI_EXPLO]);
 			kawangi_score++;
 		}
 		break;

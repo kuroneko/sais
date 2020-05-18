@@ -501,7 +501,7 @@ void load_scores()
 {
     IS_FileHdl fil;
 	char scorefile[256];
-	sprintf(scorefile, "%s%s", moddir, "scores.dat");
+	snprintf(scorefile, sizeof(scorefile), "%s%s", moddir, "scores.dat");
 
 	fil = IS_Open_Read(scorefile);
 	if (!fil)
@@ -521,7 +521,7 @@ void save_scores()
 {
     IS_FileHdl fil;
 	char scorefile[256];
-	sprintf(scorefile, "%s%s", moddir, "scores.dat");
+	snprintf(scorefile, sizeof(scorefile), "%s%s", moddir, "scores.dat");
 	fil = IS_Open_Write(scorefile);
 	if (!fil)
 	{

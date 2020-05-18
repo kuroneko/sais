@@ -227,9 +227,9 @@ void starmap()
 									starmap_tutorialtype = tut_ally;
 
 									if (shiptypes[player.ships[player.num_ships-1]].flag & 64)
-										sprintf(hisher, textstring[STR_MERC_HER]);
+										strcpy(hisher, textstring[STR_MERC_HER]);
 									else
-										sprintf(hisher, textstring[STR_MERC_HIS]);
+										strcpy(hisher, textstring[STR_MERC_HIS]);
 
 									sprintf(texty, textstring[STR_MERC_PAYMENT], 
 													hulls[shiptypes[player.ships[player.num_ships-1]].hull].name,
@@ -521,13 +521,13 @@ void starmap()
 				{
 					if (shiptypes[0].engine==-1)
 					{
-						sprintf(topic, textstring[STR_DRIVE_MISSING]);
-						sprintf(texty, textstring[STR_DRIVE_MISSING2]);
+						strcpy(topic, textstring[STR_DRIVE_MISSING]);
+                        strcpy(texty, textstring[STR_DRIVE_MISSING2]);
 					}
 					else
 					{
-						sprintf(topic, textstring[STR_DRIVE_BROKEN]);
-						sprintf(texty, textstring[STR_DRIVE_BROKEN2]);
+                        strcpy(topic, textstring[STR_DRIVE_BROKEN]);
+                        strcpy(texty, textstring[STR_DRIVE_BROKEN2]);
 					}
 
 					Play_SoundFX(WAV_DESELECT);
@@ -1809,7 +1809,7 @@ void starmap_display(int32 t)
 	if (player.num_items > 12)
 		hud.invslider = MIN(hud.invslider, player.num_items-12);
 
-	sprintf(top, textstring[STR_STARMAP_CARGO]);
+    strcpy(top, textstring[STR_STARMAP_CARGO]);
 	interface_drawborder(screen,
 											 SM_INV_X, SM_INV_Y, SM_INV_X + 160, SM_INV_Y + 128,
 											 1, STARMAP_INTERFACE_COLOR, top);
@@ -1864,13 +1864,13 @@ void starmap_display(int32 t)
 	ik_dsprite(screen, SM_INV_X + 112, SM_INV_Y + 120, spr_IFbutton->spr[14], 2+(l<<8));
 	*/
 	// draw selection (system) info
-	sprintf(top, textstring[STR_STARMAP_SELECT]);
+    strcpy(top, textstring[STR_STARMAP_SELECT]);
 	if (player.target > -1)
 	{
 		if (sm_stars[player.target].explored)
-			sprintf(top, sm_stars[player.target].planetname);
+            strcpy(top, sm_stars[player.target].planetname);
 		else
-			sprintf(top, sm_stars[player.target].starname);
+            strcpy(top, sm_stars[player.target].starname);
 	}
 	interface_drawborder(screen,
 											 SM_SEL_X, SM_SEL_Y, SM_SEL_X + 160, SM_SEL_Y + 96,

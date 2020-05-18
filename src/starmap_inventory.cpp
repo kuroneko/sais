@@ -1025,14 +1025,14 @@ int32 use_vacuum_collapser(char *title)
 											 bx, by, bx+192, by+80,
 											 1, STARMAP_INTERFACE_COLOR, title);
 
-	sprintf(texty, textstring[STR_LVC_ASKWHEN]);
+    strcpy(texty, textstring[STR_LVC_ASKWHEN]);
 	interface_textbox(screen, font_6x8,
 										bx+16, by+24, 160, 24, 0,
 										texty);
 	ik_print(screen, font_6x8, bx+16, by+48, 0, textstring[STR_LVC_DAYSTILL]);
 	ik_blit();
 
-	sprintf(nummy, "");
+    strcpy(nummy, "");
 	ik_text_input(bx+176-24, by+48, 4, font_6x8, "", nummy, STARMAP_INTERFACE_COLOR*16+3, STARMAP_INTERFACE_COLOR);
 
 	num = 0;
@@ -1381,11 +1381,11 @@ int32 probe_fleet_encounter(int32 flt)
 				if (sm_fleets[flt].num_ships>1)
 					sprintf(texty, textstring[STR_PROBE_FLEET1], sm_fleets[flt].num_ships);
 				else
-					sprintf(texty, textstring[STR_PROBE_FLEET2]);
+                    strcpy(texty, textstring[STR_PROBE_FLEET2]);
 			}
 			else
 			{
-				sprintf(texty, textstring[STR_PROBE_FLEET3]);
+                strcpy(texty, textstring[STR_PROBE_FLEET3]);
 			}
 			interface_textbox(screen, font_4x8, bx+16, by+160, 128, 24, 0, 
 												texty);
@@ -1475,8 +1475,8 @@ void probe_exploreplanet(int32 probe)
 										bx+84, by+36, 96, 104, 0,
 										platypes[sm_stars[player.target].planet].text);
 
-	sprintf(name, textstring[STR_PROBE_MISCDATA]);
-	sprintf(texty, textstring[STR_PROBE_MISCDATA1+tof]);
+    strcpy(name, textstring[STR_PROBE_MISCDATA]);
+    strcpy(texty, textstring[STR_PROBE_MISCDATA1+tof]);
 	if (ecards[c].type == card_event)
 	{	
 #ifndef DEMO_VERSION
@@ -1495,20 +1495,20 @@ void probe_exploreplanet(int32 probe)
 	{
 		it = shiptypes[ecards[c].parm].race; 
 		if (it == race_none)
-			sprintf(texty, textstring[STR_PROBE_MISCDATA3+tof]);
+            strcpy(texty, textstring[STR_PROBE_MISCDATA3+tof]);
 #ifndef DEMO_VERSION
 		if (it == race_muktian)
-			sprintf(texty, textstring[STR_PROBE_MISCDATA4+tof]);
+            strcpy(texty, textstring[STR_PROBE_MISCDATA4+tof]);
 #endif
 	}
 	else if ((ecards[c].type == card_item) || (ecards[c].type == card_rareitem) || (ecards[c].type == card_lifeform))
 	{
 		it = ecards[c].parm;
 		if (ecards[c].type == card_lifeform)
-			sprintf(texty, textstring[STR_PROBE_MISCDATA5+tof]);
+            strcpy(texty, textstring[STR_PROBE_MISCDATA5+tof]);
 
 		if (itemtypes[it].type == item_treasure)
-			sprintf(texty, textstring[STR_PROBE_MISCDATA6+tof]);
+            strcpy(texty, textstring[STR_PROBE_MISCDATA6+tof]);
 	}
 
 	ik_print(screen, font_6x8, bx+96-strlen(name)*3, by+108, STARMAP_INTERFACE_COLOR, name);
@@ -1717,7 +1717,7 @@ int32 eledras_bauble(char *title)
 
 		ik_blit();
 
-		sprintf(itname, "");
+        strcpy(itname, "");
 		ik_text_input(bx+16, by+104, 26, font_6x8, "", itname, STARMAP_INTERFACE_COLOR*16+3, STARMAP_INTERFACE_COLOR);
 
 		it = -1;

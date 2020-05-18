@@ -154,7 +154,7 @@ IS_Printf(IS_FileHdl fileHdl, const char *format, ...)
     va_list ap2;
     va_start(ap, format);
     va_copy(ap2, ap);
-    lineOutLen = vsprintf(nullptr, format, ap);
+    lineOutLen = vsnprintf(nullptr, 0, format, ap);
     va_end(ap);
 
     // build the buffer. - must include 1 extra for NUL storage
@@ -171,7 +171,7 @@ IS_VPrintf(IS_FileHdl fileHdl, const char *format, va_list arglist)
     size_t lineOutLen;
     va_list ap2;
     va_copy(ap2, arglist);
-    lineOutLen = vsprintf(nullptr, format, ap2);
+    lineOutLen = vsnprintf(nullptr, 0, format, ap2);
     va_end(ap2);
     // build the buffer. - must include 1 extra for NUL storage
     std::vector<char>   bufOut(lineOutLen+1);

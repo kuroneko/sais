@@ -224,7 +224,7 @@ t_ik_spritepak *load_sprites(const char *fname) {
             free(buffu);
         }
         if (sd.replacedFrames[x]) {
-            sprintf(framename, "%s/frame%03d.tga", spritedir, x);
+            snprintf(framename, sizeof(framename), "%s/frame%03d.tga", spritedir, x);
             img = ik_load_tga(framename, nullptr);
             if (img) {
                 pak->spr[x] = get_sprite(img, 0, 0, img->w, img->h);
