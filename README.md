@@ -37,7 +37,10 @@ Key changes to the game source include:
   * Support loading gamedata and mods from zipfiles.
 
   * Make use of writable local directories for scores and config
-
+  
+* Support rescaling to native resolution full-screen including "whole multiple" 
+  scaling. (I'd like pixel perfect, but the scaled blit always filters)
+  
 * Inclusion of the Retail Data (see below for information about the license)
 
 ## Building on Windows

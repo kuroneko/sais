@@ -90,7 +90,7 @@ void ik_blit() {
 
     // calculate scale factor.
     if (realsurf->w != sdlsurf->w || realsurf->h != sdlsurf->h) {
-        if (globalsettings.opt_pixel_perfect) {
+        if (globalsettings.opt_whole_multiple_rescale_ratio) {
             // for pixel perfect scaling, use integer ratios only.
             int yrat = realsurf->h / sdlsurf->h;
             int xrat = realsurf->w / sdlsurf->w;

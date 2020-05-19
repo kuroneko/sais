@@ -43,7 +43,7 @@ extern t_gamesettings settings;
 typedef struct _t_globalsettings
 {
     int8 opt_fullscreen;
-    int8 opt_pixel_perfect;
+    int8 opt_whole_multiple_rescale_ratio;
 } t_globalsettings;
 
 extern t_globalsettings globalsettings;
