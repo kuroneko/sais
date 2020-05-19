@@ -154,7 +154,11 @@ void eventhandler()
                 case SDL_WINDOWEVENT_FOCUS_LOST:
                     ActiveApp = 0;
                     break;
-		        }
+                case SDL_WINDOWEVENT_RESTORED:
+                case SDL_WINDOWEVENT_RESIZED:
+                    gfx_refresh_screen();
+                    break;
+                }
 		        break;
 			case SDL_QUIT:
 				must_quit = 1;

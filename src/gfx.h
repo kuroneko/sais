@@ -92,6 +92,7 @@ void gfx_magnify();
 void prep_screen(); // call before drawing stuff to *screen
 void free_screen(); // call after drawing, before blit
 void ik_blit();         // blit from memory to hardware
+extern void gfx_refresh_screen();
 int gfx_checkswitch();  // check for gfx mode switch
 void halfbritescreen();
 void reshalfbritescreen();

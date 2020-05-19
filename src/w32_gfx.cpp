@@ -52,40 +52,7 @@ int sdl_x_offset = 0;
 int sdl_y_offset = 0;
 float sdl_screen_scale = 1.0f;
 
-
-// blit screen
-void ik_blit() {
-    t_ik_sprite *cs = nullptr;
-
-    // take screenshots here (!)
-#ifdef MOVIE
-    if (get_ik_timer(2) > when && movrecord == 1)
-    {
-        when += 2;
-        wants_screenshot = 1;
-    }
-#endif
-    if (wants_screenshot) {
-        ik_save_screenshot(screen, currentpal);
-        wants_screenshot = 0;
-    }
-
-    if ((settings.opt_mousemode & 5) == 0) {
-        cs = get_sprite(screen, ik_mouse_x, ik_mouse_y, 16, 16);
-        ik_draw_mousecursor();
-    } else if (settings.opt_mousemode & 4) {
-//		cs = get_sprite(screen, ik_mouse_x-128, ik_mouse_y-128, 256, 256);
-        cs = get_sprite(screen, ik_mouse_x - 192, ik_mouse_y - 96, 384, 192);
-        gfx_magnify();
-        if (!(settings.opt_mousemode & 1)) {
-            ik_draw_mousecursor();
-        }
-    }
-#ifdef DEMO_VERSION
-    gfx_blarg();
-#endif
-    free_screen();
-
+void gfx_refresh_screen() {
     auto *realsurf = SDL_GetWindowSurface(sdlWind);
 
     // calculate scale factor.
@@ -137,6 +104,42 @@ void ik_blit() {
         SDL_Log("Update Surface Failed: %s", SDL_GetError());
         abort();
     }
+}
+
+// blit screen
+void ik_blit() {
+    t_ik_sprite *cs = nullptr;
+
+    // take screenshots here (!)
+#ifdef MOVIE
+    if (get_ik_timer(2) > when && movrecord == 1)
+    {
+        when += 2;
+        wants_screenshot = 1;
+    }
+#endif
+    if (wants_screenshot) {
+        ik_save_screenshot(screen, currentpal);
+        wants_screenshot = 0;
+    }
+
+    if ((settings.opt_mousemode & 5) == 0) {
+        cs = get_sprite(screen, ik_mouse_x, ik_mouse_y, 16, 16);
+        ik_draw_mousecursor();
+    } else if (settings.opt_mousemode & 4) {
+//		cs = get_sprite(screen, ik_mouse_x-128, ik_mouse_y-128, 256, 256);
+        cs = get_sprite(screen, ik_mouse_x - 192, ik_mouse_y - 96, 384, 192);
+        gfx_magnify();
+        if (!(settings.opt_mousemode & 1)) {
+            ik_draw_mousecursor();
+        }
+    }
+#ifdef DEMO_VERSION
+    gfx_blarg();
+#endif
+    free_screen();
+
+    gfx_refresh_screen();
 
     if ((settings.opt_mousemode & 5) == 0) {
         prep_screen();
