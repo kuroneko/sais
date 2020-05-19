@@ -22,6 +22,8 @@
 #include <cstdio>
 #include <cstring>
 
+#include <SDL.h>
+
 #include "Typedefs.h"
 #include "iface_globals.h"
 #include "is_fileio.h"
@@ -213,8 +215,10 @@ void combat_inithulls()
 	int tv1, tv2, tv3, tv4, tv5;
 
 	ini = IS_Open_Read("gamedata/hulls.ini");
-	if (!ini)
-		return;
+	if (!ini) {
+	    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load hulls information: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return;
+    }
 
 	end = 0; num = 0;
 	while (!end)
@@ -223,14 +227,16 @@ void combat_inithulls()
 		if (!strcmp(s1, hull_keywords[hlkBegin]))
 			num++;
 	}
-	IS_Close(ini);
 
 	hulls = (t_hull*)calloc(num, sizeof(t_hull));
-	if (!hulls)
-		return;
+	if (!hulls) {
+	    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to allocate memory for %d hulls", num);
+        IS_Close(ini);
+        return;
+    }
 	num_hulls = num;
 
-	ini = IS_Open_Read("gamedata/hulls.ini");
+	PHYSFS_seek(ini, 0);
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -322,8 +328,10 @@ void combat_initshiptypes()
 	int wep;
 
 	ini = IS_Open_Read("gamedata/ships.ini");
-	if (!ini)
-		return;
+	if (!ini) {
+	    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to open ships data: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return;
+	}
 
 	end = 0; num = 0; 
 	flag = 0; num_enemies = 0;
@@ -351,14 +359,16 @@ void combat_initshiptypes()
 		}
 
 	}
-	IS_Close(ini);
 
 	shiptypes = (t_shiptype*)calloc(num, sizeof(t_shiptype));
-	if (!shiptypes)
-		return;
+	if (!shiptypes) {
+	    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to allocate memory for %d shiptypes", num);
+	    PHYSFS_close(ini);
+        return;
+    }
 	num_shiptypes = num;
 
-	ini = IS_Open_Read("gamedata/ships.ini");
+	PHYSFS_seek(ini, 0);
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -473,8 +483,10 @@ void combat_initshipweapons()
 	int tv1, tv2;
 
 	ini = IS_Open_Read("gamedata/weapons.ini");
-	if (!ini)
-		return;
+	if (!ini) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to open weapon data: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return;
+    }
 
 	end = 0; num = 0;
 	while (!end)
@@ -483,14 +495,16 @@ void combat_initshipweapons()
 		if (!strcmp(s1, shipweapon_keywords[wpkBegin]))
 			num++;
 	}
-	IS_Close(ini);
 
 	shipweapons = (t_shipweapon*)calloc(num, sizeof(t_shipweapon));
-	if (!shipweapons)
-		return;
+	if (!shipweapons) {
+	    SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to allocate memory for %d weapons", num);
+	    IS_Close(ini);
+        return;
+    }
 	num_shipweapons = num;
 
-	ini = IS_Open_Read("gamedata/weapons.ini");
+	PHYSFS_seek(ini, 0);
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -613,8 +627,10 @@ void combat_initshipsystems()
 	int32 num_systypes;
 
 	ini = IS_Open_Read("gamedata/systems.ini");
-	if (!ini)
-		return;
+	if (!ini) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to open race data: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return;
+    }
 
 	end = 0; num = 0; 
 	flag = 0; num_systypes = 0;
@@ -635,14 +651,17 @@ void combat_initshipsystems()
 		}
 
 	}
-	IS_Close(ini);
 
 	shipsystems = (t_shipsystem*)calloc(num, sizeof(t_shipsystem));
-	if (!shipsystems)
-		return;
+	if (!shipsystems) {
+	    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to allocate storage for %d ship systems", num);
+	    IS_Close(ini);
+        return;
+    }
 	num_shipsystems = num;
 
-	ini = IS_Open_Read("gamedata/systems.ini");
+	// back to the start.
+	PHYSFS_seek(ini, 0);
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
@@ -861,8 +880,10 @@ void initraces(void)
 	int n, com;
 
 	ini = IS_Open_Read("gamedata/races.ini");
-	if (!ini)
-		return;
+	if (!ini) {
+	    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to open race data: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return;
+    }
 
 	end = 0; num = 0; flag = 0;
 	while (!end)
