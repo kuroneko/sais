@@ -43,8 +43,9 @@ vid_reset_settings() {
         if (globalsettings.opt_fullscreen) {
             SDL_SetWindowFullscreen(sdlWind, SDL_WINDOW_FULLSCREEN_DESKTOP);
         } else {
-            SDL_SetWindowFullscreen(sdlWind, 0);
+            SDL_SetWindowFullscreen(sdlWind, SDL_WINDOW_RESIZABLE);
             SDL_SetWindowSize(sdlWind, 640, 480);
+            SDL_SetWindowMinimumSize(sdlWind, 640, 480);
             sdl_screen_scale = 1.0;
             sdl_x_offset = 0;
             sdl_y_offset = 0;
@@ -114,7 +115,7 @@ int main(int argc, char *argv[]) {
     sound_init();
 
     // create the application window
-    int sdlFlags = 0;
+    int sdlFlags = SDL_WINDOW_RESIZABLE;
     if (globalsettings.opt_fullscreen) {
         sdlFlags |= SDL_WINDOW_FULLSCREEN;
     }
@@ -128,6 +129,7 @@ int main(int argc, char *argv[]) {
         SDL_Log("Failed to create SDL Window: %s", SDL_GetError());
         return 1;
     }
+    SDL_SetWindowMinimumSize(sdlWind, 640, 480);
 
     // create the i8 surface
     sdlsurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 8, SDL_PIXELFORMAT_INDEX8);

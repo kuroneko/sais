@@ -41,6 +41,9 @@ Key changes to the game source include:
 * Support rescaling to native resolution full-screen including "whole multiple" 
   scaling. (I'd like pixel perfect, but the scaled blit always filters)
   
+* Allow the main window to be resized on the fly.  Doesn't redraw whilst you're
+  resizing (yet), but it will once the resize is complete.
+  
 * Inclusion of the Retail Data (see below for information about the license)
 
 ## Building on Windows
