@@ -202,7 +202,9 @@ void ik_print_log(const char *format, ...) {
     int d = 0, m = 0, y = 0;
     int date = player.stardate;
     va_list ap;
+    va_list ap2;
     va_start(ap, format);
+    va_copy(ap2, ap);
 
     // clear the text1 buffer.
     memset(text1, 0, sizeof(text1));
@@ -222,5 +224,7 @@ void ik_print_log(const char *format, ...) {
         }
         IS_VPrintf(logfile, format, ap);
     }
+    SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, format, ap2);
+    va_end(ap2);
     va_end(ap);
 }
