@@ -28,6 +28,7 @@ All DIRECTDRAW stuff here
 #include <cmath>
 
 #include <SDL.h>
+#include <algorithm>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -38,7 +39,7 @@ All DIRECTDRAW stuff here
 #define SCREEN_BPP    8                // bits per pixel
 
 // GLOBALS
-extern SDL_Window  *sdlWind;
+extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
 
 #ifdef MOVIE
@@ -46,122 +47,154 @@ int when = 0;
 int movrecord = 1;
 #endif
 
+int sdl_x_offset = 0;
+int sdl_y_offset = 0;
+float sdl_screen_scale = 1.0f;
+
+
 // blit screen
-void ik_blit()
-{
-	t_ik_sprite *cs = nullptr;
+void ik_blit() {
+    t_ik_sprite *cs = nullptr;
 
-	// take screenshots here (!)
+    // take screenshots here (!)
 #ifdef MOVIE
-	if (get_ik_timer(2) > when && movrecord == 1)
-	{
-		when += 2;
-		wants_screenshot = 1;
-	}
+    if (get_ik_timer(2) > when && movrecord == 1)
+    {
+        when += 2;
+        wants_screenshot = 1;
+    }
 #endif
-	if (wants_screenshot)
-	{
-		ik_save_screenshot(screen, currentpal);
-		wants_screenshot=0;
-	}
+    if (wants_screenshot) {
+        ik_save_screenshot(screen, currentpal);
+        wants_screenshot = 0;
+    }
 
-	if ((settings.opt_mousemode&5)==0)
-	{
-		cs = get_sprite(screen, ik_mouse_x, ik_mouse_y, 16, 16);
-		ik_draw_mousecursor();
-	}
-	else if (settings.opt_mousemode & 4)
-	{
+    if ((settings.opt_mousemode & 5) == 0) {
+        cs = get_sprite(screen, ik_mouse_x, ik_mouse_y, 16, 16);
+        ik_draw_mousecursor();
+    } else if (settings.opt_mousemode & 4) {
 //		cs = get_sprite(screen, ik_mouse_x-128, ik_mouse_y-128, 256, 256);
-		cs = get_sprite(screen, ik_mouse_x-192, ik_mouse_y-96, 384, 192);
-		gfx_magnify();
-		if (!(settings.opt_mousemode & 1))
-		{
-			ik_draw_mousecursor();
-		}
-	}
+        cs = get_sprite(screen, ik_mouse_x - 192, ik_mouse_y - 96, 384, 192);
+        gfx_magnify();
+        if (!(settings.opt_mousemode & 1)) {
+            ik_draw_mousecursor();
+        }
+    }
 #ifdef DEMO_VERSION
-		gfx_blarg();
+    gfx_blarg();
 #endif
-	free_screen();
+    free_screen();
 
-	auto *realsurf = SDL_GetWindowSurface(sdlWind);
-    if (SDL_BlitSurface(sdlsurf, nullptr, realsurf, nullptr)) {
-        SDL_Log("Blit Failed?: %s", SDL_GetError());
-        abort();
+    auto *realsurf = SDL_GetWindowSurface(sdlWind);
+
+    // calculate scale factor.
+    if (realsurf->w != sdlsurf->w || realsurf->h != sdlsurf->h) {
+        if (globalsettings.opt_pixel_perfect) {
+            // for pixel perfect scaling, use integer ratios only.
+            int yrat = realsurf->h / sdlsurf->h;
+            int xrat = realsurf->w / sdlsurf->w;
+            sdl_screen_scale = static_cast<float>(std::min<int>(xrat, yrat));
+            if (sdl_screen_scale < 1) {
+                sdl_screen_scale = 1;
+            }
+        } else {
+            float yrat = static_cast<float>(realsurf->h) / static_cast<float>(sdlsurf->h);
+            float xrat = static_cast<float>(realsurf->w) / static_cast<float>(sdlsurf->w);
+            sdl_screen_scale = std::min<float>(xrat, yrat);
+        }
+
+        int targetXSize = static_cast<int>(sdlsurf->w * sdl_screen_scale);
+        int targetYSize = static_cast<int>(sdlsurf->h * sdl_screen_scale);
+        sdl_x_offset = (realsurf->w - targetXSize) / 2;
+        sdl_y_offset = (realsurf->h - targetYSize) / 2;
+
+        SDL_Rect destRect{
+                sdl_x_offset,
+                sdl_y_offset,
+                targetXSize,
+                targetYSize,
+        };
+        // clear the surface first.
+        SDL_FillRect(realsurf, nullptr, 0);
+        // conver the surface.
+        auto convertedSurf = SDL_ConvertSurface(sdlsurf, realsurf->format, 0);
+        // now blit in the scaled window
+        if (SDL_BlitScaled(convertedSurf, nullptr, realsurf, &destRect)) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "BlitScaled failed: %s", SDL_GetError());
+            //abort();
+        }
+        // trash the converted surface.
+        SDL_FreeSurface(convertedSurf);
+    } else {
+        if (SDL_BlitSurface(sdlsurf, nullptr, realsurf, nullptr)) {
+            SDL_Log("Blit Failed?: %s", SDL_GetError());
+            //abort();
+        }
     }
     if (SDL_UpdateWindowSurface(sdlWind)) {
         SDL_Log("Update Surface Failed: %s", SDL_GetError());
         abort();
     }
 
-	if ((settings.opt_mousemode&5)==0)
-	{
-		prep_screen();
-		ik_dsprite(screen, ik_mouse_x, ik_mouse_y, cs, 4);
-		free_screen();
-		free_sprite(cs);
-	}
-	else if (settings.opt_mousemode & 4)
-	{
-		prep_screen();
+    if ((settings.opt_mousemode & 5) == 0) {
+        prep_screen();
+        ik_dsprite(screen, ik_mouse_x, ik_mouse_y, cs, 4);
+        free_screen();
+        free_sprite(cs);
+    } else if (settings.opt_mousemode & 4) {
+        prep_screen();
 //		ik_dsprite(screen, ik_mouse_x-128, ik_mouse_y-128, cs, 4);
-		ik_dsprite(screen, ik_mouse_x-192, ik_mouse_y-96, cs, 4);
-		free_screen();
-		free_sprite(cs);
-	}
+        ik_dsprite(screen, ik_mouse_x - 192, ik_mouse_y - 96, cs, 4);
+        free_screen();
+        free_sprite(cs);
+    }
 }
 
 // palette stuff
-void update_palette()  
-{
-	SDL_Color spal[256];
-	int i;
+void update_palette() {
+    SDL_Color spal[256];
+    int i;
 
-	for (i = 0; i < 256; i++)
-	{
-		spal[i].r = currentpal[i*3];
-		spal[i].g = currentpal[i*3+1];
-		spal[i].b = currentpal[i*3+2];
-	}
+    for (i = 0; i < 256; i++) {
+        spal[i].r = currentpal[i * 3];
+        spal[i].g = currentpal[i * 3 + 1];
+        spal[i].b = currentpal[i * 3 + 2];
+    }
 
-	SDL_SetPaletteColors(sdlsurf->format->palette, spal, 0, 256);
+    SDL_SetPaletteColors(sdlsurf->format->palette, spal, 0, 256);
 }
 
-void set_palette_entry(int n, int r, int g, int b)
-{
-	currentpal[n*3]		= r;
-	currentpal[n*3+1]	= g;
-	currentpal[n*3+2]	= b;
+void set_palette_entry(int n, int r, int g, int b) {
+    currentpal[n * 3] = r;
+    currentpal[n * 3 + 1] = g;
+    currentpal[n * 3 + 2] = b;
 }
 
-int get_palette_entry(int n)
-{
-	return currentpal[n*3]*65536 + 
-				 currentpal[n*3+1]*256 +
-				 currentpal[n*3+2];
+int get_palette_entry(int n) {
+    return currentpal[n * 3] * 65536 +
+           currentpal[n * 3 + 1] * 256 +
+           currentpal[n * 3 + 2];
 }
 
 void prep_screen() // call before drawing stuff to *screen
 {
-	SDL_LockSurface(sdlsurf);
+    SDL_LockSurface(sdlsurf);
 
-	screenbuf.data=(uint8*)sdlsurf->pixels;
-	screenbuf.w=sdlsurf->w;
-	screenbuf.h=sdlsurf->h;
-	screenbuf.pitch=sdlsurf->pitch;
-	screen=&screenbuf;
+    screenbuf.data = (uint8 *) sdlsurf->pixels;
+    screenbuf.w = sdlsurf->w;
+    screenbuf.h = sdlsurf->h;
+    screenbuf.pitch = sdlsurf->pitch;
+    screen = &screenbuf;
 }
 
 void free_screen() // call after drawing, before blit
 {
-	SDL_UnlockSurface(sdlsurf);
+    SDL_UnlockSurface(sdlsurf);
 }
 
-int gfx_checkswitch()
-{
-	/*
-	// implement windowed/fullscreen switch here?
-	*/
-	return 0;
+int gfx_checkswitch() {
+    /*
+    // implement windowed/fullscreen switch here?
+    */
+    return 0;
 }

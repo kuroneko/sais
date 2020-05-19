@@ -21,8 +21,11 @@
 
 #include "Typedefs.h"
 #include "gfx.h"
+#include "iface_globals.h"
+#include "is_fileio.h"
 
 int my_main();
+
 int sound_init();
 
 extern SDL_Window *sdlWind;
@@ -30,8 +33,51 @@ extern SDL_Surface *sdlsurf;
 
 // directory paths for our core.
 
-std::string     fsBaseDir;
-std::string     fsPreferencesDir;
+std::string fsBaseDir;
+std::string fsPreferencesDir;
+
+int
+vid_reset_settings() {
+    if (sdlWind != nullptr) {
+        if (globalsettings.opt_fullscreen) {
+            SDL_SetWindowFullscreen(sdlWind, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        } else {
+            SDL_SetWindowFullscreen(sdlWind, 0);
+            SDL_SetWindowSize(sdlWind, 640, 480);
+            sdl_screen_scale = 1.0;
+            sdl_x_offset = 0;
+            sdl_y_offset = 0;
+        }
+    }
+    return 0;
+}
+
+void
+load_globalsettings() {
+    memset(&globalsettings, 0, sizeof(globalsettings));
+    auto gsFile = IS_Open_Read("globalsettings.dat");
+    if (nullptr == gsFile) {
+        memset(&globalsettings, 0, sizeof(globalsettings));
+        return;
+    }
+    IS_Read(&globalsettings, 1, sizeof(globalsettings), gsFile);
+    IS_Close(gsFile);
+
+    vid_reset_settings();
+}
+
+void
+save_globalsettings() {
+    auto gsFile = IS_Open_Write("globalsettings.dat");
+    if (nullptr == gsFile) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't open globalsettings.dat for write: %s",
+                     PHYSFS_getLastError());
+        return;
+    }
+    IS_Write(&globalsettings, sizeof(globalsettings), 1, gsFile);
+    IS_Close(gsFile);
+}
+
 
 int main(int argc, char *argv[]) {
     gfx_width = 640;
@@ -52,6 +98,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    load_globalsettings();
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_EVENTS) < 0) {
         SDL_Log("Failed to initialise SDL: %s", SDL_GetError());
@@ -67,7 +114,7 @@ int main(int argc, char *argv[]) {
 
     // create the application window
     int sdlFlags = 0;
-    if (gfx_fullscreen) {
+    if (globalsettings.opt_fullscreen) {
         sdlFlags |= SDL_WINDOW_FULLSCREEN;
     }
 

@@ -18,9 +18,7 @@
 #define MAX(x,y)     (((x) > (y)) ? (x) : (y))
 #define ABS(x)			 (((x) > 0) ? (x) : (0-x))
 
-#define SAIS_VERSION_NUMBER "v1.5"
-
-//#define WINDOWED_MODE
+#define SAIS_VERSION_NUMBER "v1.6"
 
 typedef struct _t_gamesettings
 {
@@ -41,8 +39,17 @@ typedef struct _t_gamesettings
 
 extern t_gamesettings settings;
 
-// ******** GENERAL STUFF *******
+/* these settings are global to all plugins, etc. */
+typedef struct _t_globalsettings
+{
+    int8 opt_fullscreen;
+    int8 opt_pixel_perfect;
+} t_globalsettings;
 
+extern t_globalsettings globalsettings;
+
+// ******** GENERAL STUFF *******
+extern int  vid_reset_settings();
 int my_main();
 int ik_eventhandler();
 int Game_Init(void *parms=nullptr);
@@ -62,6 +69,11 @@ int get_ik_timer(int n);
 int get_ik_timer_fr(int n);
 
 // INTERFACE GLOBALS
+
+extern int sdl_x_offset;
+extern int sdl_y_offset;
+extern float sdl_screen_scale;
+
 extern int ik_mouse_x;
 extern int ik_mouse_y;
 extern int ik_mouse_b;

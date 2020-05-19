@@ -23,6 +23,7 @@ code to handle all/most of the interaction with the win32 system
 
 // INCLUDES ///////////////////////////////////////////////
 #include <SDL.h>
+#include <algorithm>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -88,6 +89,14 @@ t_ik_timer ik_timer[10];
 
 // FUNCTIONS //////////////////////////////////////////////
 
+static void iface_update_mouse_position(int raw_x, int raw_y) {
+    int adjusted_x = static_cast<int>(static_cast<float>(raw_x - sdl_x_offset) / sdl_screen_scale);
+    int adjusted_y = static_cast<int>(static_cast<float>(raw_y - sdl_y_offset) / sdl_screen_scale);
+
+    ik_mouse_x = std::max(std::min(adjusted_x, 639), 0);
+    ik_mouse_y = std::max(std::min(adjusted_y, 479), 0);
+}
+
 void eventhandler()
 {
 	SDL_Event event;
@@ -125,8 +134,7 @@ void eventhandler()
 				ik_mouse_c = b;	
 				ik_mouse_b |= b;
 			case SDL_MOUSEMOTION:
-				ik_mouse_x = event.motion.x;
-				ik_mouse_y = event.motion.y;
+                iface_update_mouse_position(event.motion.x, event.motion.y);
 				break;
 
 			case SDL_MOUSEBUTTONUP:

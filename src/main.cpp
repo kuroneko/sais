@@ -60,6 +60,8 @@ int opt_verbose = 0;
 
 t_ik_spritepak *spr_titles;
 
+t_globalsettings globalsettings = {};
+
 // ----------------
 // LOCAL VARIABLES
 // ----------------
@@ -729,7 +731,7 @@ int32 intro_screen()
 
 			if (mode == 2)	// settings
 			{
-				if (mx > bx+16 && mx < bx+32 && my > by+27 && my < by+27+7*16)
+				if (mx > bx+16 && mx < bx+32 && my > by+27 && my < by+27+9*16)
 				{
 					c = (my - (by+27)) / 16;
 					switch (c)
@@ -766,10 +768,19 @@ int32 intro_screen()
 						settings.opt_mucrontext = settings.opt_mucrontext ^ 2;
 						break;
 
+                        case 7:
+                        globalsettings.opt_fullscreen = !globalsettings.opt_fullscreen;
+                        // needed to flip the fullscreen flag internally.
+                        vid_reset_settings();
+                        break;
+
+					    case 8:
+                        globalsettings.opt_pixel_perfect = !globalsettings.opt_pixel_perfect;
+                        break;
 						default: ;
 					}
 				}
-				if (mx > bx+32 && mx < bx+160 && my > by+158 && my < by+166)
+				if (mx > bx+32 && mx < bx+160 && my > by+190 && my < by+198)
 				{
 					settings.opt_volume = ((mx - (bx+26))*10) / 128;
 					s_volume = settings.opt_volume * 10;
@@ -912,7 +923,7 @@ int32 intro_screen()
 				break;
 
 				case 2:
-				bx = 192; by = 136; h = 184;
+				bx = 192; by = 120; h = 216;
 				interface_drawborder(screen, bx, by, bx+256, by+h, 1, MAIN_INTERFACE_COLOR, "game settings");
 
 				y = 32;
@@ -942,6 +953,14 @@ int32 intro_screen()
 				y+=16;
 				ik_print(screen, font_6x8, bx+32, by+y, MAIN_INTERFACE_COLOR, "LARGE TRADING SCREEN");
 				ik_dsprite(screen, bx+16, by+y-5, spr_IFbutton->spr[(settings.opt_mucrontext & 2)/2], 2+(MAIN_INTERFACE_COLOR<<8));
+
+                y+=16;
+                ik_print(screen, font_6x8, bx+32, by+y, MAIN_INTERFACE_COLOR, "RUN IN FULLSCREEN");
+                ik_dsprite(screen, bx+16, by+y-5, spr_IFbutton->spr[globalsettings.opt_fullscreen], 2+(MAIN_INTERFACE_COLOR<<8));
+
+                y+=16;
+                ik_print(screen, font_6x8, bx+32, by+y, MAIN_INTERFACE_COLOR, "PIXELPERFECT SCALING");
+                ik_dsprite(screen, bx+16, by+y-5, spr_IFbutton->spr[globalsettings.opt_pixel_perfect], 2+(MAIN_INTERFACE_COLOR<<8));
 
 				y+=16;
 				ik_print(screen, font_6x8, bx+32, by+y, MAIN_INTERFACE_COLOR, "SOUND VOLUME: %d%%", s_volume);
