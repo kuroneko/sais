@@ -54,6 +54,8 @@ int my_main();
 int ik_eventhandler();
 int Game_Init(void *parms=nullptr);
 int Game_Shutdown(void *parms=nullptr);
+extern void load_globalsettings();
+extern void save_globalsettings();
 
 // inputs
 int key_pressed(int vk_code);  // FIXME: GET RID OF VK CODES!

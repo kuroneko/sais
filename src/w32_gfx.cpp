@@ -41,6 +41,7 @@ All DIRECTDRAW stuff here
 // GLOBALS
 extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
+extern SDL_Surface *blitIntermedSurf;
 
 #ifdef MOVIE
 int when = 0;
@@ -116,19 +117,20 @@ void ik_blit() {
         };
         // clear the surface first.
         SDL_FillRect(realsurf, nullptr, 0);
-        // conver the surface.
-        auto convertedSurf = SDL_ConvertSurface(sdlsurf, realsurf->format, 0);
-        // now blit in the scaled window
-        if (SDL_BlitScaled(convertedSurf, nullptr, realsurf, &destRect)) {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "BlitScaled failed: %s", SDL_GetError());
-            //abort();
+        // convert the surface.
+        if (SDL_BlitSurface(sdlsurf, nullptr, blitIntermedSurf, nullptr)) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Blit to correct format failed: %s", SDL_GetError());
+            abort();
         }
-        // trash the converted surface.
-        SDL_FreeSurface(convertedSurf);
+        // now blit in the scaled window
+        if (SDL_BlitScaled(blitIntermedSurf, nullptr, realsurf, &destRect)) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "BlitScaled failed: %s", SDL_GetError());
+            abort();
+        }
     } else {
         if (SDL_BlitSurface(sdlsurf, nullptr, realsurf, nullptr)) {
             SDL_Log("Blit Failed?: %s", SDL_GetError());
-            //abort();
+            abort();
         }
     }
     if (SDL_UpdateWindowSurface(sdlWind)) {

@@ -788,8 +788,11 @@ int32 intro_screen()
 					Play_SoundFX(WAV_SLIDER, 0, 50);
 				}
 
-				if (mx > bx+192 && mx < bx+240 && my > by+h-32 && my < by+h-16)
-				{	Play_SoundFX(WAV_DOT, 0, 50);  mode = 0; }
+				if (mx > bx+192 && mx < bx+240 && my > by+h-32 && my < by+h-16) {
+                    Play_SoundFX(WAV_DOT, 0, 50);
+                    mode = 0;
+                    save_globalsettings();
+                }
 			}
 		}
 

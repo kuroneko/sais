@@ -30,6 +30,7 @@ int sound_init();
 
 extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
+SDL_Surface *blitIntermedSurf = nullptr;
 
 // directory paths for our core.
 
@@ -134,6 +135,11 @@ int main(int argc, char *argv[]) {
         SDL_Log("Failed to create INDEX8 Surface: %s", SDL_GetError());
         return 1;
     }
+
+    // create the intermediate blitting surface (needed for fullscreen support)
+    auto *realSurf = SDL_GetWindowSurface(sdlWind);
+    blitIntermedSurf = SDL_ConvertSurface(sdlsurf, realSurf->format, 0);
+
     my_main();
     return 0;
 }
