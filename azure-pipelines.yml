@@ -11,8 +11,8 @@ pool:
 
 steps:
 - script: |
-    apt-get update
-    DEBAIN_FRONTEND=noninteractive apt-get install -y libsdl2-dev libsdl2-mixer-dev libphysfs-dev build-essential cmake ninja-build
+    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libsdl2-dev libsdl2-mixer-dev libphysfs-dev build-essential cmake ninja-build
   displayName: 'Install Prerequisities'
 
 - script: |
