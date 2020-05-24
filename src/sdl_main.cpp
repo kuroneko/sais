@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
     // create the application window
     int sdlFlags = SDL_WINDOW_RESIZABLE;
     if (globalsettings.opt_fullscreen) {
-        sdlFlags |= SDL_WINDOW_FULLSCREEN;
+        sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
 
     sdlWind = SDL_CreateWindow("Strange Adventures In Infinite Space",
