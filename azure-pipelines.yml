@@ -22,5 +22,9 @@ steps:
     cpack
   displayName: 'Build'
 
+- script: |
+    cp .artifactignore build/
+  displayName: prep artifact tree
+
 - publish: build
   artifact: Ubuntu Linux Build
