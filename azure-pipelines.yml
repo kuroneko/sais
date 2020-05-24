@@ -19,4 +19,9 @@ steps:
     mkdir build && cd build
     cmake ../ -GNinja
     ninja all
+    cpack
   displayName: 'Build'
+
+- publish: build/SAIS-GPL-*
+  artifact: Ubuntu Linux Binaries
+  
