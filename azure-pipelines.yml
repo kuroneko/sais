@@ -22,6 +22,5 @@ steps:
     cpack
   displayName: 'Build'
 
-- publish: build/SAIS-GPL-*
-  artifact: Ubuntu Linux Binaries
-  
+- publish: build
+  artifact: Ubuntu Linux Build
