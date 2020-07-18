@@ -29,3 +29,10 @@ class SaisConan(ConanFile):
         # SDL2 on macOS requires iconv
         if self.settings.os == "Macos":
             self.options["sdl2"].iconv = True
+        # on Windows, we always use the MT runtime type.
+        if self.settings.os == "Windows":
+            if self.settings.compiler == "Visual Studio":
+                if self.settings.build_type == 'Debug':
+                    self.settings.compiler.runtime = 'MTd'
+                else:
+                    self.settings.compiler.runtime = 'MT'
