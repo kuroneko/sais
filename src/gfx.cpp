@@ -329,7 +329,7 @@ struct gfx_pcx_header {
 #define PCX_RLE_MASK 0xc0
 
 t_ik_image *ik_load_pcx(const char *fname, uint8 *pal) {
-    struct gfx_pcx_header pcxHeader{};
+    struct gfx_pcx_header pcxHeader = {};
     int32 x, y, po;
     uint8_t c, ch;
 

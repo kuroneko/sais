@@ -14,6 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+/* macos: need to include at least one C++ header for the compiler to recognise nullptr, etc. */
+#include <limits>
+
 #define MIN(x,y)     (((x) < (y)) ? (x) : (y))
 #define MAX(x,y)     (((x) > (y)) ? (x) : (y))
 #define ABS(x)			 (((x) > 0) ? (x) : (0-x))
