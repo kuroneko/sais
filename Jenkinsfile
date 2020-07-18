@@ -68,7 +68,7 @@ pipeline {
                         dir('saisgpl.w64') {
                             deleteDir()
                             bat '''
-                            conan install ..\\saisgpl --build=outdated --build=cascade --update --profile=default
+                            conan install ..\\saisgpl --build=outdated --build=cascade --update --profile=default -s compiler.runtime=MT
                             '''
                         }
                         cmakeBuild generator: 'Visual Studio 16 2019',
