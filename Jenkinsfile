@@ -46,8 +46,7 @@ pipeline {
                             conan install ../saisgpl --build --update --profile=default
                             '''
                         }
-                        cmakeBuild
-                            buildDir: 'saisgpl.m64',
+                        cmakeBuild buildDir: 'saisgpl.m64',
                             sourceDir: 'saisgpl',
                             cmakeArgs: "-DUSE_CONAN=ON",
                             buildType: 'Release',
