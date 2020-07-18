@@ -95,10 +95,29 @@ int main(int argc, char *argv[]) {
         SDL_Log("PhysFS failed to initialise: %s", PHYSFS_getLastError());
         return 1;
     }
+
+#if TARGET_OS_OSX
+    const char *prefDirCStr = PHYSFS_getPrefDir("FreeSAIS", "SAIS");
+
+    if (!PHYSFS_mount(prefDirCStr, "/", 0)) {
+        SDL_Log("Failed to mount write directory \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+    }
+    if (!PHYSFS_setWriteDir(prefDirCStr)) {
+        SDL_Log("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+    }
+    std::string resourcePath(PHYSFS_getBaseDir());
+    resourcePath += "Contents/Resources/saisdata.zip";
+
+    if (!PHYSFS_mount(resourcePath.c_str(), "/", 1)) {
+        SDL_Log("Failed to mount data archive \"%s\": %s", resourcePath.c_str(), PHYSFS_getLastError());
+    }
+
+#else
     if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 0)) {
         SDL_Log("PhysFS failed to set default env: %s", PHYSFS_getLastError());
         return 1;
     }
+#endif
 
     load_globalsettings();
 

@@ -18,7 +18,14 @@ class SaisConan(ConanFile):
         "sdl2_mixer:mikmod": False,
         "sdl2_mixer:modplug": False,
         "sdl2_mixer:mpg123": False,
+        "sdl2_mixer:opus": False,
+        "sdl2_mixer:flac": False,
         "sdl2_mixer*:tinymidi": False,
         "sdl2_mixer:wav": True,
     }
     generators = "cmake"
+
+    def configure(self):
+        # SDL2 on macOS requires iconv
+        if self.settings.os == "Macos":
+            self.options["sdl2"].iconv = True

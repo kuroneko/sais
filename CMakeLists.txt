@@ -65,13 +65,13 @@ if(BUILD_DEMO)
 
     add_subdirectory(demo-data)
 else()
-    add_executable(strange WIN32 ${SAIS_SRC})
+    add_executable(strange WIN32 MACOSX_BUNDLE ${SAIS_SRC})
     target_link_directories(strange PRIVATE ${SAIS_LIB_DIRS})
     target_link_libraries(strange
         PRIVATE
         ${SAIS_LIBS})
     target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
-    install(TARGETS strange RUNTIME DESTINATION .)
+    install(TARGETS strange RUNTIME DESTINATION . BUNDLE DESTINATION Contents/MacOS)
     install(DIRECTORY full/ DESTINATION .)
 
     add_subdirectory(full-data)
@@ -94,6 +94,15 @@ if(MSVC)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS=1)
 endif()
 
+if(CMAKE_SYSTEM_NAME MATCHES Darwin)
+    set_target_properties(strange PROPERTIES
+            MACOSX_BUNDLE TRUE
+            MACOSX_BUNDLE_BUNDLE_NAME "Strange Adventures"
+            MACOSX_BUNDLE_COPYRIGHT "Copyright © 2020 Chris Collins, Copyright © 2005 Richard Carlson, Iikka Keranen and William Sears")
+    set_property(TARGET strange PROPERTY
+            RESOURCE "saisdata.zip")
+endif()
+
 if(USE_LOG)
     add_compile_definitions(LOG_OUTPUT=1)
 endif()
@@ -106,7 +115,7 @@ if(NOT BUILD_DEMO)
     elseif(CMAKE_SYSTEM_NAME MATCHES Windows)
         set(CPACK_GENERATOR ZIP;WIX)
     endif()
-    set(CPACK_PACKAGE_NAME "Strange Adventures in Infinite Space GPL")
+    set(CPACK_PACKAGE_NAME  "Strange Adventures in Infinite Space GPL")
     set(CPACK_PACKAGE_FILE_NAME "SAIS-GPL-${CMAKE_PROJECT_VERSION}-${CPACK_SYSTEM_NAME}")
     set(CPACK_PACKAGE_VENDOR "FreeSAIS")
     set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/kuroneko/sais/")
