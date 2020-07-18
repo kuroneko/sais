@@ -71,7 +71,7 @@ else()
         PRIVATE
         ${SAIS_LIBS})
     target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
-    install(TARGETS strange RUNTIME DESTINATION . BUNDLE DESTINATION Contents/MacOS)
+    install(TARGETS strange RUNTIME DESTINATION . BUNDLE DESTINATION .)
     install(DIRECTORY full/ DESTINATION .)
 
     add_subdirectory(full-data)
@@ -98,9 +98,12 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
     set_target_properties(strange PROPERTIES
             MACOSX_BUNDLE TRUE
             MACOSX_BUNDLE_BUNDLE_NAME "Strange Adventures"
-            MACOSX_BUNDLE_COPYRIGHT "Copyright © 2020 Chris Collins, Copyright © 2005 Richard Carlson, Iikka Keranen and William Sears")
+            MACOSX_BUNDLE_COPYRIGHT "Copyright © 2020 Chris Collins, Copyright © 2005 Richard Carlson, Iikka Keranen and William Sears"
+            MACOSX_BUNDLE_ICON_FILE "sais.icns")
+    target_sources(strange PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/full-data/saisdata.zip" "src/sais.icns")
     set_property(TARGET strange PROPERTY
-            RESOURCE "saisdata.zip")
+            RESOURCE "${CMAKE_CURRENT_BINARY_DIR}/full-data/saisdata.zip;src/sais.icns")
+    add_dependencies(strange retail_data)
 endif()
 
 if(USE_LOG)
@@ -114,6 +117,8 @@ if(NOT BUILD_DEMO)
         set(CPACK_GENERATOR TGZ)
     elseif(CMAKE_SYSTEM_NAME MATCHES Windows)
         set(CPACK_GENERATOR ZIP;WIX)
+    elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
+        set(CPACK_GENERATOR DragNDrop)
     endif()
     set(CPACK_PACKAGE_NAME  "Strange Adventures in Infinite Space GPL")
     set(CPACK_PACKAGE_FILE_NAME "SAIS-GPL-${CMAKE_PROJECT_VERSION}-${CPACK_SYSTEM_NAME}")

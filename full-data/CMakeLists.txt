@@ -189,4 +189,6 @@ add_custom_command(OUTPUT saisdata.zip
         COMMAND  ${CMAKE_COMMAND} -E tar cvf ${CMAKE_CURRENT_BINARY_DIR}/saisdata.zip --format=zip -- ${RETAIL_DATA_FILES}
         COMMENT "Building Retail Data File"
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/saisdata.zip DESTINATION .)
+if(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/saisdata.zip DESTINATION .)
+endif()

@@ -21,6 +21,7 @@ pipeline {
                         cmakeBuild generator: 'Ninja',
                             buildDir: 'saisgpl.l64',
                             sourceDir: 'saisgpl',
+                            cmakeArgs: "-DUSE_CONAN=ON",
                             buildType: 'Release',
                             installation: 'CMake 3.16.0',
                             steps: [
@@ -48,6 +49,7 @@ pipeline {
                         cmakeBuild generator: 'Ninja',
                             buildDir: 'saisgpl.m64',
                             sourceDir: 'saisgpl',
+                            cmakeArgs: "-DUSE_CONAN=ON",
                             buildType: 'Release',
                             installation: 'CMake 3.16.0',
                             steps: [
@@ -73,6 +75,7 @@ pipeline {
                         cmakeBuild generator: 'Ninja',
                             sourceDir: 'saisgpl',
                             buildDir: 'saisgpl.w64',
+                            cmakeArgs: "-DUSE_CONAN=ON",
                             buildType: 'Release',
                             installation: 'CMake 3.16.0',
                             steps: [
