@@ -290,7 +290,7 @@ int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 		}*/
 	}
 
-	if (wep->flags && wpfImplode)
+	if (wep->flags & wpfImplode)
 		a = (1024 + a + rand()%30 - 15) & 1023;
 	
 //	a = (src->a + hull->hardpts[hdp].a + 1024) & 1023;
