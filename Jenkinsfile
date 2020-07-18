@@ -72,14 +72,14 @@ pipeline {
                             conan install ..\\saisgpl --build=outdated --build=cascade --update --profile=default
                             '''
                         }
-                        cmakeBuild generator: 'Ninja',
+                        cmakeBuild generator: 'Visual Studio 16 2019',
                             sourceDir: 'saisgpl',
                             buildDir: 'saisgpl.w64',
                             cmakeArgs: "-DUSE_CONAN=ON",
                             buildType: 'Release',
                             installation: 'CMake 3.16.0',
                             steps: [
-                                [args: 'all']
+                                [args: '-- -p:Configuration=Release', withCmake: true]
                             ]
                         dir('saisgpl.w64') {
                             cpack installation: 'CMake 3.16.0'
