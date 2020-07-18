@@ -46,7 +46,7 @@ pipeline {
                             conan install ../saisgpl --build --update --profile=default
                             '''
                         }
-                        cmakeBuild generator: 'Ninja',
+                        cmakeBuild
                             buildDir: 'saisgpl.m64',
                             sourceDir: 'saisgpl',
                             cmakeArgs: "-DUSE_CONAN=ON",
