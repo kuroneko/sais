@@ -16,10 +16,11 @@ else()
     include(FindPkgConfig)
     pkg_check_modules(SDL2 REQUIRED sdl2)
     pkg_check_modules(SDL2MIXER REQUIRED SDL2_mixer)
-    find_library(PHYSFS NAMES physfs)
+    pkg_check_modules(PHYSFS REQUIRED physfs)
 
-    set(SAIS_LIBS ${SDL2_LIBRARIES} ${SDL2MIXER_LIBRARIES} ${PHYSFS})
-    set(SAIS_INCLUDES ${SDL2_INCLUDE_DIRS} ${SDL2MIXER_INCLUDE_DIRS})
+    set(SAIS_LIBS ${SDL2_LIBRARIES} ${SDL2MIXER_LIBRARIES} ${PHYSFS_LIBRARIES})
+    set(SAIS_LIB_DIRS ${SDL2_LIBRARY_DIRS} ${SDL2MIXER_LIBRARY_DIRS} ${PHYSFS_LIBRARY_DIRS})
+    set(SAIS_INCLUDES ${SDL2_INCLUDE_DIRS} ${SDL2MIXER_INCLUDE_DIRS} ${PHYSFS_INCLUDE_DIRS})
 endif()
 
 set(SAIS_SRC
@@ -52,6 +53,7 @@ set(SAIS_SRC
 
 if(BUILD_DEMO)
     add_executable(strangedemo WIN32 ${SAIS_SRC})
+    target_link_directories(strangedemo PRIVATE ${SAIS_LIB_DIRS})
     target_link_libraries(strangedemo
         PRIVATE
         ${SAIS_LIBS})
@@ -64,11 +66,11 @@ if(BUILD_DEMO)
     add_subdirectory(demo-data)
 else()
     add_executable(strange WIN32 ${SAIS_SRC})
+    target_link_directories(strange PRIVATE ${SAIS_LIB_DIRS})
     target_link_libraries(strange
         PRIVATE
         ${SAIS_LIBS})
     target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
-
     install(TARGETS strange RUNTIME DESTINATION .)
     install(DIRECTORY full/ DESTINATION .)
 
