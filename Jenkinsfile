@@ -18,8 +18,7 @@ pipeline {
                             conan install ../saisgpl  --build=outdated --build=cascade --update --profile=default
                             '''
                         }
-                        cmakeBuild
-                            generator: 'Ninja',
+                        cmakeBuild generator: 'Ninja',
                             buildDir: 'saisgpl.l64',
                             sourceDir: 'saisgpl',
                             buildType: 'Release',
@@ -28,8 +27,7 @@ pipeline {
                                 [args: 'all']
                             ]
                         dir('saisgpl.l64') {
-                            cpack
-                                installation: 'CMake 3.16.0'
+                            cpack installation: 'CMake 3.16.0'
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
                         }
                     }
@@ -47,8 +45,7 @@ pipeline {
                             conan install ../saisgpl --build --update --profile=default
                             '''
                         }
-                        cmakeBuild
-                            generator: 'Ninja',
+                        cmakeBuild generator: 'Ninja',
                             buildDir: 'saisgpl.m64',
                             sourceDir: 'saisgpl',
                             buildType: 'Release',
@@ -57,8 +54,7 @@ pipeline {
                                 [args: 'all']
                             ]
                         dir('saisgpl.m64') {
-                            cpack
-                                installation: 'CMake 3.16.0'
+                            cpack installation: 'CMake 3.16.0'
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
                         }
                     }
@@ -74,8 +70,7 @@ pipeline {
                             conan install ..\\saisgpl --build=outdated --build=cascade --update --profile=default
                             '''
                         }
-                        cmakeBuild
-                            generator: 'Ninja',
+                        cmakeBuild generator: 'Ninja',
                             sourceDir: 'saisgpl',
                             buildDir: 'saisgpl.w64',
                             buildType: 'Release',
@@ -84,8 +79,7 @@ pipeline {
                                 [args: 'all']
                             ]
                         dir('saisgpl.w64') {
-                            cpack
-                                installation: 'CMake 3.16.0'
+                            cpack installation: 'CMake 3.16.0'
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
                         }
                     }
