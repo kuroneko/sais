@@ -103,6 +103,7 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
     target_sources(strange PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/full-data/saisdata.zip" "src/sais.icns")
     set_property(TARGET strange PROPERTY
             RESOURCE "${CMAKE_CURRENT_BINARY_DIR}/full-data/saisdata.zip;src/sais.icns")
+    set_property(SOURCE "${CMAKE_CURRENT_BINARY_DIR}/full-data/saisdata.zip" PROPERTY GENERATED TRUE)
     add_dependencies(strange retail_data)
 endif()
 
