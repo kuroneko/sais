@@ -59,7 +59,7 @@ pipeline {
                             set +x
 
                             security unlock-keychain -p "${APPSIGNING_PASSWORD}" appsigning
-                            codesign --keychain appsigning -s "${APPSIGNING_KEYID}" --timestamp "bin/Strange Adventures in Infinite Space.app"
+                            codesign --keychain appsigning -s "${APPSIGNING_KEYID}" --options runtime,library --timestamp "bin/Strange Adventures in Infinite Space.app"
                             '''
                             cpack installation: 'CMake 3.16.0'
                             sh '''
