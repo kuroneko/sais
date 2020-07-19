@@ -56,8 +56,8 @@ pipeline {
                             ]
                         dir('saisgpl.m64') {
                             sh '''
-                            security unlock-keychain -p '' appsigning
-                            codesign --keychain appsigning -s "AA22B289D7BCD9C66BC95F2AD2E8B35D8D1E4E7C" --timestamp "bin/Strange Adventures in Infinite Space.app"
+                            security unlock-keychain -p "${APPSIGNING_PASSWORD}" appsigning
+                            codesign --keychain appsigning -s "${APPSIGNING_KEYID}" --timestamp "bin/Strange Adventures in Infinite Space.app"
                             '''
                             cpack installation: 'CMake 3.16.0'
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
