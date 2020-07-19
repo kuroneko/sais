@@ -60,6 +60,10 @@ pipeline {
                             codesign --keychain appsigning -s "${APPSIGNING_KEYID}" --timestamp "bin/Strange Adventures in Infinite Space.app"
                             '''
                             cpack installation: 'CMake 3.16.0'
+                            sh '''
+                            security unlock-keychain -p "${APPSIGNING_PASSWORD}" appsigning
+                            xcrun altool --notarize-app  --primary-bundle-id "au.com.ecsim.SAISGPL" --username "kuroneko@sysadninjas.net" --password "@keychain:AC_PASSWORD" --file SAIS_GPL-*-macOS-x86_64.zip
+                            '''
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
                         }
                     }
