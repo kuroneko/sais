@@ -31,7 +31,8 @@ int sound_init();
 extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
 SDL_Surface *blitIntermedSurf = nullptr;
-
+SDL_Renderer *sdlRend = nullptr;
+SDL_Texture *sdlWindTexture = nullptr;
 // directory paths for our core.
 
 std::string fsBaseDir;
@@ -141,7 +142,7 @@ int main(int argc, char *argv[]) {
     sound_init();
 
     // create the application window
-    int sdlFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+    int sdlFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL;
     if (globalsettings.opt_fullscreen) {
         sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
@@ -157,6 +158,19 @@ int main(int argc, char *argv[]) {
     }
     SDL_SetWindowMinimumSize(sdlWind, 640, 480);
 
+
+    // create the SDL Renderer we use to stream from the intermed blitting surface to the window.
+    sdlRend = SDL_CreateRenderer(sdlWind, -1, SDL_RENDERER_ACCELERATED);
+    if (sdlRend == nullptr) {
+        SDL_Log("Failed to create SDL Renderer: %s", SDL_GetError());
+        return 1;
+    }
+    if (SDL_RenderSetLogicalSize(sdlRend, 640, 480)) {
+        SDL_Log("Renderer refused our logical window scale: %s", SDL_GetError());
+        return 1;
+    }
+    SDL_RenderSetIntegerScale(sdlRend, (globalsettings.opt_whole_multiple_rescale_ratio != 0)?SDL_TRUE:SDL_FALSE);
+
     // create the i8 surface
     sdlsurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 8, SDL_PIXELFORMAT_INDEX8);
     if (sdlsurf == nullptr) {
@@ -167,6 +181,13 @@ int main(int argc, char *argv[]) {
     // create the intermediate blitting surface (needed for fullscreen support)
     auto *realSurf = SDL_GetWindowSurface(sdlWind);
     blitIntermedSurf = SDL_ConvertSurface(sdlsurf, realSurf->format, 0);
+
+    // and create the streaming texture.
+    sdlWindTexture = SDL_CreateTexture(sdlRend, realSurf->format->format, SDL_TEXTUREACCESS_STREAMING, 640, 480);
+    if (sdlWindTexture == nullptr) {
+        SDL_Log("Failed to create intermediate window texture (for fullscreen scaling): %s", SDL_GetError());
+        return 1;
+    }
 
     my_main();
     return 0;

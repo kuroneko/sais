@@ -775,7 +775,8 @@ int32 intro_screen()
                         break;
 
 					    case 8:
-                        globalsettings.opt_whole_multiple_rescale_ratio = !globalsettings.opt_whole_multiple_rescale_ratio;
+                            globalsettings.opt_whole_multiple_rescale_ratio = !globalsettings.opt_whole_multiple_rescale_ratio;
+
                         break;
 						default: ;
 					}
@@ -962,7 +963,7 @@ int32 intro_screen()
                 ik_dsprite(screen, bx+16, by+y-5, spr_IFbutton->spr[globalsettings.opt_fullscreen], 2+(MAIN_INTERFACE_COLOR<<8));
 
                 y+=16;
-                ik_print(screen, font_6x8, bx+32, by+y, MAIN_INTERFACE_COLOR, "LIMIT TO WHOLE MULTIPLE SCALING");
+                ik_print(screen, font_6x8, bx+32, by+y, MAIN_INTERFACE_COLOR, "PIXEL PERFECT SCALING");
                 ik_dsprite(screen, bx+16, by+y-5, spr_IFbutton->spr[globalsettings.opt_whole_multiple_rescale_ratio], 2 + (MAIN_INTERFACE_COLOR << 8));
 
 				y+=16;
