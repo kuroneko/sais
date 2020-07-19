@@ -57,10 +57,16 @@ dependencies.
 
 ## Building on Linux
 
-I suggest NOT using Conan and relying on your distributions shipped SDL2+physfs.
+I suggest NOT using Conan and relying on your distributions shipped SDL2+physfs,
+that said, the Linux prebuilt binaries are built using Conan.
   
 This has been tested with SDL 2.0.10 and PhysFS 3.0.1 on Raspbian (armhf) and
 has worked without issue.
+
+## Building on macOS
+
+Use Conan to perform the build - whilst you can use brew provided sdl2 and 
+physfs, you will have difficulties with rpaths and codesigning.
 
 ## Using Conan
 
@@ -76,6 +82,9 @@ Which will add the remote to your conan configuration.
 You need to set the `USE_CONAN` option to `ON` (`-DUSE_CONAN=ON` via the command
 line) to make the CMake project consider the Conan package data during build,
 otherwise it will search your system paths for the libraries required. 
+
+When using Conan with Windows, make sure that your profile uses the `MT` runtime
+library, and not `MD`.
 
 # Licensing
 

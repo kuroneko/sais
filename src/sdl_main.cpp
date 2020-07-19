@@ -97,6 +97,11 @@ int main(int argc, char *argv[]) {
     }
 
 #if TARGET_OS_OSX
+    /* Under macOS, we need to use a "non-standard" mount heirachy.
+     *
+     * We ONLY mount the pref dir and the game data zipfile here - we don't
+     * use the BaseDir (which points to the top level of the resource bundle)
+    */
     const char *prefDirCStr = PHYSFS_getPrefDir("FreeSAIS", "SAIS");
 
     if (!PHYSFS_mount(prefDirCStr, "/", 0)) {
@@ -106,12 +111,14 @@ int main(int argc, char *argv[]) {
         SDL_Log("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
     }
     std::string resourcePath(PHYSFS_getBaseDir());
+#ifdef DEMO_VERSION
+    resourcePath += "Contents/Resources/saisdemo.zip";
+#else
     resourcePath += "Contents/Resources/saisdata.zip";
-
+#endif
     if (!PHYSFS_mount(resourcePath.c_str(), "/", 1)) {
         SDL_Log("Failed to mount data archive \"%s\": %s", resourcePath.c_str(), PHYSFS_getLastError());
     }
-
 #else
     if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 0)) {
         SDL_Log("PhysFS failed to set default env: %s", PHYSFS_getLastError());
