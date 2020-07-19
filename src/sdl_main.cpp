@@ -142,7 +142,7 @@ int main(int argc, char *argv[]) {
     sound_init();
 
     // create the application window
-    int sdlFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL;
+    int sdlFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
     if (globalsettings.opt_fullscreen) {
         sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
 
 
     // create the SDL Renderer we use to stream from the intermed blitting surface to the window.
-    sdlRend = SDL_CreateRenderer(sdlWind, -1, SDL_RENDERER_ACCELERATED);
+    sdlRend = SDL_CreateRenderer(sdlWind, -1, 0);
     if (sdlRend == nullptr) {
         SDL_Log("Failed to create SDL Renderer: %s", SDL_GetError());
         return 1;
@@ -179,11 +179,18 @@ int main(int argc, char *argv[]) {
     }
 
     // create the intermediate blitting surface (needed for fullscreen support)
+#if 0
     auto *realSurf = SDL_GetWindowSurface(sdlWind);
-    blitIntermedSurf = SDL_ConvertSurface(sdlsurf, realSurf->format, 0);
+    if (realSurf == nullptr) {
+        SDL_Log("Couldn't get window surface: %s", SDL_GetError());
+        return 1;
+    }
+    blitIntermedSurf = SDL_ConvertSurface(sdlsurf, SDL_PIXELFORMAT_RGBA8888, 0);
+#endif
+    blitIntermedSurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 32, SDL_PIXELFORMAT_RGBA8888);
 
     // and create the streaming texture.
-    sdlWindTexture = SDL_CreateTexture(sdlRend, realSurf->format->format, SDL_TEXTUREACCESS_STREAMING, 640, 480);
+    sdlWindTexture = SDL_CreateTexture(sdlRend, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
     if (sdlWindTexture == nullptr) {
         SDL_Log("Failed to create intermediate window texture (for fullscreen scaling): %s", SDL_GetError());
         return 1;
