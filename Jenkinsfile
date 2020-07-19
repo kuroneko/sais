@@ -55,6 +55,8 @@ pipeline {
                                 [args: 'all']
                             ]
                         dir('saisgpl.m64') {
+                            sh '''
+                            codesign --keychain appsigning -s "AA22B289D7BCD9C66BC95F2AD2E8B35D8D1E4E7C" "bin/Strange Adventures in Infinite Space.app"
                             cpack installation: 'CMake 3.16.0'
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
                         }
