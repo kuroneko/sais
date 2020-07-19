@@ -56,11 +56,15 @@ pipeline {
                             ]
                         dir('saisgpl.m64') {
                             sh '''
+                            set +x
+
                             security unlock-keychain -p "${APPSIGNING_PASSWORD}" appsigning
                             codesign --keychain appsigning -s "${APPSIGNING_KEYID}" --timestamp "bin/Strange Adventures in Infinite Space.app"
                             '''
                             cpack installation: 'CMake 3.16.0'
                             sh '''
+                            set +x
+
                             xcrun altool --notarize-app  --primary-bundle-id "au.com.ecsim.SAISGPL" --username "${APPSIGNING_APPLEUSER}" --password "${APPSIGNING_APPLEPW}" --file SAIS-GPL-*-macOS-x86_64.zip
                             '''
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
