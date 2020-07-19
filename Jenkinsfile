@@ -61,7 +61,7 @@ pipeline {
                             '''
                             cpack installation: 'CMake 3.16.0'
                             sh '''
-                            xcrun altool --notarize-app  --primary-bundle-id "au.com.ecsim.SAISGPL" --username "${APPSIGNING_APPLEUSER}" --password "${APPSIGNING_APPLEPW}" --file SAIS_GPL-*-macOS-x86_64.zip
+                            xcrun altool --notarize-app  --primary-bundle-id "au.com.ecsim.SAISGPL" --username "${APPSIGNING_APPLEUSER}" --password "${APPSIGNING_APPLEPW}" --file SAIS-GPL-*-macOS-x86_64.zip
                             '''
                             archiveArtifacts artifacts: 'SAIS-GPL-**', defaultExcludes: false, fingerprint: true
                         }
