@@ -122,6 +122,7 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
     if(BUILD_DEMO)
         set_target_properties(strangedemo PROPERTIES
                 OUTPUT_NAME "Strange Adventures in Infinite Space Demo"
+                MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in"
                 MACOSX_FRAMEWORK_IDENTIFIER "au.com.ecsim.saisgpldemo"
                 MACOSX_BUNDLE TRUE
                 MACOSX_BUNDLE_BUNDLE_NAME "Strange Adventures Demo"
@@ -136,6 +137,7 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
     else()
         set_target_properties(strange PROPERTIES
                 OUTPUT_NAME "Strange Adventures in Infinite Space"
+                MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in"
                 MACOSX_FRAMEWORK_IDENTIFIER "au.com.ecsim.saisgpl"
                 MACOSX_BUNDLE TRUE
                 MACOSX_BUNDLE_BUNDLE_NAME "Strange Adventures"

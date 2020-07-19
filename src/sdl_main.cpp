@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
     sound_init();
 
     // create the application window
-    int sdlFlags = SDL_WINDOW_RESIZABLE;
+    int sdlFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
     if (globalsettings.opt_fullscreen) {
         sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
