@@ -128,7 +128,7 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
                 MACOSX_BUNDLE_BUNDLE_NAME "Strange Adventures Demo"
                 MACOSX_BUNDLE_COPYRIGHT "Copyright © 2020 Chris Collins, Copyright © 2005 Richard Carlson, Iikka Keranen and William Sears"
                 MACOSX_BUNDLE_ICON_FILE "sais.icns"
-                XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME TRUE)
+                XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
         target_sources(strangedemo PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/demo-data/saisdemo.zip" "src/sais.icns")
         set_property(TARGET strangedemo PROPERTY
                 RESOURCE "${CMAKE_CURRENT_BINARY_DIR}/demo-data/saisdemo.zip;src/sais.icns")
@@ -143,7 +143,7 @@ if(CMAKE_SYSTEM_NAME MATCHES Darwin)
                 MACOSX_BUNDLE_BUNDLE_NAME "Strange Adventures"
                 MACOSX_BUNDLE_COPYRIGHT "Copyright © 2020 Chris Collins, Copyright © 2005 Richard Carlson, Iikka Keranen and William Sears"
                 MACOSX_BUNDLE_ICON_FILE "sais.icns"
-                XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME TRUE)
+                XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
         target_sources(strange PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/full-data/saisdata.zip" "src/sais.icns")
         set_property(TARGET strange PROPERTY
                 RESOURCE "${CMAKE_CURRENT_BINARY_DIR}/full-data/saisdata.zip;src/sais.icns")
