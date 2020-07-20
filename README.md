@@ -57,11 +57,61 @@ dependencies.
 
 ## Building on Linux
 
-I suggest NOT using Conan and relying on your distributions shipped SDL2+physfs,
-that said, the Linux prebuilt binaries are built using Conan.
+I suggest NOT using Conan and relying on your distributions shipped SDL2+physfs.
+
+There been issues with the conan built SDL2 on Linux not being able to reliably
+load audio drivers when it and it's dependencies are linked statically.
   
 This has been tested with SDL 2.0.10 and PhysFS 3.0.1 on Raspbian (armhf) and
 has worked without issue.
+
+The precompilied binaries here on github are built using Ubuntu 18.04 LTS and
+its shipping libraries.  If they do not work for you, please build SAIS GPL from
+the source.
+
+### The 5 Second Guide to building from source on Linux
+
+This is not an exhaustive guide to how to deal with everything that can go wrong
+during the build, but should be enough for the simple case.
+
+1. Make sure you have make, a recent cmake (3.15 or newer), your C++ 
+   compilers, zip, and the development packages for SDL2, SDL2_mixer and 
+   physfs installed.  All of these are required to build from source.
+   
+2. Fetch the source tree.
+   ```shell script
+   git clone https://github.com/kuroneko/sais
+   ```
+
+3. Make yourself a build directory and switch to it
+   ```shell script
+   mkdir sais-build && cd sais-build
+   ```
+   
+4. Prepare the Project files
+   ```shell script
+   cmake -DCMAKE_INSTALL_PREFIX=${HOME}/games/sais ../sais
+   ```
+   
+   You can substitute the path above to set where you want to install SAIS GPL.
+   
+5. Compile the project
+   ```shell script
+   make all
+   ```
+  
+   This should produce a lot of output from the compiler and from zip as it
+   builds the game executable and assembles the data zipfile.
+    
+6. Install the project into it's final home.        
+
+   **NOTE:** You cannot run SAIS from the build-tree - you must install it.
+
+   ```shell script
+   # you will need to use sudo for the install if you're not installing into a
+   # user-writable directory 
+   make install
+   ```
 
 ## Building on macOS
 
