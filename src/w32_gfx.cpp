@@ -55,32 +55,49 @@ int sdl_y_offset = 0;
 float sdl_screen_scale = 1.0f;
 
 void gfx_refresh_screen() {
-    int w,h;
-    SDL_GetWindowSize(sdlWind, &w, &h);
+    int outw,outh,inw,inh,render_offx,render_offy;
+    float render_scale = 1.0f;
+    SDL_GetWindowSize(sdlWind, &inw, &inh);
+    SDL_GetRendererOutputSize(sdlRend, &outw, &outh);
 
-    // calculate scale factor.
+    // calculate scale factor.  This is based on output sizes.
     if (globalsettings.opt_whole_multiple_rescale_ratio) {
         // for pixel perfect scaling, use integer ratios only.
-        int yrat = h / sdlsurf->h;
-        int xrat = w / sdlsurf->w;
-        sdl_screen_scale = static_cast<float>(std::min<int>(xrat, yrat));
-        if (sdl_screen_scale < 1) {
-            sdl_screen_scale = 1;
+        int yrat = outh / sdlsurf->h;
+        int xrat = outw / sdlsurf->w;
+        render_scale = static_cast<float>(std::min<int>(xrat, yrat));
+        if (render_scale < 1) {
+            render_scale = 1;
         }
     } else {
-        float yrat = static_cast<float>(h) / static_cast<float>(sdlsurf->h);
-        float xrat = static_cast<float>(w) / static_cast<float>(sdlsurf->w);
-        sdl_screen_scale = std::min<float>(xrat, yrat);
+        float yrat = static_cast<float>(outh) / static_cast<float>(sdlsurf->h);
+        float xrat = static_cast<float>(outw) / static_cast<float>(sdlsurf->w);
+        render_scale = std::min<float>(xrat, yrat);
     }
+
+    // damnit SDL!  When we're on a HighDPI device, we have to work in two separate scales.
+    //
+    // Input is always in logical pixels, whereas output is in actual display pixels.
+    //
+    // this means we need to calculate our ratios twice - once to position the actual output rect
+    // and the second time to get the equivalent input transform information.
+
+    sdl_screen_scale = render_scale * static_cast<float>(inw) / static_cast<float>(outw);
 
     int targetXSize = static_cast<int>(sdlsurf->w * sdl_screen_scale);
     int targetYSize = static_cast<int>(sdlsurf->h * sdl_screen_scale);
-    sdl_x_offset = (w - targetXSize) / 2;
-    sdl_y_offset = (h - targetYSize) / 2;
+    sdl_x_offset = (inw - targetXSize) / 2;
+    sdl_y_offset = (inh - targetYSize) / 2;
+
+    targetXSize = static_cast<int>(sdlsurf->w * render_scale);
+    targetYSize = static_cast<int>(sdlsurf->h * render_scale);
+    render_offx = (outw - targetXSize) / 2;
+    render_offy = (outh - targetYSize) / 2;
+
 
     SDL_Rect destRect{
-            sdl_x_offset,
-            sdl_y_offset,
+            render_offx,
+            render_offy,
             targetXSize,
             targetYSize,
     };
