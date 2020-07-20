@@ -775,7 +775,8 @@ int32 intro_screen()
                         break;
 
 					    case 8:
-                            globalsettings.opt_whole_multiple_rescale_ratio = !globalsettings.opt_whole_multiple_rescale_ratio;
+                        globalsettings.opt_whole_multiple_rescale_ratio = !globalsettings.opt_whole_multiple_rescale_ratio;
+                        vid_reset_settings();
 
                         break;
 						default: ;
