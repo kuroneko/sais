@@ -22,7 +22,7 @@
 #define MAX(x,y)     (((x) > (y)) ? (x) : (y))
 #define ABS(x)			 (((x) > 0) ? (x) : (0-x))
 
-#define SAIS_VERSION_NUMBER "v1.6"
+#define SAIS_VERSION_NUMBER "v1.6.1"
 
 typedef struct _t_gamesettings
 {
