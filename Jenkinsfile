@@ -38,7 +38,7 @@ pipeline {
                             deleteDir()
                             sh '''
                             export PATH=/usr/local/bin:$PATH
-            			    export MACOS_DEPLOYMENT_TARGET=10.9
+            			    export MACOS_DEPLOYMENT_TARGET=10.11
                             conan install ../saisgpl --build --update --profile=default
                             '''
                         }

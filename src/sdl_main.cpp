@@ -31,24 +31,54 @@ int sound_init();
 extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
 SDL_Surface *blitIntermedSurf = nullptr;
-
+SDL_Renderer *sdlRend = nullptr;
+SDL_Texture *sdlWindTexture = nullptr;
 // directory paths for our core.
 
 std::string fsBaseDir;
 std::string fsPreferencesDir;
 
+static int8 isPixelPerfect = -1;
+static int8 isFullscreen = -1;
+
 int
 vid_reset_settings() {
     if (sdlWind != nullptr) {
-        if (globalsettings.opt_fullscreen) {
-            SDL_SetWindowFullscreen(sdlWind, SDL_WINDOW_FULLSCREEN_DESKTOP);
-        } else {
-            SDL_SetWindowFullscreen(sdlWind, SDL_WINDOW_RESIZABLE);
-            SDL_SetWindowSize(sdlWind, 640, 480);
-            SDL_SetWindowMinimumSize(sdlWind, 640, 480);
-            sdl_screen_scale = 1.0;
-            sdl_x_offset = 0;
-            sdl_y_offset = 0;
+        if (isFullscreen != globalsettings.opt_fullscreen) {
+            isFullscreen = globalsettings.opt_fullscreen;
+            if (isFullscreen) {
+                SDL_SetWindowFullscreen(sdlWind, SDL_WINDOW_FULLSCREEN_DESKTOP);
+            } else {
+                SDL_SetWindowFullscreen(sdlWind, SDL_WINDOW_RESIZABLE);
+                SDL_SetWindowSize(sdlWind, 640, 480);
+                SDL_SetWindowMinimumSize(sdlWind, 640, 480);
+                sdl_screen_scale = 1.0;
+                sdl_x_offset = 0;
+                sdl_y_offset = 0;
+            }
+        }
+        if (sdlRend != nullptr) {
+            if (globalsettings.opt_whole_multiple_rescale_ratio != isPixelPerfect
+                || sdlWindTexture == nullptr) {
+                isPixelPerfect = globalsettings.opt_whole_multiple_rescale_ratio;
+                if (isPixelPerfect) {
+                    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+                } else {
+                    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+                }
+                if (sdlWindTexture != nullptr) {
+                    SDL_DestroyTexture(sdlWindTexture);
+                    sdlWindTexture = nullptr;
+                }
+                // and create the streaming texture.
+                sdlWindTexture = SDL_CreateTexture(sdlRend, blitIntermedSurf->format->format,
+                                                   SDL_TEXTUREACCESS_STREAMING, 640, 480);
+                if (sdlWindTexture == nullptr) {
+                    SDL_Log("Failed to create intermediate window texture (for fullscreen scaling): %s",
+                            SDL_GetError());
+                    return 1;
+                }
+            }
         }
     }
     return 0;
@@ -141,7 +171,7 @@ int main(int argc, char *argv[]) {
     sound_init();
 
     // create the application window
-    int sdlFlags = SDL_WINDOW_RESIZABLE;
+    int sdlFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL;
     if (globalsettings.opt_fullscreen) {
         sdlFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
@@ -157,6 +187,14 @@ int main(int argc, char *argv[]) {
     }
     SDL_SetWindowMinimumSize(sdlWind, 640, 480);
 
+
+    // create the SDL Renderer we use to stream from the intermed blitting surface to the window.
+    sdlRend = SDL_CreateRenderer(sdlWind, -1, SDL_RENDERER_ACCELERATED);
+    if (sdlRend == nullptr) {
+        SDL_Log("Failed to create SDL Renderer: %s", SDL_GetError());
+        return 1;
+    }
+
     // create the i8 surface
     sdlsurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 8, SDL_PIXELFORMAT_INDEX8);
     if (sdlsurf == nullptr) {
@@ -165,8 +203,11 @@ int main(int argc, char *argv[]) {
     }
 
     // create the intermediate blitting surface (needed for fullscreen support)
-    auto *realSurf = SDL_GetWindowSurface(sdlWind);
-    blitIntermedSurf = SDL_ConvertSurface(sdlsurf, realSurf->format, 0);
+    blitIntermedSurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 32, SDL_PIXELFORMAT_RGBA8888);
+
+    // make sure our video state matches what we think it should be.  This also
+    // creates the SDL_Texture we use to do the screen copy.
+    vid_reset_settings();
 
     my_main();
     return 0;
