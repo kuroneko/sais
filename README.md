@@ -1,4 +1,4 @@
-# Strange Adventures in Infinte Space (GPL)
+# Strange Adventures in Infinte Space (GPL) 1.6.1
 
 ![Screenshot on Raspian (ARM Linux)](screenshot.png)
 
@@ -22,6 +22,18 @@ input in it, and they have no responsibility for any problems it may have.
 
 Likewise, there are no warranties explicit or implied for this software
 (per the License).
+
+## Changes over 1.6.0
+
+* HighDPI display support for Retina display macs (and hopefully all others).
+
+* Now correctly uses linear filtering when rescaling the window if available - this
+  produces a much smoother easy on the eyes appearance than the nearest rescale
+  used previously.  This looks a LOT better to me on highDPI and high resolution
+  displays.
+  
+  * Pixel Perfect will turn the filtering off to give you that crisp pixel perfect
+    look if that's what you want.
 
 ## Changes over the Original 1.5 Release
 
