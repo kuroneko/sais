@@ -14,14 +14,10 @@ pipeline {
                     steps {
                         dir('saisgpl.l64') {
                             deleteDir()
-                            sh '''
-                            conan install ../saisgpl  --build=outdated --build=cascade --update --profile=default
-                            '''
                         }
                         cmakeBuild generator: 'Ninja',
                             buildDir: 'saisgpl.l64',
                             sourceDir: 'saisgpl',
-                            cmakeArgs: "-DUSE_CONAN=ON",
                             buildType: 'Release',
                             installation: 'CMake 3.16.0',
                             steps: [
