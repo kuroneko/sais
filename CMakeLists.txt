@@ -7,6 +7,9 @@ cmake_policy(SET CMP0091 NEW)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED 14)
 
+# on macos, target 10.11
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
+
 project(strange VERSION 1.6.0 LANGUAGES C CXX)
 
 option(USE_CONAN "Use conan for dependencies" OFF)
