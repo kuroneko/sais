@@ -160,16 +160,11 @@ int main(int argc, char *argv[]) {
 
 
     // create the SDL Renderer we use to stream from the intermed blitting surface to the window.
-    sdlRend = SDL_CreateRenderer(sdlWind, -1, SDL_RENDERER_ACCELERATED);
+    sdlRend = SDL_CreateRenderer(sdlWind, -1, 0);
     if (sdlRend == nullptr) {
         SDL_Log("Failed to create SDL Renderer: %s", SDL_GetError());
         return 1;
     }
-    if (SDL_RenderSetLogicalSize(sdlRend, 640, 480)) {
-        SDL_Log("Renderer refused our logical window scale: %s", SDL_GetError());
-        return 1;
-    }
-    SDL_RenderSetIntegerScale(sdlRend, (globalsettings.opt_whole_multiple_rescale_ratio != 0)?SDL_TRUE:SDL_FALSE);
 
     // create the i8 surface
     sdlsurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 8, SDL_PIXELFORMAT_INDEX8);

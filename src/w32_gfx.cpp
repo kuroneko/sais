@@ -55,13 +55,44 @@ int sdl_y_offset = 0;
 float sdl_screen_scale = 1.0f;
 
 void gfx_refresh_screen() {
-    SDL_RenderSetIntegerScale(sdlRend, (globalsettings.opt_whole_multiple_rescale_ratio != 0)?SDL_TRUE:SDL_FALSE);
+    int w,h;
+    SDL_GetWindowSize(sdlWind, &w, &h);
 
-    // convert the surface.
+    // calculate scale factor.
+    if (globalsettings.opt_whole_multiple_rescale_ratio) {
+        // for pixel perfect scaling, use integer ratios only.
+        int yrat = h / sdlsurf->h;
+        int xrat = w / sdlsurf->w;
+        sdl_screen_scale = static_cast<float>(std::min<int>(xrat, yrat));
+        if (sdl_screen_scale < 1) {
+            sdl_screen_scale = 1;
+        }
+    } else {
+        float yrat = static_cast<float>(h) / static_cast<float>(sdlsurf->h);
+        float xrat = static_cast<float>(w) / static_cast<float>(sdlsurf->w);
+        sdl_screen_scale = std::min<float>(xrat, yrat);
+    }
+
+    int targetXSize = static_cast<int>(sdlsurf->w * sdl_screen_scale);
+    int targetYSize = static_cast<int>(sdlsurf->h * sdl_screen_scale);
+    sdl_x_offset = (w - targetXSize) / 2;
+    sdl_y_offset = (h - targetYSize) / 2;
+
+    SDL_Rect destRect{
+            sdl_x_offset,
+            sdl_y_offset,
+            targetXSize,
+            targetYSize,
+    };
+    // clear the surface first.
+    SDL_RenderClear(sdlRend);
+
+    // now, blit the 8I surface to the RGBA32 surface
     if (SDL_BlitSurface(sdlsurf, nullptr, blitIntermedSurf, nullptr)) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Blit to correct format failed: %s", SDL_GetError());
         abort();
     }
+
     // now, copy the surface data to the texture.
     char *TexPixelData = nullptr; int pitch = 0;
     if (!SDL_LockTexture(sdlWindTexture, nullptr, reinterpret_cast<void**>(&TexPixelData), &pitch)) {
@@ -77,8 +108,7 @@ void gfx_refresh_screen() {
     }
 
     // and blat the texture onto the screen.
-    SDL_RenderClear(sdlRend);
-    SDL_RenderCopy(sdlRend, sdlWindTexture, nullptr, nullptr);
+    SDL_RenderCopy(sdlRend, sdlWindTexture, nullptr, &destRect);
     SDL_RenderPresent(sdlRend);
 }
 
