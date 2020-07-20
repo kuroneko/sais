@@ -38,8 +38,8 @@ Key changes to the game source include:
 
   * Make use of writable local directories for scores and config
   
-* Support rescaling to native resolution full-screen including "whole multiple" 
-  scaling. (I'd like pixel perfect, but the scaled blit always filters)
+* Support rescaling to native resolution full-screen including pixel perfect 
+  scaling.
   
 * Allow the main window to be resized on the fly.  Doesn't redraw whilst you're
   resizing (yet), but it will once the resize is complete.
