@@ -35,6 +35,7 @@
 #include "textstr.h"
 
 #include "starmap.h"
+#include "safe_cstr.h"
 
 // ----------------
 //     CONSTANTS
@@ -168,9 +169,9 @@ t_month				months[12] =
 	{	"Dec", "December",	334,	31 },
 };
 
-char	captnames[64][16];
+char	captnames[64][CAPT_NAME_LENGTH];
 int32 num_captnames;
-char	shipnames[64][16];
+char	shipnames[64][SHIP_NAME_LENGTH];
 int32 num_shipnames;
 
 // ----------------
@@ -300,11 +301,11 @@ void player_init()
 	ik_print_log("initializing player...\n");
 
 	memcpy(&shiptypes[0], &shiptypes[1+settings.dif_ship], sizeof(t_shiptype));
-	strcpy(shiptypes[0].name, settings.shipname);
+	safe_strncpy(shiptypes[0].name, settings.shipname, SHIP_NAME_LENGTH);
 
 	memset(&player, 0, sizeof(t_player));
-	strcpy(player.shipname, settings.shipname);
-	strcpy(player.captname, settings.captname);
+	safe_strncpy(player.shipname, settings.shipname, SHIP_NAME_LENGTH);
+	safe_strncpy(player.captname, settings.captname, CAPT_NAME_LENGTH);
 
 	player.system = homesystem;
 	player.target = homesystem;
@@ -409,14 +410,14 @@ void allies_init()
 	{
 		f = shiptypes[c].flag;
 		r = shiptypes[c].race;
-		strcpy(name, shiptypes[c].name);
+		safe_strncpy(name, shiptypes[c].name, 32);
 		for (s = 0; s < num_shiptypes; s++)
 		if (!(shiptypes[s].flag & 1))
 		{
 			if (!strcmp(shiptypes[s].name, hulls[shiptypes[c].hull].name))
 			{
 				memcpy(&shiptypes[c], &shiptypes[s], sizeof(t_shiptype));
-				strcpy(shiptypes[c].name, name);
+				safe_strncpy(shiptypes[c].name, name, SHIP_NAME_LENGTH);
 				shiptypes[c].flag = f;
 				shiptypes[c].race = r;
 			}
@@ -594,11 +595,11 @@ void starmap_initplanettypes()
 		else switch(com)
 		{
 			case plkName:
-			strcpy(platypes[num].name, s2);
+			safe_strncpy(platypes[num].name, s2, 16);
 			break;
 
 			case plkText:
-			strcpy(platypes[num].text, s2);
+			safe_strncpy(platypes[num].text, s2, 172);
 			break;
 
 			case plkBonus:
@@ -636,11 +637,11 @@ void starmap_initplanettypes()
 		else switch(com)
 		{
 			case stkName:
-			strcpy(startypes[num].name, s2);
+			safe_strncpy(startypes[num].name, s2, 16);
 			break;
 
 			case stkText:
-			strcpy(startypes[num].text, s2);
+			safe_strncpy(startypes[num].text, s2, 176);
 			break;
 
 			case stkEnd:
@@ -685,31 +686,31 @@ void starmap_initplanettypes()
 			if (flag==3) // planetgfx
 			{
 				for (n=0; n<num_platypes; n++)
-					if (!strcmp(s1, platypes[n].name))
+					if (!strncmp(s1, platypes[n].name, 16))
 						plgfx_type[num_plgfx++]=n;
 				num++;
 			}
 			if (flag==4) // planetnames
 			{
-				strcpy(planetnames[num], s2);
+				safe_strncpy(planetnames[num], s2, 32);
 				for (n=0; n<num_platypes; n++)
-					if (!strcmp(s1, platypes[n].name))
+					if (!strncmp(s1, platypes[n].name, 16))
 						planetnametype[num] = n;
 				num++;
 				num_planetnames = num;
 			}
 			if (flag==5) // starnames
 			{
-				strcpy(starnames[num], s2);
+				safe_strncpy(starnames[num], s2, 32);
 				for (n=0; n<8; n++)
-					if (!strcmp(s1, startypes[n].name))
+					if (!strncmp(s1, startypes[n].name, 16))
 						starnametype[num] = n;
 				num++;
 				num_starnames = num;
 			}
 			if (flag==6) // holenames
 			{
-				strcpy(holenames[num], s2);
+				safe_strncpy(holenames[num], s2, 32);
 				num++;
 				num_holenames = num;
 			}
@@ -749,7 +750,7 @@ void starmap_inititems()
 			flag = 0;
 		else 	if (flag == 1)
 		{
-			strcpy(itemtype[num_types], s1);
+			safe_strncpy(itemtype[num_types], s1, 32);
 			num_types++;
 		}
 
@@ -784,7 +785,7 @@ void starmap_inititems()
 		else switch(com)
 		{
 			case itkName:
-			strcpy(itemtypes[num].name, s2);
+			safe_strncpy(itemtypes[num].name, s2, 32);
 			break;
 
 			case itkType:
@@ -810,11 +811,11 @@ void starmap_inititems()
 			break;
 
 			case itkText:
-			strcpy(itemtypes[num].text, s2);
+			safe_strncpy(itemtypes[num].text, s2, 256);
 			break;
 
 			case itkClass:
-			strcpy(itemtypes[num].clas, s2);
+			safe_strncpy(itemtypes[num].clas, s2, 32);
 			break;
 
 			case itkCost:
@@ -829,7 +830,7 @@ void starmap_inititems()
 
 			case itkSound:
 			sscanf(s2, "%d", &tv1);
-			if (!strcmp(itemtypes[num].clas, textstring[STR_INV_ARTIFACT]))
+			if (!strncmp(itemtypes[num].clas, textstring[STR_INV_ARTIFACT], 32))
 				itemtypes[num].sound = tv1 + SND_ARTIF*( (tv1>=0)-(tv1<0) );
 			else
 				itemtypes[num].sound = tv1 + SND_ITEMS*( (tv1>=0)-(tv1<0) );
@@ -964,7 +965,7 @@ void starmap_createstars(int n)
 				if (!strcmp(sm_stars[t].starname, starnames[r]))
 					end = 0;
 		}
-		strcpy(sm_stars[c].starname, starnames[r]);
+		safe_strncpy(sm_stars[c].starname, starnames[r], 16);
 		end = 0;
 		while (!end && !must_quit)
 		{
@@ -980,7 +981,7 @@ void starmap_createstars(int n)
 				if (!strcmp(sm_stars[t].planetname, planetnames[r]))
 					end = 0;
 		}
-		strcpy(sm_stars[c].planetname, planetnames[r]);
+		safe_strncpy(sm_stars[c].planetname, planetnames[r], 16);
 	}
 
 	// find suitable home (starting) world
@@ -1006,8 +1007,8 @@ void starmap_createstars(int n)
 		sm_stars[h].planet = 9;
 		sm_stars[h].planetgfx = 21;
 		sm_stars[h].explored = 2;
-		strcpy(sm_stars[h].starname, textstring[STR_NAME_GLORY]);
-		strcpy(sm_stars[h].planetname, textstring[STR_NAME_HOPE]);
+		safe_strncpy(sm_stars[h].starname, textstring[STR_NAME_GLORY], 16);
+		safe_strncpy(sm_stars[h].planetname, textstring[STR_NAME_HOPE], 16);
 	}
 
 	// extra star for kawangi start
@@ -1273,7 +1274,7 @@ void starmap_createholes(int32 n)
 				if (!strcmp(sm_holes[t].name, holenames[r]))
 					end = 0;
 		}
-		strcpy(sm_holes[c].name, holenames[r]);
+		safe_strncpy(sm_holes[c].name, holenames[r], 20);
 	}
 }
 
@@ -1588,7 +1589,7 @@ void starmap_createcards(void)
 		}
 
 #ifdef STARMAP_STEPBYSTEP
-	sprintf(texty, "ally %d 50%%", c);
+	safe_snprintf(texty, 256, "ally %d 50%%", c);
 	interface_popup(font_6x8, 256,208,128,64,0,0,"pause", texty, "ok");
 #endif
 
@@ -1615,7 +1616,7 @@ void starmap_createcards(void)
 		sm_stars[s].card = i;
 
 #ifdef STARMAP_STEPBYSTEP
-	sprintf(texty, "ally %d 100%%", c);
+	safe_snprintf(texty, 256, "ally %d 100%%", c);
 	interface_popup(font_6x8, 256,208,128,64,0,0,"pause", texty, "ok");
 #endif
 
@@ -1662,7 +1663,10 @@ void starmap_createcards(void)
 					{
 						end = rand()%num_planetnames;
 						if (planetnametype[end] == sm_stars[c].planet)
-						{	strcpy(sm_stars[c].planetname, planetnames[end]); end = 1; }
+						{
+						    safe_strncpy(sm_stars[c].planetname, planetnames[end], 16);
+						    end = 1;
+						}
 						else
 							end=0;
 					}
@@ -1809,11 +1813,13 @@ void starmap_initshipnames()
 			flag = 0;
 		else if (flag == 1)
 		{
-			strcpy(captnames[num_captnames++], s1);
+			safe_strncpy(captnames[num_captnames], s1, CAPT_NAME_LENGTH);
+			num_captnames++;
 		}
 		else if (flag == 2)
 		{
-			strcpy(shipnames[num_shipnames++], s1);
+            safe_strncpy(shipnames[num_shipnames], s1, SHIP_NAME_LENGTH);
+            num_shipnames++;
 		}
 
 	}

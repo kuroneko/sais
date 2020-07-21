@@ -28,6 +28,7 @@
 #include "textstr.h"
 
 #include "interface.h"
+#include "safe_cstr.h"
 
 // ----------------
 //     CONSTANTS
@@ -82,7 +83,7 @@ void interface_drawborder(t_ik_image *img,
 	int32 flag;
 	char title2[128];
 
-	strcpy(title2, title);
+	safe_strncpy(title2, title, 128);
 	y = strlen(title2);
 	for (x = 0; x < y; x++)
 	{	

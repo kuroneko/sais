@@ -30,6 +30,7 @@
 
 #include "is_fileio.h"
 #include "physfsrwops.h"
+#include "safe_cstr.h"
 
 
 
@@ -78,7 +79,7 @@ Mix_Chunk *lsnd(int32 name)
 
 int Load_WAV(const char *filename, int id)
 {
-	strcpy(wavesnd[id].name, filename);
+	safe_strncpy(wavesnd[id].name, filename, 64);
 	lsnd(id);
 	return id;
 }

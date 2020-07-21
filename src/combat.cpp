@@ -31,6 +31,7 @@
 #include "textstr.h"
 
 #include "combat.h"
+#include "safe_cstr.h"
 
 // ----------------
 //		CONSTANTS
@@ -803,7 +804,7 @@ void klakar_pissoff()
 
 	// trader greeting screen
 	prep_screen();
-	sprintf(str, textstring[STR_VIDCAST], races[r].name);
+	safe_snprintf(str, 256, textstring[STR_VIDCAST], races[r].name);
 	interface_drawborder(screen,
 											 bx, by, bx+208, by+144,
 											 1, STARMAP_INTERFACE_COLOR, str);
@@ -1080,7 +1081,7 @@ void combat_end(int32 flt)
 	
 	if (de > -1 && player.num_ships > 0 && player.ships[0] == 0)
 	{	// system was destroyed
-		sprintf(texty, textstring[STR_SYSTEM_DESTROYED], player.shipname, shipsystems[de].name);
+		safe_snprintf(texty, 256, textstring[STR_SYSTEM_DESTROYED], player.shipname, shipsystems[de].name);
 		interface_popup(font_6x8, 224, 192, 192, 96, STARMAP_INTERFACE_COLOR, 0, 
 										textstring[STR_COMBAT_SYSDMG], texty, textstring[STR_OK]);
 	}

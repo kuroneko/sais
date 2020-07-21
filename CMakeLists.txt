@@ -65,7 +65,7 @@ set(SAIS_SRC
     src/startgame.cpp
     src/textstr.cpp
     src/w32_gfx.cpp
-    src/w32_sound.cpp)
+    src/w32_sound.cpp src/safe_cstr.cpp src/safe_cstr.h)
 
 if(BUILD_DEMO)
     add_executable(strangedemo WIN32 MACOSX_BUNDLE ${SAIS_SRC})

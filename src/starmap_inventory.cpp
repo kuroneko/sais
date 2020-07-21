@@ -37,6 +37,7 @@
 #include "endgame.h"
 
 #include "starmap.h"
+#include "safe_cstr.h"
 
 // ----------------
 //		CONSTANTS
@@ -1041,7 +1042,7 @@ int32 use_vacuum_collapser(char *title)
 											 bx, by, bx+192, by+80,
 											 1, STARMAP_INTERFACE_COLOR, title);
 
-    strcpy(texty, textstring[STR_LVC_ASKWHEN]);
+    safe_strncpy(texty, textstring[STR_LVC_ASKWHEN], 256);
 	interface_textbox(screen, font_6x8,
 										bx+16, by+24, 160, 24, 0,
 										texty);
@@ -1395,13 +1396,13 @@ int32 probe_fleet_encounter(int32 flt)
 			if (survive)
 			{
 				if (sm_fleets[flt].num_ships>1)
-					sprintf(texty, textstring[STR_PROBE_FLEET1], sm_fleets[flt].num_ships);
+					safe_snprintf(texty, 256, textstring[STR_PROBE_FLEET1], sm_fleets[flt].num_ships);
 				else
-                    strcpy(texty, textstring[STR_PROBE_FLEET2]);
+                    safe_strncpy(texty, textstring[STR_PROBE_FLEET2], 256);
 			}
 			else
 			{
-                strcpy(texty, textstring[STR_PROBE_FLEET3]);
+                safe_strncpy(texty, textstring[STR_PROBE_FLEET3], 256);
 			}
 			interface_textbox(screen, font_4x8, bx+16, by+160, 128, 24, 0, 
 												texty);
@@ -1491,19 +1492,19 @@ void probe_exploreplanet(int32 probe)
 										bx+84, by+36, 96, 104, 0,
 										platypes[sm_stars[player.target].planet].text);
 
-    strcpy(name, textstring[STR_PROBE_MISCDATA]);
-    strcpy(texty, textstring[STR_PROBE_MISCDATA1+tof]);
+    safe_strncpy(name, textstring[STR_PROBE_MISCDATA], 32);
+    safe_strncpy(texty, textstring[STR_PROBE_MISCDATA1+tof], 256);
 	if (ecards[c].type == card_event)
 	{	
 #ifndef DEMO_VERSION
 		if (!strcmp(ecards[c].name, textstring[STR_EVENT_FLARE]) || !strcmp(ecards[c].name, textstring[STR_EVENT_NOVA]))
 		{
-			sprintf(texty, textstring[STR_PROBE_MISCDATA2+tof], sm_stars[player.target].starname, player.shipname);
+			safe_snprintf(texty, 256,textstring[STR_PROBE_MISCDATA2+tof], sm_stars[player.target].starname, player.shipname);
 		}
 #else
 		if (!strcmp(ecards[c].name, textstring[STR_EVENT_FLARE]))
 		{
-			sprintf(texty, textstring[STR_PROBE_MISCDATA2+tof], sm_stars[player.target].starname, player.shipname);
+			safe_snprintf(texty, 256, textstring[STR_PROBE_MISCDATA2+tof], sm_stars[player.target].starname, player.shipname);
 		}
 #endif
 	}
@@ -1511,20 +1512,20 @@ void probe_exploreplanet(int32 probe)
 	{
 		it = shiptypes[ecards[c].parm].race; 
 		if (it == race_none)
-            strcpy(texty, textstring[STR_PROBE_MISCDATA3+tof]);
+            safe_strncpy(texty, textstring[STR_PROBE_MISCDATA3+tof], 256);
 #ifndef DEMO_VERSION
 		if (it == race_muktian)
-            strcpy(texty, textstring[STR_PROBE_MISCDATA4+tof]);
+            safe_strncpy(texty, textstring[STR_PROBE_MISCDATA4+tof], 256);
 #endif
 	}
 	else if ((ecards[c].type == card_item) || (ecards[c].type == card_rareitem) || (ecards[c].type == card_lifeform))
 	{
 		it = ecards[c].parm;
 		if (ecards[c].type == card_lifeform)
-            strcpy(texty, textstring[STR_PROBE_MISCDATA5+tof]);
+            safe_strncpy(texty, textstring[STR_PROBE_MISCDATA5+tof], 256);
 
 		if (itemtypes[it].type == item_treasure)
-            strcpy(texty, textstring[STR_PROBE_MISCDATA6+tof]);
+            safe_strncpy(texty, textstring[STR_PROBE_MISCDATA6+tof], 256);
 	}
 
 	ik_print(screen, font_6x8, bx+96-strlen(name)*3, by+108, STARMAP_INTERFACE_COLOR, name);
@@ -1546,13 +1547,13 @@ void probe_exploreplanet(int32 probe)
 		{
 			if (ik_mouse_y > by+24 && ik_mouse_y < by+32 && ik_mouse_x > bx+16 && ik_mouse_x < bx+176)
 			{
-				strcpy(name, sm_stars[player.target].planetname);
+				safe_strncpy(name, sm_stars[player.target].planetname, 32);
 				prep_screen();
 				ik_drawbox(screen, bx+16, by+24, bx+176, by+32, STARMAP_INTERFACE_COLOR*16+3);
 				free_screen();
 				ik_text_input(bx+16, by+24, 16, font_6x8, "", name, STARMAP_INTERFACE_COLOR*16+3, STARMAP_INTERFACE_COLOR);
 				if (strlen(name))
-					strcpy(sm_stars[player.target].planetname, name);
+					safe_strncpy(sm_stars[player.target].planetname, name, 16);
 
 				prep_screen();
 				ik_drawbox(screen, bx+16, by+24, bx+176, by+32, STARMAP_INTERFACE_COLOR*16+3);

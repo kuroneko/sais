@@ -36,6 +36,7 @@
 #include "endgame.h"
 
 #include "starmap.h"
+#include "safe_cstr.h"
 
 // ----------------
 //		CONSTANTS
@@ -232,7 +233,7 @@ void starmap()
 							{
 								mx2 = 1;
 								Play_Sound(WAV_ALLY, 15, 1);
-								sprintf(texty, textstring[STR_MERC_DEAL], hulls[shiptypes[ecards[c].parm].hull].name, shiptypes[ecards[c].parm].name);
+								safe_snprintf(texty, 256, textstring[STR_MERC_DEAL], hulls[shiptypes[ecards[c].parm].hull].name, shiptypes[ecards[c].parm].name);
 								if (!interface_popup(font_6x8, 224, 192, 192, 96, STARMAP_INTERFACE_COLOR, 0, 
 																		textstring[STR_MERC_TITLE], texty, textstring[STR_YES], textstring[STR_NO]))
 								{
@@ -243,11 +244,11 @@ void starmap()
 									starmap_tutorialtype = tut_ally;
 
 									if (shiptypes[player.ships[player.num_ships-1]].flag & 64)
-										strcpy(hisher, textstring[STR_MERC_HER]);
+										safe_strncpy(hisher, textstring[STR_MERC_HER], 8);
 									else
-										strcpy(hisher, textstring[STR_MERC_HIS]);
+										safe_strncpy(hisher, textstring[STR_MERC_HIS], 8);
 
-									sprintf(texty, textstring[STR_MERC_PAYMENT], 
+									safe_snprintf(texty, 256, textstring[STR_MERC_PAYMENT],
 													hulls[shiptypes[player.ships[player.num_ships-1]].hull].name,
 													shiptypes[player.ships[player.num_ships-1]].name,
 													hisher);
@@ -272,7 +273,7 @@ void starmap()
 								{
 									my2 = itemtypes[s].cost/10 + (player.target*7)%(itemtypes[s].cost/10);
 									starmap_additem(s, 0);
-									sprintf(texty, textstring[STR_LIFEFORM_HUNT], itemtypes[s].name, my2);
+									safe_snprintf(texty, 256, textstring[STR_LIFEFORM_HUNT], itemtypes[s].name, my2);
 									if (!interface_popup(font_6x8, 224, 192, 192, 0, STARMAP_INTERFACE_COLOR, 0, textstring[STR_LIFEFORM_HUNTT], texty, textstring[STR_YES], textstring[STR_NO]))
 									{
 										starmap_advancedays(my2);
@@ -331,7 +332,7 @@ void starmap()
 										sp1 = 2;
 
 								Play_SoundFX(WAV_INSTALL, t);
-								sprintf(texty, textstring[STR_INV_REPAIR_HULL], sp1);
+								safe_snprintf(texty, 256, textstring[STR_INV_REPAIR_HULL], sp1);
 								sp2 = interface_popup(font_6x8, SM_SHIP_X + 32*(SM_SHIP_X==0) - 64*(SM_SHIP_X>0), SM_SHIP_Y+40, 192, 72, STARMAP_INTERFACE_COLOR, 0, 
 																		textstring[STR_INV_REPAIR_TITLE], texty, textstring[STR_YES], textstring[STR_NO]);
 								if (!sp2)
@@ -373,7 +374,7 @@ void starmap()
 								else	// repair damages
 								{
 									sp1 = (int32)(sqrt(itemtypes[shipsystems[shiptypes[player.ships[player.sel_ship]].system[(my-168)>>3]].item].cost)*.75);
-									sprintf(texty, textstring[STR_INV_REPAIR_SYS], itemtypes[shipsystems[shiptypes[player.ships[player.sel_ship]].system[(my-168)>>3]].item].name, sp1);
+									safe_snprintf(texty, 256, textstring[STR_INV_REPAIR_SYS], itemtypes[shipsystems[shiptypes[player.ships[player.sel_ship]].system[(my-168)>>3]].item].name, sp1);
 									Play_SoundFX(WAV_INSTALL, t);
 									sp2 = interface_popup(font_6x8, SM_SHIP_X + 32*(SM_SHIP_X==0) - 64*(SM_SHIP_X>0), SM_SHIP_Y+160, 192, 72, STARMAP_INTERFACE_COLOR, 0, 
 																	textstring[STR_INV_REPAIR_TITLE], texty, textstring[STR_YES], textstring[STR_NO]);
@@ -437,7 +438,7 @@ void starmap()
 											{
 												Play_SoundFX(WAV_INFO);
 												Play_Sound(WAV_MESSAGE, 15, 1);
-												sprintf(texty, textstring[STR_KLAK_UNSAFE], sm_stars[player.system].starname);
+												safe_snprintf(texty, 256, textstring[STR_KLAK_UNSAFE], sm_stars[player.system].starname);
 												interface_popup(font_6x8, SM_INV_X + 32*(SM_INV_X==0) - 64*(SM_INV_X>0), SM_INV_Y+24, 192, 112, STARMAP_INTERFACE_COLOR, 0, 
 																		textstring[STR_KLAK_UNAVAIL], texty, textstring[STR_OK]);
 												upd=1;
@@ -537,13 +538,13 @@ void starmap()
 				{
 					if (shiptypes[0].engine==-1)
 					{
-						strcpy(topic, textstring[STR_DRIVE_MISSING]);
-                        strcpy(texty, textstring[STR_DRIVE_MISSING2]);
+						safe_strncpy(topic, textstring[STR_DRIVE_MISSING], 32);
+                        safe_strncpy(texty, textstring[STR_DRIVE_MISSING2], 256);
 					}
 					else
 					{
-                        strcpy(topic, textstring[STR_DRIVE_BROKEN]);
-                        strcpy(texty, textstring[STR_DRIVE_BROKEN2]);
+                        safe_strncpy(topic, textstring[STR_DRIVE_BROKEN], 32);
+                        safe_strncpy(texty, textstring[STR_DRIVE_BROKEN2], 256);
 					}
 
 					Play_SoundFX(WAV_DESELECT);
@@ -1251,7 +1252,7 @@ void starmap_display(int32 t)
 				sm_stars[c].planet = 10;
 				sm_stars[c].card = 0;
 				sm_stars[c].explored = 0;
-				sprintf(sm_stars[c].planetname, "No Planets");
+				safe_strncpy(sm_stars[c].planetname, "No Planets", 16);
 				while (plgfx_type[sm_stars[c].planetgfx] != sm_stars[c].planet && !must_quit)
 				{
 					ik_eventhandler();
@@ -1805,11 +1806,11 @@ void starmap_display(int32 t)
 //	sprintf(lne, "%s", player.captname, 60-strlen(player.captname));
 
 	if (!settings.opt_timeremaining || player.stardate>=10*365)
-		sprintf(cal, textstring[STR_STARMAP_DATE], a, months[l].name, player.stardate/365+4580);
+		safe_snprintf(cal, 128, textstring[STR_STARMAP_DATE], a, months[l].name, player.stardate/365+4580);
 	else
 	{
 		c = 10*365 - player.stardate;
-		sprintf(cal, textstring[STR_STARMAP_DAYSLEFT], c);
+		safe_snprintf(cal, 128, textstring[STR_STARMAP_DAYSLEFT], c);
 	}
 
 	sprintf(lne, textstring[STR_STARMAP_CAPTAIN], player.captname, 66-strlen(player.captname));
@@ -1825,8 +1826,8 @@ void starmap_display(int32 t)
 	if (player.num_items > 12)
 		hud.invslider = MIN(hud.invslider, player.num_items-12);
 
-    strcpy(top, textstring[STR_STARMAP_CARGO]);
-	interface_drawborder(screen,
+    safe_strncpy(top, textstring[STR_STARMAP_CARGO], 128);
+    interface_drawborder(screen,
 											 SM_INV_X, SM_INV_Y, SM_INV_X + 160, SM_INV_Y + 128,
 											 1, STARMAP_INTERFACE_COLOR, top);
 	for (c = 0; c < player.num_items; c++)
@@ -1880,13 +1881,13 @@ void starmap_display(int32 t)
 	ik_dsprite(screen, SM_INV_X + 112, SM_INV_Y + 120, spr_IFbutton->spr[14], 2+(l<<8));
 	*/
 	// draw selection (system) info
-    strcpy(top, textstring[STR_STARMAP_SELECT]);
+    safe_strncpy(top, textstring[STR_STARMAP_SELECT], 128);
 	if (player.target > -1)
 	{
 		if (sm_stars[player.target].explored)
-            strcpy(top, sm_stars[player.target].planetname);
+            safe_strncpy(top, sm_stars[player.target].planetname, 128);
 		else
-            strcpy(top, sm_stars[player.target].starname);
+            safe_strncpy(top, sm_stars[player.target].starname, 128);
 	}
 	interface_drawborder(screen,
 											 SM_SEL_X, SM_SEL_Y, SM_SEL_X + 160, SM_SEL_Y + 96,

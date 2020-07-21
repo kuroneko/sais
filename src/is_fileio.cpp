@@ -32,6 +32,7 @@
 #include "is_fileio.h"
 #include "combat.h"
 #include "starmap.h"
+#include "safe_cstr.h"
 
 IS_FileHdl logfile;
 int last_logdate;
@@ -151,7 +152,7 @@ void ik_start_log() {
 
     n = 0;
     while (n < 1000) {
-        sprintf(fname, "log%04d.txt", n);
+        safe_snprintf(fname, 32, "log%04d.txt", n);
         if (!IS_exists(fname)) {
             logfile = IS_Open_Write(fname);
 //			ik_save_tga(fname, img, pal);
@@ -217,7 +218,7 @@ void ik_print_log(const char *format, ...) {
                     m = y;
             d = d + 1 - months[m].sd;
             y = 4580 + (date / 365);
-            snprintf(text1, 256, "Captain %s of the %s", player.captname, player.shipname);
+            safe_snprintf(text1, 256, "Captain %s of the %s", player.captname, player.shipname);
             IS_Printf(logfile, "\n%s%*s %02d %s %d\n", text1, (int)(52-strlen(text1)), "Date:", d, months[m].name, y);
             IS_Printf(logfile, "================================================================\n");
             last_logdate = date;

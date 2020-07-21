@@ -34,6 +34,7 @@
 #include "endgame.h"
 
 #include "starmap.h"
+#include "safe_cstr.h"
 
 #define CS_SHIP 24
 #define CS_WING (CS_SHIP+48)
@@ -57,11 +58,11 @@ void cs_player_init()
 	ik_print_log("initializing player...\n");
 
 	memcpy(&shiptypes[0], &shiptypes[1+settings.dif_ship], sizeof(t_shiptype));
-	strcpy(shiptypes[0].name, settings.shipname);
+	safe_strncpy(shiptypes[0].name, settings.shipname, SHIP_NAME_LENGTH);
 
 	memset(&player, 0, sizeof(t_player));
-	strcpy(player.shipname, settings.shipname);
-	strcpy(player.captname, settings.captname);
+	safe_strncpy(player.shipname, settings.shipname, SHIP_NAME_LENGTH);
+    safe_strncpy(player.captname, settings.captname, CAPT_NAME_LENGTH);
 
 	player.num_ships = 1;
 	player.ships[0] = 0;

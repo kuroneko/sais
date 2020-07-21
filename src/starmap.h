@@ -14,6 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+#ifndef STARMAP_H
+#define STARMAP_H
+
+#include "iface_globals.h"
+
 // ----------------
 //    CONSTANTS
 // ----------------
@@ -99,7 +105,6 @@
 #endif
 #endif
 
-
 // ----------------
 //     TYPEDEFS
 // ----------------
@@ -159,8 +164,8 @@ typedef struct _t_nebula
 
 typedef struct _t_player
 {
-	char captname[32];
-	char shipname[32];
+	char captname[CAPT_NAME_LENGTH];
+	char shipname[SHIP_NAME_LENGTH];
 	char deathmsg[64];
 
 	int32 x,y,a;
@@ -378,9 +383,9 @@ extern t_hud					hud;
 extern int32					kla_items[32];
 extern int32					kla_numitems;
 
-extern char	captnames[64][16];
+extern char	captnames[64][CAPT_NAME_LENGTH];
 extern int32 num_captnames;
-extern char	shipnames[64][16];
+extern char	shipnames[64][SHIP_NAME_LENGTH];
 extern int32 num_shipnames;
 
 extern int starmap_tutorialtype;
@@ -468,3 +473,5 @@ void use_conograph(char *title);
 int32 probe_fleet_encounter(int32 flt);
 void probe_exploreplanet(int32 probe);
 int32 stellar_probe(char *title);
+
+#endif /* #ifndef STARMAP_H */

@@ -15,6 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+
+#ifndef IFACE_GLOBALS_H
+#define IFACE_GLOBALS_H
+
 /* macos: need to include at least one C++ header for the compiler to recognise nullptr, etc. */
 #include <limits>
 
@@ -23,6 +27,9 @@
 #define ABS(x)			 (((x) > 0) ? (x) : (0-x))
 
 #define SAIS_VERSION_NUMBER "v1.6.1"
+
+#define CAPT_NAME_LENGTH 32
+#define SHIP_NAME_LENGTH 32
 
 typedef struct _t_gamesettings
 {
@@ -37,8 +44,8 @@ typedef struct _t_gamesettings
 	int8 opt_smoketrails;
 	int8 opt_lensflares;
 	int16 opt_volume;
-	char captname[32];
-	char shipname[32];
+	char captname[CAPT_NAME_LENGTH];
+	char shipname[SHIP_NAME_LENGTH];
 } t_gamesettings;
 
 extern t_gamesettings settings;
@@ -96,3 +103,4 @@ extern int key_fire1;
 extern int key_fire2;
 extern int key_fire2b;
 
+#endif /* #ifndef IFACE_GLOBALS_H */

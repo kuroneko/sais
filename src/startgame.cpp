@@ -37,6 +37,7 @@
 #include "starmap.h"
 
 #include "startgame.h"
+#include "safe_cstr.h"
 
 int32 waitclick(int left = 0, int top = 0, int right = 640, int bottom = 480);
 
@@ -69,11 +70,13 @@ int32 startgame()
 	Play_Sound(WAV_MUS_TITLE, 14, 1, 80, 22050, 1000);
 
 
-	if (settings.random_names & 1)
-		strcpy(settings.captname, captnames[rand()%num_captnames]);
+	if (settings.random_names & 1) {
+        safe_strncpy(settings.captname, captnames[rand() % num_captnames], CAPT_NAME_LENGTH);
+    }
 
-	if (settings.random_names & 2)
-		strcpy(settings.shipname, shipnames[rand()%num_shipnames]);
+	if (settings.random_names & 2) {
+        safe_strncpy(settings.shipname, shipnames[rand() % num_shipnames], SHIP_NAME_LENGTH);
+    }
 
 	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
 
@@ -113,10 +116,10 @@ int32 startgame()
 					prep_screen();
 					ik_drawbox(screen, bx+70, by+32, bx+215, by+39, STARMAP_INTERFACE_COLOR*16+3);
 					ik_blit();
-					strcpy(name, settings.captname);
+					safe_strncpy(name, settings.captname, 32);
 					ik_text_input(bx+70, by+32, 14, font_6x8, "", name, STARMAP_INTERFACE_COLOR*16+3, STARMAP_INTERFACE_COLOR);
 					if (strlen(name)>0)
-						strcpy(settings.captname, name);
+						safe_strncpy(settings.captname, name, CAPT_NAME_LENGTH);
 				}
 				else
 				{
@@ -133,10 +136,10 @@ int32 startgame()
 					prep_screen();
 					ik_drawbox(screen, bx+70, by+40, bx+215, by+47, STARMAP_INTERFACE_COLOR*16+3);
 					ik_blit();
-					strcpy(name, settings.shipname);
+					safe_strncpy(name, settings.shipname, 32);
 					ik_text_input(bx+70, by+40, 14, font_6x8, "", name, STARMAP_INTERFACE_COLOR*16+3, STARMAP_INTERFACE_COLOR);
 					if (strlen(name)>0)
-						strcpy(settings.shipname, name);
+						safe_strncpy(settings.shipname, name, SHIP_NAME_LENGTH);
 				}
 				else
 				{

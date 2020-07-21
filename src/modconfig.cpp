@@ -36,6 +36,7 @@
 #include "gfx.h"
 #include "interface.h"
 #include "snd.h"
+#include "safe_cstr.h"
 
 #define MAX_MODDIRS 64
 #define MOD_INTERFACE_COLOR 11
@@ -143,7 +144,7 @@ void modconfig_clearAllMods() {
 void modconfig_setMod(int modnumber) {
     modconfig_clearAllMods();
     allModDirectories[modnumber]->mapInPHYSFS();
-    strncpy(moddir, allModDirectories[modnumber]->name.c_str(), 255);
+    safe_strncpy(moddir, allModDirectories[modnumber]->name.c_str(), 256);
     SDL_Log("Selected Mod: %s", allModDirectories[modnumber]->name.c_str());
     SDL_Log("Mod basepath: %s (mounted onto tree)", allModDirectories[modnumber]->path.c_str());
 }

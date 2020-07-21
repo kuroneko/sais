@@ -28,6 +28,7 @@
 #include "gfx.h"
 #include "is_fileio.h"
 #include "snd.h"
+#include "safe_cstr.h"
 
 #include <SDL.h>
 
@@ -199,7 +200,7 @@ t_ik_spritepak *load_sprites(const char *fname) {
         sd.replacedFrames[x] = false;
     sd.lastFrame = 0;
     // rewrite the filename as a parent directory
-    strncpy(spritedir, fname, 255);
+    safe_strncpy(spritedir, fname, 256);
     sdp = spritedir + strlen(spritedir) - 4;
     sdp[0] = 0;
     SDL_Log("Looking for sprite override frames in %s", spritedir);
@@ -240,7 +241,7 @@ t_ik_spritepak *load_sprites(const char *fname) {
             free(buffu);
         }
         if (sd.replacedFrames[x]) {
-            snprintf(framename, sizeof(framename), "%s/frame%03d.tga", spritedir, x);
+            safe_snprintf(framename, sizeof(framename), "%s/frame%03d.tga", spritedir, x);
             img = ik_load_tga(framename, nullptr);
             if (img) {
                 pak->spr[x] = get_sprite(img, 0, 0, img->w, img->h);

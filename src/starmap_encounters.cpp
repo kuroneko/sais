@@ -37,6 +37,7 @@
 #include "endgame.h"
 
 #include "starmap.h"
+#include "safe_cstr.h"
 
 // ----------------
 //		CONSTANTS
@@ -218,15 +219,15 @@ void starmap_exploreplanet()
 										bx+84, by+36, 96, 104, 0,
 										platypes[sm_stars[player.target].planet].text);
 
-	sprintf(texty, ecards[c].text, "A", "B");
+	safe_snprintf(texty, 256, ecards[c].text, "A", "B");
 	if (ecards[c].type == card_event)
 	{
-        strcpy(name, textstring[STR_CARD_EVENT]);
+        safe_strncpy(name, textstring[STR_CARD_EVENT], 32);
 #ifndef DEMO_VERSION
-		if (!strcmp(ecards[c].name, textstring[STR_EVENT_DEVA]))
+		if (!strncmp(ecards[c].name, textstring[STR_EVENT_DEVA], 32))
 		{
 			Play_Sound(WAV_NOPLANET, 15, 1);
-			sprintf(texty, ecards[c].text, sm_stars[player.target].starname);
+			safe_snprintf(texty, 256, ecards[c].text, sm_stars[player.target].starname);
 		}
 #endif
 		if (!strcmp(ecards[c].name, textstring[STR_EVENT_FLARE]))
@@ -265,7 +266,7 @@ void starmap_exploreplanet()
 						r++; 
 					}
 				}
-				sprintf(texty, ecards[c].text, 
+				safe_snprintf(texty, 256, ecards[c].text,
 								shiptypes[sh].name, 
 								shipsystems[shiptypes[sh].system[s]].name);
 				shiptypes[sh].sysdmg[s]=1;
@@ -273,7 +274,7 @@ void starmap_exploreplanet()
 			}
 			else
 			{
-				sprintf(texty, ecards[c].text2, shiptypes[sh].name); // player.shipname);
+				safe_snprintf(texty, 256, ecards[c].text2, shiptypes[sh].name); // player.shipname);
 			}
 			
 		}
@@ -293,18 +294,18 @@ void starmap_exploreplanet()
 					s = rand()%player.num_items;
 				n = player.items[s];
 				starmap_removeitem(s);
-				sprintf(texty, ecards[c].text, itemtypes[n].name);
+				safe_snprintf(texty, 256, ecards[c].text, itemtypes[n].name);
 				if (rand()&1)
 					kla_items[kla_numitems++]=n;
 			}
 			else
-				sprintf(texty, ecards[c].text2, player.shipname);
+				safe_snprintf(texty, 256, ecards[c].text2, player.shipname);
 		}
 #ifndef DEMO_VERSION
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_NOVA]))
 		{
 			Play_Sound(WAV_NOVA, 15, 1);
-			sprintf(texty, ecards[c].text, sm_stars[player.system].starname);
+			safe_snprintf(texty, 256, ecards[c].text, sm_stars[player.system].starname);
 			sm_stars[player.system].novadate = player.stardate+30;
 			sm_stars[player.system].novatype = 0;
 			for (n = 0; n < STARMAP_MAX_FLEETS; n++)
@@ -354,13 +355,13 @@ void starmap_exploreplanet()
 					if (shipsystems[shiptypes[0].system[s]].item == -1)
 						s = -1;
 				}
-				sprintf(texty, ecards[c].text, 
+				safe_snprintf(texty, 256, ecards[c].text,
 								shipsystems[shiptypes[0].system[s]].name);
 				starmap_destroysystem(s);
 			}
 			else
 			{
-				sprintf(texty, ecards[c].text2, 
+				safe_snprintf(texty, 256, ecards[c].text2,
 								player.shipname);
 				player.death = 5;
 				player.num_ships = 0;
@@ -473,11 +474,11 @@ void starmap_exploreplanet()
 	}
 	else if (ecards[c].type == card_ally)
 	{
-        strcpy(name, textstring[STR_CARD_ALLY]);
+        safe_strncpy(name, textstring[STR_CARD_ALLY], 32);
 	}
 	else
 	{	
-		sprintf(name, textstring[STR_CARD_DISCOVERY], itemtypes[it].clas); 
+		safe_snprintf(name, 32, textstring[STR_CARD_DISCOVERY], itemtypes[it].clas);
 		for (n = 0; n < (int32)strlen(name); n++)
 		{
 			if (name[n]>='a' && name[n]<='z')
@@ -534,13 +535,13 @@ void starmap_exploreplanet()
 			if (cname)
 			if (ik_mouse_y > by+24 && ik_mouse_y < by+32 && ik_mouse_x > bx+16 && ik_mouse_x < bx+176)
 			{
-				strcpy(name, sm_stars[player.target].planetname);
+				safe_strncpy(name, sm_stars[player.target].planetname, 32);
 				prep_screen();
 				ik_drawbox(screen, bx+16, by+24, bx+176, by+32, STARMAP_INTERFACE_COLOR*16+3);
 				free_screen();
 				ik_text_input(bx+16, by+24, 16, font_6x8, "", name, STARMAP_INTERFACE_COLOR*16+3, STARMAP_INTERFACE_COLOR);
 				if (strlen(name))
-					strcpy(sm_stars[player.target].planetname, name);
+					safe_strncpy(sm_stars[player.target].planetname, name, 16);
 
 				prep_screen();
 				ik_drawbox(screen, bx+16, by+24, bx+176, by+32, STARMAP_INTERFACE_COLOR*16+3);
@@ -582,11 +583,11 @@ void starmap_exploreplanet()
 #endif
 		{
 			if (shiptypes[ecards[c].parm].flag & 64)
-                strcpy(hisher, textstring[STR_MERC_HER]);
+                safe_strncpy(hisher, textstring[STR_MERC_HER], 8);
 			else
-                strcpy(hisher, textstring[STR_MERC_HIS]);
+                safe_strncpy(hisher, textstring[STR_MERC_HIS], 8);
 
-			sprintf(texty, textstring[STR_MERC_PAYMENT], 
+			safe_snprintf(texty, 256, textstring[STR_MERC_PAYMENT],
 							hulls[shiptypes[ecards[c].parm].hull].name,
 							shiptypes[ecards[c].parm].name,
 							hisher);
@@ -610,7 +611,7 @@ void starmap_exploreplanet()
 		if (itemtypes[it].flag & lifeform_hard)
 		{
 			h = itemtypes[it].cost/10 + rand()%(itemtypes[it].cost/10);
-			sprintf(texty, textstring[STR_LIFEFORM_HARD], itemtypes[it].name, h);
+			safe_snprintf(texty, 256, textstring[STR_LIFEFORM_HARD], itemtypes[it].name, h);
 			if (!interface_popup(font_6x8, bx+16, by+96, 192, 0, STARMAP_INTERFACE_COLOR, 0, textstring[STR_LIFEFORM_HARDT], texty, textstring[STR_YES], textstring[STR_NO]))
 			{
 				starmap_advancedays(h);
@@ -708,13 +709,13 @@ int32 starmap_explorehole(int32 h, int32 t)
 		{
 			if (my > 24 && my < 32) // rename
 			{
-				strcpy(name, sm_holes[h].name);
+				safe_strncpy(name, sm_holes[h].name, 31);
 				prep_screen();
 				ik_drawbox(screen, bx+16, by+24, bx+192, by+32, STARMAP_INTERFACE_COLOR*16+3);
 				free_screen();
 				ik_text_input(bx+16, by+24, 16, font_6x8, "", name, STARMAP_INTERFACE_COLOR*16+3, STARMAP_INTERFACE_COLOR);
 				if (strlen(name))
-					strcpy(sm_holes[h].name, name);
+					safe_strncpy(sm_holes[h].name, name, 20);
 			}
 			if (my > z-24 && my < z-8)
 			{
@@ -796,9 +797,9 @@ int32 fleet_encounter(int32 flt, int32 inc)
 			upd = 0;
 			prep_screen();
 			if (!inc)
-                strcpy(texty, textstring[STR_SCANNER_ALIENS]);
+                safe_strncpy(texty, textstring[STR_SCANNER_ALIENS], 32);
 			else
-                strcpy(texty, textstring[STR_SCANNER_INCOMING]);
+                safe_strncpy(texty, textstring[STR_SCANNER_INCOMING], 32);
 			interface_drawborder(screen,
 													 bx, by, bx+160, by+184,
 													 1, STARMAP_INTERFACE_COLOR, texty);
@@ -953,7 +954,7 @@ void starmap_mantle(int32 flt)
 			halfbritescreen();
 
 			prep_screen();
-			sprintf(texty, textstring[STR_VIDCAST], races[r].name);
+			safe_snprintf(texty, 256, textstring[STR_VIDCAST], races[r].name);
 			interface_drawborder(screen,
 													 bx, by, bx+208, by+h,
 													 1, STARMAP_INTERFACE_COLOR, texty);
@@ -1029,17 +1030,17 @@ void enemy_encounter(int32 r)
 
 	// generic enemy greeting screen
 	prep_screen();
-	sprintf(texty, textstring[STR_VIDCAST], races[r].name);
+	safe_snprintf(texty, 256, textstring[STR_VIDCAST], races[r].name);
 	interface_drawborder(screen,
 											 bx, by, bx+208, by+144,
 											 1, STARMAP_INTERFACE_COLOR, texty);
 	ik_print(screen, font_6x8, bx+16, by+26, 3, textstring[STR_VIDCAST2]);
 
 	if (r == race_garthan)
-        strcpy(texty, textstring[STR_GARTHAN_WARN1+rand()%3]);
+        safe_strncpy(texty, textstring[STR_GARTHAN_WARN1+rand()%3], 256);
 #ifndef DEMO_VERSION
 	else if (r == race_urluquai)
-		strcpy(texty, textstring[STR_URLUQUAI_WARN1+rand()%3]);
+		safe_strncpy(texty, textstring[STR_URLUQUAI_WARN1+rand()%3], 256);
 	else // tan ru
 	{
 		// generate random tan ru message
@@ -1152,7 +1153,7 @@ int32 muktian_encounter()
 		starmap_removeship(mc);
 
 	prep_screen();
-	sprintf(str, textstring[STR_VIDCAST], races[r].name);
+	safe_snprintf(str, 256, textstring[STR_VIDCAST], races[r].name);
 	interface_drawborder(screen,
 											 bx, by, bx+208, by+144,
 											 1, STARMAP_INTERFACE_COLOR, str);
@@ -1343,7 +1344,7 @@ void kawangi_warning()
 										bx+88, by+48, 104, 64, 0,
 										textstring[STR_KAWANGI_WARNING2]);
 
-	sprintf(texty, textstring[STR_KAWANGI_WARNING3], player.shipname);
+	safe_snprintf(texty, 512, textstring[STR_KAWANGI_WARNING3], player.shipname);
 	interface_textbox(screen, font_4x8,
 										bx+16, by+112, 176, 80, 0,
 										texty);
@@ -1399,13 +1400,13 @@ void kawangi_message(int32 flt, int32 m)
 
 		if (sm_fleets[flt].explored < 2)	// don't know it's the kawangi
 		{
-            strcpy(texty, textstring[STR_KAWANGI_KILLED1]);
-            strcpy(topic, textstring[STR_KAWANGI_KILLED]);
+            safe_strncpy(texty, textstring[STR_KAWANGI_KILLED1], 512);
+            safe_strncpy(topic, textstring[STR_KAWANGI_KILLED], 32);
 		}
 		else
 		{
-            strcpy(texty, textstring[STR_KAWANGI_KILLED2]);
-            strcpy(topic, races[race_kawangi].name);
+            safe_strncpy(texty, textstring[STR_KAWANGI_KILLED2], 512);
+            safe_strncpy(topic, races[race_kawangi].name, 32);
 		}
 		break;
 
@@ -1414,14 +1415,14 @@ void kawangi_message(int32 flt, int32 m)
 
 		if (kawangi_score == 0)
 		{
-			sprintf(texty, textstring[STR_KAWANGI_EXPLO1], sm_stars[sm_fleets[flt].system].starname);
-            strcpy(topic, textstring[STR_KAWANGI_EXPLO]);
+			safe_snprintf(texty, 512, textstring[STR_KAWANGI_EXPLO1], sm_stars[sm_fleets[flt].system].starname);
+            safe_strncpy(topic, textstring[STR_KAWANGI_EXPLO], 32);
 			kawangi_score++;
 		}
 		else
 		{
-			sprintf(texty, textstring[STR_KAWANGI_EXPLO2], sm_stars[sm_fleets[flt].system].starname);
-            strcpy(topic, textstring[STR_KAWANGI_EXPLO]);
+			safe_snprintf(texty, 512, textstring[STR_KAWANGI_EXPLO2], sm_stars[sm_fleets[flt].system].starname);
+            safe_strncpy(topic, textstring[STR_KAWANGI_EXPLO], 32);
 			kawangi_score++;
 		}
 		break;

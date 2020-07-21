@@ -26,6 +26,7 @@
 #include "gfx.h"
 #include "is_fileio.h"
 #include "interface.h"
+#include "safe_cstr.h"
 
 //#define THICK_MAGNIFIER
 
@@ -342,7 +343,6 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal) {
     uint8 bpp, planecount;
 
     t_ik_image *image;
-    uint8 *buffer;
     uint8 *line;
 
     IS_FileHdl img;
@@ -397,7 +397,6 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal) {
         return nullptr;
     }
 
-    buffer = image->data;
     line = (uint8 *) malloc(line_w);
 
     // read image data
@@ -486,7 +485,6 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal) {
 
 void ik_save_screenshot(t_ik_image *img, uint8 *pal) {
     int n;
-    IS_FileHdl fil;
     char fname[32];
 
     wants_screenshot = 0;
@@ -494,13 +492,13 @@ void ik_save_screenshot(t_ik_image *img, uint8 *pal) {
 #ifdef MOVIE
     n = aframe;
     aframe++;
-    sprintf(fname, "frames/fram%04d.tga", n);
+    safe_snprintf(fname, 32, "frames/fram%04d.tga", n);
     ik_save_tga(fname, img, pal);
 #else
 
     n = 0;
     while (n < 1000) {
-        sprintf(fname, "shot%04d.tga", n);
+        safe_snprintf(fname, 32, "shot%04d.tga", n);
 
         if (!IS_exists(fname)) {
             ik_save_tga(fname, img, pal);

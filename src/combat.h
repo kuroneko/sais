@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+#include "iface_globals.h"
 //#define DEBUG_COMBAT
 
 //#define COMBAT_BUILD_HELP
@@ -59,7 +61,7 @@ typedef struct _t_hardpoint
 
 typedef struct _t_hull
 {
-	char name[32];
+	char name[SHIP_NAME_LENGTH];
 	int32 size;			// length in meters
 	int32 hits;
 	int32 mass;
@@ -71,7 +73,7 @@ typedef struct _t_hull
 
 typedef struct _t_shiptype
 {
-	char name[32];
+	char name[SHIP_NAME_LENGTH];
 	int32 race;
 	int32 flag;
 	int32 hull;
@@ -91,7 +93,7 @@ typedef struct _t_shiptype
 
 typedef struct _t_ship
 {
-	char name[32];
+	char name[SHIP_NAME_LENGTH];
 	int32 type;
 	int32 hits;
 

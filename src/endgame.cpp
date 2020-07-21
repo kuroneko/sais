@@ -35,6 +35,7 @@
 #include "starmap.h"
 
 #include "endgame.h"
+#include "safe_cstr.h"
 
 // ----------------
 //     CONSTANTS
@@ -231,12 +232,12 @@ void game_over()
 	else 
 	{	bx = 192; by = 208; h = 128; } // dies
 
-	sprintf(edate, textstring[STR_ENDGAME_DATEF], c, months[v].name, player.stardate/365+4580);
+	safe_snprintf(edate, 32, textstring[STR_ENDGAME_DATEF], c, months[v].name, player.stardate/365+4580);
 
-	sprintf(topic,  textstring[STR_ENDGAME_OVER], 
+	safe_snprintf(topic, 64,  textstring[STR_ENDGAME_OVER],
 					textstring[STR_ENDGAME_DATE], edate);
 
-	sprintf(edate, textstring[STR_ENDGAME_DATEF2], months[v].name, c, player.stardate/365+4580);
+	safe_snprintf(edate, 32, textstring[STR_ENDGAME_DATEF2], months[v].name, c, player.stardate/365+4580);
 
 	if (player.system == homesystem && player.death==0) // return to hope
 	{
@@ -272,11 +273,11 @@ void game_over()
 		y += 1 + interface_textbox(screen, font_4x8, bx+84, by+24+y*8, 160, 128, 0, textstring[STR_ENDGAME_MUCRON1 + (player.stardate>=365*10)]);
 #endif
 
-		sprintf(texty, textstring[STR_ENDGAME_MUCRON3+2*(val<0)], abs(val));
+		safe_snprintf(texty, 512,textstring[STR_ENDGAME_MUCRON3+2*(val<0)], abs(val));
 		y += 1 + interface_textbox(screen, font_4x8, bx+84, by+24+y*8, 160, 128, 0, texty);
 		y = MAX(9,y);
 
-		sprintf(texty, textstring[STR_ENDGAME_MUCRON4+2*(val<0)], jobs[job].name);
+		safe_snprintf(texty, 512, textstring[STR_ENDGAME_MUCRON4+2*(val<0)], jobs[job].name);
 		y += 1 + interface_textbox(screen, font_4x8, bx+16, by+24+y*8, 224, 128, 0, texty);
 
 		if (!w)
@@ -284,7 +285,7 @@ void game_over()
 			ik_print(screen, font_4x8, bx+16, by+24+y*8, 0, textstring[STR_ENDGAME_MUCRON7]);
 			Play_Sound(WAV_MUS_VICTORY, 15, 1);
 
-			sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG1], edate);
+			safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG1], edate);
 		}
 #ifndef DEMO_VERSION
 		else
@@ -294,7 +295,7 @@ void game_over()
 			y += 1 + MAX(8,interface_textbox(screen, font_4x8, bx+84, by+24+y*8, 160, 128, 0, textstring[STR_ENDGAME_KAWANGI]));
 			Play_Sound(WAV_KAWANGI, 15, 1);
 
-			sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG7], edate);
+			safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG7], edate);
 		}
 #endif
 	}
@@ -308,52 +309,52 @@ void game_over()
 		{
 			default:
 			case 1:	// combat
-				sprintf(texty, 
+				safe_snprintf(texty, 512,
 								textstring[STR_ENDGAME_DEATH1], 
 								shiptypes[0].name);
-				sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG2], edate);
+				safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG2], edate);
 				deathpic = spr_SMraces->spr[RC_BLOWUP];
 			break;
 			case 2:	// hole
-				sprintf(texty,
+				safe_snprintf(texty, 512,
 								textstring[STR_ENDGAME_DEATH2],
 								shiptypes[0].name);
-				sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG3], edate);			
+				safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG3], edate);
 				deathpic = spr_SMraces->spr[RC_HOLED];
 				break;
 			case 3: // vacuum collapse
-				sprintf(texty,
+				safe_snprintf(texty, 512,
 								textstring[STR_ENDGAME_DEATH3],
 								shiptypes[0].name);
-				sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG4], edate);			
+				safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG4], edate);
 				deathpic = spr_SMraces->spr[RC_BLOWUP];
 			break;
 			case 4: // nova shockwave
-				sprintf(texty,
+				safe_snprintf(texty, 512,
 								textstring[STR_ENDGAME_DEATH4],
 								shiptypes[0].name);
-				sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG5], edate);			
+				safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG5], edate);
 				deathpic = spr_SMraces->spr[RC_BLOWUP];
 			break;
 			case 5: // sabotage
-				sprintf(texty,
+				safe_snprintf(texty, 512,
 								textstring[STR_ENDGAME_DEATH5],
 								shiptypes[0].name);
-				sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG6], edate);
+				safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG6], edate);
 				deathpic = spr_SMraces->spr[RC_BLOWUP];
 			break;
 			case 6: // glory harvested by kawangi
-				sprintf(texty,
+				safe_snprintf(texty, 512,
 								textstring[STR_ENDGAME_DEATH6],
 								shiptypes[0].name);
-				sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG7], edate);
+				safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG7], edate);
 				deathpic = spr_SMplanet2->spr[22];
 			break;
 			case 7: // glory destroyed by vacuum collapser
-				sprintf(texty,
+				safe_snprintf(texty, 512,
 								textstring[STR_ENDGAME_DEATH7],
 								shiptypes[0].name);
-				sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG8], edate);
+				safe_snprintf(player.deathmsg, 64, "%s %s", textstring[STR_ENDGAME_MSG8], edate);
 				deathpic = spr_SMraces->spr[RC_LOST];
 			break;
  		}
@@ -369,7 +370,7 @@ void game_over()
 		y += 1 + interface_textbox(screen, font_4x8, bx+84, by+24+y*8, 160, 128, 0, texty);
 
 		y = MAX(9, y);
-		sprintf(texty, textstring[STR_ENDGAME_SCORE], val);
+		safe_snprintf(texty, 512, textstring[STR_ENDGAME_SCORE], val);
 		y += 1 + interface_textbox(screen, font_4x8, bx+16, by+24+y*8, 224, 128, 0, texty);
 		Play_Sound(WAV_MUS_DEATH, 15, 1);
 	}
@@ -438,11 +439,11 @@ void checkhiscore(int32 score)
 		{
 			memcpy(&scores[c], &scores[c-1], sizeof(t_score));
 		}
-		strcpy(scores[b].cname, player.captname);
-		strcpy(scores[b].sname, player.shipname);
+		safe_strncpy(scores[b].cname, player.captname, 16);
+		safe_strncpy(scores[b].sname, player.shipname, 16);
 		scores[b].score = score;
 		scores[b].date = player.stardate;
-		strcpy(scores[b].deathmsg, player.deathmsg);
+		safe_strncpy(scores[b].deathmsg, player.deathmsg, 64);
 		got_hiscore = b;
 	}
 
@@ -496,7 +497,7 @@ void endgame_init()
 			{
 				sscanf(s1, "%d", &tv1);
 				jobs[num].value = tv1;
-				strcpy(jobs[num].name, s2);
+				safe_strncpy(jobs[num].name, s2,64);
 				num++;
 			}
 		}
@@ -517,7 +518,7 @@ void load_scores()
 {
     IS_FileHdl fil;
 	char scorefile[256];
-	snprintf(scorefile, sizeof(scorefile), "%s%s", moddir, "scores.dat");
+	safe_snprintf(scorefile, sizeof(scorefile), "%s%s", moddir, "scores.dat");
 
 	fil = IS_Open_Read(scorefile);
 	if (!fil)
@@ -537,7 +538,7 @@ void save_scores()
 {
     IS_FileHdl fil;
 	char scorefile[256];
-	snprintf(scorefile, sizeof(scorefile), "%s%s", moddir, "scores.dat");
+	safe_snprintf(scorefile, sizeof(scorefile), "%s%s", moddir, "scores.dat");
 	fil = IS_Open_Write(scorefile);
 	if (!fil)
 	{

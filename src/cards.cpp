@@ -32,6 +32,7 @@
 #include "combat.h"
 
 #include "cards.h"
+#include "safe_cstr.h"
 
 // ----------------
 //     CONSTANTS
@@ -93,7 +94,7 @@ void cards_init()
 			if (!strcmp(s1, "END"))
 			{	numtypes = n; flag = 0; }
 			else
-				strcpy(cardtypenames[n++], s1);
+				safe_strncpy(cardtypenames[n++], s1, 32);
 		}
 	}
 	IS_Close(ini);
@@ -119,29 +120,27 @@ void cards_init()
 			if (com == eckBegin)
 			{
 				flag = 1;
-				strcpy(ecards[num].text, "\0");
+				strcpy(ecards[num].text, "");
 				ecards[num].parm = 0;
 			}
 		}
 		else switch(com)
 		{
 			case eckName:
-			strcpy(ecards[num].name, s2);
+			safe_strncpy(ecards[num].name, s2,32);
 			break;
 
 			case eckText:
-			strcpy(ecards[num].text, s2);
-			ecards[num].text[strlen(s2)]=0;
+			safe_strncpy(ecards[num].text, s2, 256);
 			break;
 
 			case eckText2:
-			strcpy(ecards[num].text2, s2);
-			ecards[num].text2[strlen(s2)]=0;
+			safe_strncpy(ecards[num].text2, s2, 256);
 			break;
 
 			case eckType:
 			for (n = 0; n < numtypes; n++)
-				if (!strcmp(s2, cardtypenames[n]))
+				if (!strncmp(s2, cardtypenames[n], 32))
 					ecards[num].type = n;
 			break;
 
@@ -150,7 +149,7 @@ void cards_init()
 			{
 				ecards[num].parm = 0;
 				for (n = 0; n < num_shiptypes; n++)
-					if (!strcmp(s2, shiptypes[n].name))
+					if (!strncmp(s2, shiptypes[n].name, SHIP_NAME_LENGTH))
 						ecards[num].parm = n;
 			}
 			else if (ecards[num].type == card_event)

@@ -31,6 +31,7 @@
 #include "textstr.h"
 
 #include "combat.h"
+#include "safe_cstr.h"
 
 // ----------------
 // GLOBAL FUNCTIONS
@@ -123,9 +124,9 @@ void combat_displayships()
 	{	camera.ship_sel = -1; camera.ship_trg = -1; }
 
 	if (ty>-1)
-		strcpy(top, shiptypes[ty].name);
+		safe_strncpy(top, shiptypes[ty].name, 32);
 	else
-		strcpy(top, player.shipname);
+        safe_strncpy(top, player.shipname, 32);
 	interface_drawborder(screen,
 											 bx, by, bx+160, by+h,
 											 1, COMBAT_INTERFACE_COLOR, top); // shipname
@@ -265,9 +266,9 @@ void combat_displayships()
 		ty = cships[s].type;
 
 	if (ty>-1)
-		strcpy(top, shiptypes[ty].name);
+		safe_strncpy(top, shiptypes[ty].name, 32);
 	else
-		strcpy(top, textstring[STR_COMBAT_NOTARGET]);
+		safe_strncpy(top, textstring[STR_COMBAT_NOTARGET], 32);
 	interface_drawborder(screen,
 											 bx, by, bx+160, by+h,
 											 1, COMBAT_INTERFACE_COLOR, top); // shipname
