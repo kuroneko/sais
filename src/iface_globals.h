@@ -26,7 +26,7 @@
 #define MAX(x,y)     (((x) > (y)) ? (x) : (y))
 #define ABS(x)			 (((x) > 0) ? (x) : (0-x))
 
-#define SAIS_VERSION_NUMBER "v1.6.1"
+#define SAIS_VERSION_NUMBER "v1.7.0"
 
 #define CAPT_NAME_LENGTH 32
 #define SHIP_NAME_LENGTH 32

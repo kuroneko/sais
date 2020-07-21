@@ -1,4 +1,4 @@
-# Strange Adventures in Infinte Space (GPL) 1.6.1
+# Strange Adventures in Infinte Space (GPL) 1.7.0
 
 ![Screenshot on Raspian (ARM Linux)](screenshot.png)
 
@@ -23,7 +23,31 @@ input in it, and they have no responsibility for any problems it may have.
 Likewise, there are no warranties explicit or implied for this software
 (per the License).
 
-## Changes over 1.6.0
+## Warning!
+
+1.7.0 (and newer) introduces changes that can break the operation of some mods.
+Please read the changes below which will contain notes on what may need to be
+updated to fix any given mod to work with this release. 
+
+Where possible, the change item will clearly indicate which data file is 
+affected and how it can be fixed.
+
+## New in 1.7.0
+
+* Fixes most string handling to avoid buffer overflows induced by mods and 
+  datafile handling.
+
+* Changed the format of the starmap headline to use a safer construction method.
+  this may affect original mods and produce odd behaviour if they override the
+  `gamedata/strings.ini` file.
+  
+  The `STARMAP_CAPTAIN` entry in the `gamedata/strings.ini` file should be 
+  updated to:
+  ```
+  STARMAP_CAPTAIN Captain %-32s  %32s
+  ```
+
+## New in 1.6.1
 
 * HighDPI display support for Retina display macs (and hopefully all others).
 
@@ -35,7 +59,7 @@ Likewise, there are no warranties explicit or implied for this software
   * Pixel Perfect will turn the filtering off to give you that crisp pixel perfect
     look if that's what you want.
 
-## Changes over the Original 1.5 Release
+## New in 1.6.0 (compared to the original 1.5.0 release)
 
 SAIS GPL has few internal behavioural changes (mostly around mod handling), but
 should play exactly the same as the 1.5 release.
