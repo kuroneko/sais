@@ -1813,8 +1813,7 @@ void starmap_display(int32 t)
 		safe_snprintf(cal, 128, textstring[STR_STARMAP_DAYSLEFT], c);
 	}
 
-	sprintf(lne, textstring[STR_STARMAP_CAPTAIN], player.captname, 66-strlen(player.captname));
-	sprintf(top, lne, cal);
+	safe_snprintf(top, 128, textstring[STR_STARMAP_CAPTAIN], player.captname, cal);
 	interface_drawborder(screen,
 											 SM_MAP_X, SM_MAP_Y, SM_MAP_X + 480, SM_MAP_Y + 480,
 											 0, STARMAP_INTERFACE_COLOR, top);
