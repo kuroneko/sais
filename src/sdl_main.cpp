@@ -23,6 +23,7 @@
 #include "gfx.h"
 #include "iface_globals.h"
 #include "is_fileio.h"
+#include "port.h"
 
 int my_main();
 
@@ -74,9 +75,7 @@ vid_reset_settings() {
                 sdlWindTexture = SDL_CreateTexture(sdlRend, blitIntermedSurf->format->format,
                                                    SDL_TEXTUREACCESS_STREAMING, 640, 480);
                 if (sdlWindTexture == nullptr) {
-                    SDL_Log("Failed to create intermediate window texture (for fullscreen scaling): %s",
-                            SDL_GetError());
-                    return 1;
+                    SYS_abort("Failed to create intermediate window texture (for fullscreen scaling): %s", SDL_GetError());
                 }
             }
         }
@@ -122,8 +121,7 @@ int main(int argc, char *argv[]) {
     c_maxy = gfx_height;
 
     if (!PHYSFS_init(argv[0])) {
-        SDL_Log("PhysFS failed to initialise: %s", PHYSFS_getLastError());
-        return 1;
+        SYS_abort("PhysFS failed to initialise: %s", PHYSFS_getLastError());
     }
 
 #if TARGET_OS_OSX
@@ -135,10 +133,10 @@ int main(int argc, char *argv[]) {
     const char *prefDirCStr = PHYSFS_getPrefDir("FreeSAIS", "SAIS");
 
     if (!PHYSFS_mount(prefDirCStr, "/", 0)) {
-        SDL_Log("Failed to mount write directory \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+        SYS_abort("Failed to mount write directory \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
     }
     if (!PHYSFS_setWriteDir(prefDirCStr)) {
-        SDL_Log("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+        SYS_abort("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
     }
     std::string resourcePath(PHYSFS_getBaseDir());
 #ifdef DEMO_VERSION
@@ -147,25 +145,23 @@ int main(int argc, char *argv[]) {
     resourcePath += "Contents/Resources/saisdata.zip";
 #endif
     if (!PHYSFS_mount(resourcePath.c_str(), "/", 1)) {
-        SDL_Log("Failed to mount data archive \"%s\": %s", resourcePath.c_str(), PHYSFS_getLastError());
+        SYS_abort("Failed to mount data archive \"%s\": %s", resourcePath.c_str(), PHYSFS_getLastError());
     }
 #else
     if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 0)) {
-        SDL_Log("PhysFS failed to set default env: %s", PHYSFS_getLastError());
-        return 1;
+        SYS_abort("PhysFS failed to set default env: %s", PHYSFS_getLastError());
     }
 #endif
 
     load_globalsettings();
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_EVENTS) < 0) {
-        SDL_Log("Failed to initialise SDL: %s", SDL_GetError());
-        return 1;
+        SYS_abort("Failed to initialise SDL: %s", SDL_GetError());
     }
 
     // init SDL mixer
     if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) < 0) {
-        return 1;
+        SYS_abort("Failed to open audio device: %s", Mix_GetError());
     }
     Mix_AllocateChannels(16);
     sound_init();
@@ -182,8 +178,7 @@ int main(int argc, char *argv[]) {
                                640, 480,
                                sdlFlags);
     if (sdlWind == nullptr) {
-        SDL_Log("Failed to create SDL Window: %s", SDL_GetError());
-        return 1;
+        SYS_abort("Failed to create SDL Window: %s", SDL_GetError());
     }
     SDL_SetWindowMinimumSize(sdlWind, 640, 480);
 
@@ -191,19 +186,20 @@ int main(int argc, char *argv[]) {
     // create the SDL Renderer we use to stream from the intermed blitting surface to the window.
     sdlRend = SDL_CreateRenderer(sdlWind, -1, SDL_RENDERER_ACCELERATED);
     if (sdlRend == nullptr) {
-        SDL_Log("Failed to create SDL Renderer: %s", SDL_GetError());
-        return 1;
+        SYS_abort("Failed to create SDL Renderer: %s", SDL_GetError());
     }
 
     // create the i8 surface
     sdlsurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 8, SDL_PIXELFORMAT_INDEX8);
     if (sdlsurf == nullptr) {
-        SDL_Log("Failed to create INDEX8 Surface: %s", SDL_GetError());
-        return 1;
+        SYS_abort("Failed to create INDEX8 Surface: %s", SDL_GetError());
     }
 
     // create the intermediate blitting surface (needed for fullscreen support)
     blitIntermedSurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 32, SDL_PIXELFORMAT_RGBA8888);
+    if (blitIntermedSurf == nullptr) {
+        SYS_abort("Failed to create intermediate target surface: %s", SDL_GetError());
+    }
 
     // make sure our video state matches what we think it should be.  This also
     // creates the SDL_Texture we use to do the screen copy.

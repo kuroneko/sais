@@ -65,10 +65,28 @@ set(SAIS_SRC
     src/startgame.cpp
     src/textstr.cpp
     src/w32_gfx.cpp
-    src/w32_sound.cpp src/safe_cstr.cpp src/safe_cstr.h)
+    src/w32_sound.cpp
+    src/safe_cstr.cpp
+    src/safe_cstr.h
+    src/port.h)
+
+### OS specific sources
+if(CMAKE_SYSTEM_NAME MATCHES Windows)
+    set(SAIS_SYS_SRCS
+        src/win32/abort.cpp
+    )
+elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
+    set(SAIS_SYS_SRCS
+        src/portable/abort.cpp
+    )
+else()
+    set(SAIS_SYS_SRCS
+        src/portable/abort.cpp
+    )
+endif()
 
 if(BUILD_DEMO)
-    add_executable(strangedemo WIN32 MACOSX_BUNDLE ${SAIS_SRC})
+    add_executable(strangedemo WIN32 MACOSX_BUNDLE ${SAIS_SRC} ${SAIS_SYS_SRCS})
     target_link_directories(strangedemo PRIVATE ${SAIS_LIB_DIRS})
     target_link_libraries(strangedemo
         PRIVATE
@@ -81,7 +99,7 @@ if(BUILD_DEMO)
 
     add_subdirectory(demo-data)
 else()
-    add_executable(strange WIN32 MACOSX_BUNDLE ${SAIS_SRC})
+    add_executable(strange WIN32 MACOSX_BUNDLE ${SAIS_SRC} ${SAIS_SYS_SRCS})
     target_link_directories(strange PRIVATE ${SAIS_LIB_DIRS})
     target_link_libraries(strange
         PRIVATE
@@ -108,7 +126,8 @@ if(MSVC)
             MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     else()
         target_sources(strange PRIVATE
-            src/Script1.rc)
+            src/Script1.rc
+            src/win32/abort.cpp)
         set_property(TARGET strange PROPERTY
             MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     endif()
