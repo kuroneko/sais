@@ -39,7 +39,7 @@ pipeline {
                             sh '''
                             export PATH=/usr/local/bin:$PATH
             			    export MACOS_DEPLOYMENT_TARGET=10.11
-                            conan install ../saisgpl --build --update --profile=default
+                            conan install ../saisgpl --build --update --profile=default -s os.version=10.11
                             '''
                         }
                         cmakeBuild buildDir: 'saisgpl.m64',
