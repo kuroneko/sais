@@ -18,7 +18,7 @@ option(USE_CONAN "Use conan for dependencies" OFF)
 # is not the default, ever.
 option(BUILD_DEMO "Build the Demo Version of SAIS" OFF)
 
-# This relates to SAIS's original interna logging, not the GPL version's SDL Logging which is always on.
+# This relates to SAIS's original internal logging, not the GPL version's SDL Logging which is always on.
 option(USE_LOG "Enable game logging" OFF)
 
 if(USE_CONAN)
@@ -66,21 +66,23 @@ set(SAIS_SRC
     src/textstr.cpp
     src/w32_gfx.cpp
     src/w32_sound.cpp
-    src/safe_cstr.cpp
     src/safe_cstr.h
     src/port.h)
 
 ### OS specific sources
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
     set(SAIS_SYS_SRCS
+        src/portable/safe_cstr.cpp
         src/win32/abort.cpp
     )
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
     set(SAIS_SYS_SRCS
+        src/portable/safe_cstr.cpp
         src/portable/abort.cpp
     )
 else()
     set(SAIS_SYS_SRCS
+        src/portable/safe_cstr.cpp
         src/portable/abort.cpp
     )
 endif()
