@@ -4,29 +4,30 @@
 
 (herein "SAIS GPL" since "Strange Adventures in Infinite Space" is a mouthful)
 
-This is an unofficial port and update of SAIS GPL to modern systems.
+This port is the basis for the binaries now released by Digital Eel at the new SAIS webpage, 
+https://rich.itch.io/strangeadventures - any release hosted here on Github (and not on itch),
+however, is not official and should be treated as such.
 
-The official website and last official release are available at 
-http://digital-eel.com/sais/.
+The legacy website and last legacy release are available at http://digital-eel.com/sais/.
 
-More about the Infinite Space games can be found and their official website, 
+More about the Infinite Space games can be found at their official website, 
 http://www.infinitespacegames.com/.
 
 If you like SAIS GPL, please consider supporting Digital Eel by buying one 
-(or more!) of their newer games as this release would not have been possible
-without their generosity.
+(or more!) of their newer games (or donating at the itch.io page) as this release would
+not have been possible without their generosity.
 
 If you don't like SAIS GPL, it's possibly my fault and you should leave 
-Digital Eel alone - this version of SAIS is unofficial - they have not had any
-input in it, and they have no responsibility for any problems it may have.
+Digital Eel alone - they have no real responsibility for any (new) problems it may have.
 
-Likewise, there are no warranties explicit or implied for this software
-(per the License).
+Likewise, there are no warranties, explicit or implied for this software
+(per the License).  
 
 ## New in 1.6.2
 
 * Fixed a build issue for the "official" releases that produced a macOS binary that
-  depended on 10.15.  It now works on macOS 10.11.
+  depended on 10.15.  The new build has been tested on macOS 10.11 successfully, and
+  should work on everything inbetween too.
   
 * On Windows systems, if we have to abort because something went wrong with SDL, we
   now display a helpful messagebox with the error message we got from SDL.  This is
@@ -34,7 +35,7 @@ Likewise, there are no warranties explicit or implied for this software
 
 ## New in 1.6.1
 
-* HighDPI display support for Retina display macs (and hopefully all others).
+* HighDPI display support for Retina display macs (and hopefully all other platforms).
 
 * Now correctly uses linear filtering when rescaling the window if available - this
   produces a much smoother easy on the eyes appearance than the nearest rescale
