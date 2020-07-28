@@ -1,4 +1,4 @@
-# Strange Adventures in Infinte Space (GPL) 1.6.1
+# Strange Adventures in Infinte Space (GPL) 1.6.2
 
 ![Screenshot on Raspian (ARM Linux)](screenshot.png)
 
@@ -23,7 +23,16 @@ input in it, and they have no responsibility for any problems it may have.
 Likewise, there are no warranties explicit or implied for this software
 (per the License).
 
-## Changes over 1.6.0
+## New in 1.6.2
+
+* Fixed a build issue for the "official" releases that produced a macOS binary that
+  depended on 10.15.  It now works on macOS 10.11.
+  
+* On Windows systems, if we have to abort because something went wrong with SDL, we
+  now display a helpful messagebox with the error message we got from SDL.  This is
+  significantly more useful than what was happening before.
+
+## New in 1.6.1
 
 * HighDPI display support for Retina display macs (and hopefully all others).
 
@@ -35,7 +44,7 @@ Likewise, there are no warranties explicit or implied for this software
   * Pixel Perfect will turn the filtering off to give you that crisp pixel perfect
     look if that's what you want.
 
-## Changes over the Original 1.5 Release
+## New in 1.6.0
 
 SAIS GPL has few internal behavioural changes (mostly around mod handling), but
 should play exactly the same as the 1.5 release.
