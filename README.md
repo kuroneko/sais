@@ -29,9 +29,11 @@ Likewise, there are no warranties, explicit or implied for this software
   depended on 10.15.  The new build has been tested on macOS 10.11 successfully, and
   should work on everything inbetween too.
   
-* On Windows systems, if we have to abort because something went wrong with SDL, we
-  now display a helpful messagebox with the error message we got from SDL.  This is
-  significantly more useful than what was happening before.
+* If we have to abort because something went wrong with SDL, we now display a helpful
+  messagebox with the error message we got from SDL (if we can!).  This is significantly
+  more useful than what was happening before.
+  
+* Fixed the input mapping for text input to now handle case correctly.
 
 ## New in 1.6.1
 

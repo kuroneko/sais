@@ -97,6 +97,25 @@ static void iface_update_mouse_position(int raw_x, int raw_y) {
     ik_mouse_y = std::max(std::min(adjusted_y, 479), 0);
 }
 
+static void
+input_update_keychar_from_sym(SDL_Keysym &ksym)
+{
+    if ((ksym.sym & SDLK_SCANCODE_MASK) != 0) {
+        // keysym given is an extended key, so we can't easily asciimap it.
+        return;
+    }
+    if (ksym.sym >= SDLK_a && ksym.sym <= SDLK_z) {
+        if ((ksym.mod & KMOD_SHIFT) != 0) {
+            ik_inchar = ksym.sym - 'a' + 'A';
+        } else {
+            ik_inchar = ksym.sym;
+        }
+    } else {
+        ik_inchar = ksym.sym;
+    }
+
+}
+
 void eventhandler()
 {
 	SDL_Event event;
@@ -123,8 +142,8 @@ void eventhandler()
 					must_quit=1;
 					break;
 			}
-
-			ik_inchar = event.key.keysym.sym & 0xff;
+            // not explicitly caught above - update the keychar for ik_inkey.
+            input_update_keychar_from_sym(event.key.keysym);
 			break;
 
 			case SDL_MOUSEBUTTONDOWN:

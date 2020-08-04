@@ -73,7 +73,7 @@ set(SAIS_SRC
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
     set(SAIS_SYS_SRCS
         src/portable/safe_cstr.cpp
-        src/win32/abort.cpp
+        src/portable/abort.cpp
     )
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
     set(SAIS_SYS_SRCS
