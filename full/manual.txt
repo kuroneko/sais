@@ -568,9 +568,12 @@ user-specific folder.
 On macOS, this folder is also the only location in which you can install
 mods because of how the macOS security features work in recent versions.
 
-On Windows, this folder can be found at %APPDATA%\FreeSAIS\SAIS
+On Windows, this folder can be found at %APPDATA%\FreeSAIS\SAIS  (If you
+type that into explorer, Windows will expand that out to the right user
+folder)
 
 On MacOS, this folder can be found at ~/Library/Application Support/SAIS
+(You can use the Go To Folder menu item in Finder with the path above).
 
 On Linux, this folder can be fund at ~/.local/share/SAIS
 
