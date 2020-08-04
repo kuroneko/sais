@@ -1,31 +1,50 @@
 
 ------------------------------------
 Strange Adventures in Infinite Space
-              v1.5
+              v1.6
            User Manual
 ------------------------------------
 
 Created by Digital Eel - http://www.digital-eel.com/
-Distributed by Cheapass Games - http://www.cheapass.com/
 
 Official Website: http://www.digital-eel.com/sais/
 
 Read mods.txt for information on modifications
 
-Minimum System Requirements:
-
-Pentium II 350MHz (600MHz or better recommended)
-32M RAM (64M or more recommended)
-Windows 95/98 or ME
-DirectX 6
-DirectX compatible video card capable of 640x480 resolution
-DirectX compatible sound card
-16M of free hard drive space
+Last Updated - August 2020.
 
 ------------------------------------
-    Changes In SAIS 1.5 Patch
+          Changes In SAIS
 ------------------------------------
+(New in 1.6.2)
+ - Fixed a bug preventing mixed case text input.
 
+(New in 1.6.1)
+ - HighDPI display support for Retina display macs (and hopefully
+   all other platforms).
+
+ - Now correctly uses linear filtering when rescaling the window
+   if available - this produces a much smoother easy on the eyes
+   appearance than the nearest rescale used previously. This looks
+   a LOT better to me on highDPI and high resolution displays.
+
+   - Pixel Perfect will turn the filtering off to give you that crisp
+     pixel perfect look if that's what you want.
+
+(New in 1.6.0)
+ - SAIS GPL has few internal behavioural changes (mostly around mod
+   handling), but should play exactly the same as the 1.5 release.
+
+ - Make use of writable local directories for scores and config (and
+   screenshots).
+
+ - Support rescaling to native resolution full-screen including pixel
+   perfect scaling.
+
+ - Allow the main window to be resized on the fly. Doesn't redraw
+   whilst you're resizing (yet), but it will once the resize is complete.
+
+(New in 1.5)
 - Fixed starmap movement varying based on processor speed.
 
 (Changes In SAIS 1.4 Patch)
@@ -535,8 +554,25 @@ to read.
 
 Strange Adventures in Infinite Space allows you to take 
 screenshots at any time by pressing F12. The images will be
-saved in the game folder in targa (.tga) format, with names
-like "shot0001.tga".
+saved in your save data folder (see below) in targa (.tga)
+format, with names like "shot0001.tga".
+
+------------------------------------
+    Save Data Folder Locations
+------------------------------------
+
+As part of the changes in 1.6, SAIS now saves all savesates,
+screenshots, and other data written by the game into a
+user-specific folder.
+
+On macOS, this folder is also the only location in which you can install
+mods because of how the macOS security features work in recent versions.
+
+On Windows, this folder can be found at %APPDATA%\FreeSAIS\SAIS
+
+On MacOS, this folder can be found at ~/Library/Application Support/SAIS
+
+On Linux, this folder can be fund at ~/.local/share/SAIS
 
 ------------------------------------
              Credits
