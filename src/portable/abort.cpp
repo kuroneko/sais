@@ -29,7 +29,7 @@ SYS_abort(const char *format, ...) {
     std::va_list        va;
 
     va_start(va, format);
-    vsprintf_s(messageOut, sizeof(messageOut), format, va);
+    safe_vsnprintf(messageOut, sizeof(messageOut), format, va);
     va_end(va);
 
     if (0 != SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Strange Adventures in Infinite Space!", messageOut, nullptr)) {
