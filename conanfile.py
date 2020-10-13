@@ -8,7 +8,7 @@ class SaisConan(ConanFile):
     requires = [
         'sdl2/2.0.12@bincrafters/stable',
         'sdl2_mixer/2.0.4@bincrafters/stable',
-        'physfs/3.0.1@bincrafters/stable',
+        'physfs/3.0.2@xsquawkbox/testing',
     ]
     default_options = {
         "*:shared": False,
