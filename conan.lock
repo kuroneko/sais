@@ -1,0 +1,46 @@
+{
+ "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Release\ncompiler=Visual Studio\ncompiler.runtime=MD\ncompiler.version=16\nos=Windows\nos_build=Windows\n[options]\n[build_requires]\n[env]\n",
+ "graph_lock": {
+  "nodes": {
+   "0": {
+    "pref": "sais/None:00df68c2abfcd209e8e65ebc709d840abe2ffba6",
+    "options": "ogg:shared=False\nphysfs:shared=False\nsdl2:directx=True\nsdl2:iconv=False\nsdl2:opengl=True\nsdl2:opengles=True\nsdl2:sdl2main=True\nsdl2:shared=False\nsdl2_mixer:cmd=False\nsdl2_mixer:flac=False\nsdl2_mixer:fluidsynth=False\nsdl2_mixer:mad=False\nsdl2_mixer:mikmod=False\nsdl2_mixer:modplug=False\nsdl2_mixer:mpg123=False\nsdl2_mixer:nativemidi=True\nsdl2_mixer:ogg=True\nsdl2_mixer:opus=False\nsdl2_mixer:shared=False\nsdl2_mixer:wav=True\nvorbis:shared=False",
+    "requires": [
+     "1",
+     "2",
+     "5"
+    ],
+    "path": "D:\\Projects\\sais_source20051111\\conanfile.py"
+   },
+   "1": {
+    "pref": "sdl2/2.0.12@bincrafters/stable#0:fde4abc671a49ddbe46aded4ea793d2156d9ea16",
+    "options": "directx=True\niconv=False\nopengl=True\nopengles=True\nsdl2main=True\nshared=False"
+   },
+   "2": {
+    "pref": "sdl2_mixer/2.0.4@bincrafters/stable#0:4a8b018499021da63abe86b0a0206849195732e4",
+    "options": "cmd=False\nflac=False\nfluidsynth=False\nmad=False\nmikmod=False\nmodplug=False\nmpg123=False\nnativemidi=True\nogg=True\nopus=False\nshared=False\nwav=True\nogg:shared=False\nsdl2:directx=True\nsdl2:iconv=False\nsdl2:opengl=True\nsdl2:opengles=True\nsdl2:sdl2main=True\nsdl2:shared=False\nvorbis:shared=False",
+    "requires": [
+     "1",
+     "3",
+     "4"
+    ]
+   },
+   "3": {
+    "pref": "ogg/1.3.4#0:3fb49604f9c2f729b85ba3115852006824e72cab#0",
+    "options": "shared=False"
+   },
+   "4": {
+    "pref": "vorbis/1.3.6#0:becff00909fb3d957c6b4ca60fa64d4e6a32a540#0",
+    "options": "shared=False\nogg:shared=False",
+    "requires": [
+     "3"
+    ]
+   },
+   "5": {
+    "pref": "physfs/3.0.2@xsquawkbox/testing#276580ebe42819891c4c816372f50228:3fb49604f9c2f729b85ba3115852006824e72cab#f06893feefd51beebba6c9876d61fb58",
+    "options": "shared=False"
+   }
+  }
+ },
+ "version": "0.3"
+}
