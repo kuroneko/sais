@@ -35,6 +35,7 @@ pipeline {
                     }
                     steps {
                         sh '''
+                        export PATH=/usr/local/bin:$PATH
                         conan config install "${WORKSPACE}/saisgpl/conan"
                         '''
                         dir('saisgpl.m64') {
