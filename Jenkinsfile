@@ -106,7 +106,7 @@ pipeline {
                     }
                     steps {
                         bat '''
-                            conan config install %WORKSPACE%\\xsb\\conan
+                            conan config install %WORKSPACE%\\saisgpl\\conan
                         '''
                         dir('saisgpl.w64') {
                             deleteDir()
