@@ -34,6 +34,9 @@ pipeline {
                         label 'macos'
                     }
                     steps {
+                        sh '''
+                        conan config install "${WORKSPACE}/saisgpl/conan"
+                        '''
                         dir('saisgpl.m64') {
                             deleteDir()
                             sh '''
@@ -101,6 +104,9 @@ pipeline {
                         label 'windows'
                     }
                     steps {
+                        bat '''
+                            conan config install %WORKSPACE%\\xsb\\conan
+                        '''
                         dir('saisgpl.w64') {
                             deleteDir()
                             bat '''
