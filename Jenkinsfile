@@ -43,7 +43,7 @@ pipeline {
                             sh '''
                             export PATH=/usr/local/bin:$PATH
             			    export MACOS_DEPLOYMENT_TARGET=10.11
-                            conan install ../saisgpl --build --update --profile=default -s os.version=10.11
+                            conan install ../saisgpl --build --update --profile=release-m64
                             '''
                         }
                         cmakeBuild buildDir: 'saisgpl.m64',
@@ -111,7 +111,7 @@ pipeline {
                         dir('saisgpl.w64') {
                             deleteDir()
                             bat '''
-                            conan install ..\\saisgpl --build=outdated --build=cascade --update --profile=default -s compiler.runtime=MT
+                            conan install ..\\saisgpl --build=outdated --build=cascade --update --profile=release-w64
                             '''
                         }
                         cmakeBuild generator: 'Visual Studio 16 2019',
