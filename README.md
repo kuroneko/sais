@@ -1,4 +1,4 @@
-# Strange Adventures in Infinte Space (GPL) 1.6.2
+# Strange Adventures in Infinte Space (GPL) 1.6.3
 
 ![Screenshot on Raspian (ARM Linux)](screenshot.png)
 
@@ -21,7 +21,12 @@ If you don't like SAIS GPL, it's possibly my fault and you should leave
 Digital Eel alone - they have no real responsibility for any (new) problems it may have.
 
 Likewise, there are no warranties, explicit or implied for this software
-(per the License).  
+(per the License).
+
+## New in 1.6.3
+
+* Updated physfs to 3.0.2 - this should fix the "PhyFS failed to initialise: (null)" error
+  some users get.
 
 ## New in 1.6.2
 

@@ -11,11 +11,15 @@ Official Website: http://www.digital-eel.com/sais/
 
 Read mods.txt for information on modifications
 
-Last Updated - August 2020.
+Last Updated - October 2020.
 
 ------------------------------------
           Changes In SAIS
 ------------------------------------
+(New in 1.6.3)
+ - Updated physfs to 3.0.2 - this should fix the "PhyFS failed to
+   initialise: (null)" error some users get.
+
 (New in 1.6.2)
  - Fixed a bug preventing mixed case text input.
 
