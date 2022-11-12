@@ -219,7 +219,7 @@ void starmap_deinit()
 /*
 void waitsecs(int w, int l)
 {
-	Play_Sound(w, 15, 1);
+	Play_Sound3(w, 15, 1);
 	start_ik_timer(3, 1000);
 	while (!must_quit && get_ik_timer(3)<l)
 		ik_eventhandler();
@@ -1358,7 +1358,7 @@ void starmap_createfleets(int32 num) // create enemy fleets
 			else if (kaw)
 			{
 				sm_fleets[c].race = kaw;
-				Play_SoundFX(WAV_DOT);
+				Play_SoundFX1(WAV_DOT);
 			}
 #endif
 			else

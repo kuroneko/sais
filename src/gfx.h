@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef SAIS_GFX_H
+#define SAIS_GFX_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //#define MOVIE
 
 // ******** GRAPHICS *********
@@ -80,7 +87,8 @@ void ik_setclip(int32 left, int32 top, int32 right, int32 bottom);
 void ik_putpixel(t_ik_image *img, int32 x, int32 y, uint32 c);
 int32 ik_getpixel(t_ik_image *img, int32 x, int32 y);
 uint8 *ik_image_pointer(t_ik_image *img, int32 x, int32 y);
-void ik_drawline(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int32 c1, int32 c2=0, uint8 mask=255, uint8 fx=0);
+// void ik_drawline(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int32 c1, int32 c2=0, uint8 mask=255, uint8 fx=0);
+void ik_drawline(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int32 c1, int32 c2, uint8 mask, uint8 fx);
 void ik_drawbox(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int32 c);
 void ik_copybox(t_ik_image *src, t_ik_image *dst, int32 xb, int32 yb, int32 xe, int32 ye, int32 xd, int32 yd);
 void ik_drawmeter(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int32 typ, int32 val, int32 c, int32 c2);
@@ -125,7 +133,8 @@ void ik_del_font(t_ik_font *fnt);
 void ik_print(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, const char *ln, ...);
 void ik_printbig(t_ik_image *img, t_ik_font *fnt, int32 x, int32 y, uint8 co, const char *ln, ...);
 //void ik_text_input(int x, int y, int l, t_ik_font *fnt, char *tx);
-void ik_text_input(int x, int y, int l, t_ik_font *fnt, const char *pmt, char *tx, int bg= 0, int co= 0);
+// void ik_text_input(int x, int y, int l, t_ik_font *fnt, const char *pmt, char *tx, int bg= 0, int co= 0);
+void ik_text_input(int x, int y, int l, t_ik_font *fnt, const char *pmt, char *tx, int bg, int co);
 void ik_hiscore_input(int x, int y, int l, t_ik_font *fnt, char *tx);
 
 // ------------------------
@@ -147,7 +156,13 @@ void							save_sprites(const char *fname, t_ik_spritepak *pak);
 
 
 // sprite drawing
-void ik_dsprite(t_ik_image *img, int32 x, int32 y, t_ik_sprite *spr, int32 flags=0);
-void ik_drsprite(t_ik_image *img, int32 x, int32 y, int32 r, int32 s, t_ik_sprite *spr, int32 flags=0);
+void ik_dsprite(t_ik_image *img, int32 x, int32 y, t_ik_sprite *spr, int32 flags);
+void ik_drsprite(t_ik_image *img, int32 x, int32 y, int32 r, int32 s, t_ik_sprite *spr, int32 flags);
 void ik_dspriteline(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int32 s, 
-										int32 offset, int32 ybits, t_ik_sprite *spr, int32 flags=0);
+										int32 offset, int32 ybits, t_ik_sprite *spr, int32 flags);
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_GFX_H */

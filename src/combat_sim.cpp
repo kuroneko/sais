@@ -245,16 +245,16 @@ int32 cs_setupbattle()
 			if (my > h-24 && my < h-8) // buttons
 			{
 				if (mx > 16 && mx < 64) // cancel
-				{	end = 1; Play_SoundFX(WAV_DOT); }
+				{	end = 1; Play_SoundFX1(WAV_DOT); }
 				else if (mx > 176 && mx < 224) // ok
 					if (sm_fleets[f].num_ships > 0)
-					{	end = 2; Play_SoundFX(WAV_DOT); }
+					{	end = 2; Play_SoundFX1(WAV_DOT); }
 			}
 			if (my > CS_SHIP+12 && my < CS_SHIP+44)
 			{
 				pship = MIN(2,(mx - 12)/72);
 				player.ships[0] = pship+1;
-				Play_SoundFX(WAV_DOT);
+				Play_SoundFX1(WAV_DOT);
 			}
 			if (my > CS_WING+11 && my < CS_WING+30 && mx > 15 && mx < 15+nwm*21 && player.num_ships < 3)
 			{
@@ -263,14 +263,14 @@ int32 cs_setupbattle()
 					player.ships[player.num_ships++] = c;
 				else if (player.ships[1] != c)
 					player.ships[player.num_ships++] = c;
-				Play_SoundFX(WAV_DOT);
+				Play_SoundFX1(WAV_DOT);
 			}
 			if (my > CS_WING+36 && my < CS_WING+100 && mx > 48 && mx < 48+(player.num_ships-1)*72)
 			{
 				if (mx < 120)
 					player.ships[1] = player.ships[2];
 				player.num_ships--;
-				Play_SoundFX(WAV_DOT);
+				Play_SoundFX1(WAV_DOT);
 			}
 			if (my > CS_FLEET+7 && my < CS_FLEET+26)
 			{
@@ -278,12 +278,12 @@ int32 cs_setupbattle()
 				{
 					c = racefleets[races[race].fleet].stype[(mx-14)/20];
 					cs_insertship((mx-14)/20);
-					Play_SoundFX(WAV_DOT);
+					Play_SoundFX1(WAV_DOT);
 				}
 				if (mx > 77 && mx < 222)
 				{
 					if ((mx - 78)/12 < sm_fleets[f].num_ships)
-					{	cs_delship((mx-78)/12); Play_SoundFX(WAV_DOT); }
+					{	cs_delship((mx-78)/12); Play_SoundFX1(WAV_DOT); }
 				}
 
 			}

@@ -463,7 +463,7 @@ void ik_dspriteline(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int
     uint8 *p1;
 
     if (s <= 2) {
-        ik_drawline(img, xb, yb, xe, ye, spr->co);
+        ik_drawline(img, xb, yb, xe, ye, spr->co, 0, 255, 0);
         return;
     }
 

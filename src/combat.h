@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef SAIS_COMBAT_H
+#define SAIS_COMBAT_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //#define DEBUG_COMBAT
 
 //#define COMBAT_BUILD_HELP
@@ -445,7 +452,7 @@ void select_ship(int32 s, int32 t);
 void combat_updateshipstats(int32 s, int32 t);
 void combat_findstuff2do(int32 s, int32 t);
 void combat_help_screen();
-void combat_SoundFX(int id, int srcx = camera.x, int volume = -1, int rate = -1);
+void combat_SoundFX(int id, int srcx /* = camera.x */, int volume /* = -1 */, int rate /* = -1 */);
 
 // combat_sim.cpp
 
@@ -461,10 +468,17 @@ void combat_display(int32 t);
 
 int32 combat_findtarget(t_ship *ship, int32 hdp);
 void combat_fire(t_ship *src, int32 hdp, t_ship *trg, int32 start);
-int32 combat_addbeam(t_shipweapon *wep, t_ship *src, int32 hdp, t_ship *trg, int32 start, int32 stg = -1);
+int32 combat_addbeam(t_shipweapon *wep, t_ship *src, int32 hdp, t_ship *trg, int32 start, int32 stg /* = -1 */);
 int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start);
 void combat_launchstages(int32 p, int32 num, int32 start);
-int32 combat_addexplo(int32 x, int32 y, t_ik_spritepak *spr, int32 spin, int32 size, int32 zoom, int32 start, int32 end, int32 anim=-1, int32 cam=1);
-void combat_damageship(int32 s, int32 src, int32 dmg, int32 t, t_shipweapon *wep, int32 deb=0);
+int32 combat_addexplo(int32 x, int32 y, t_ik_spritepak *spr, int32 spin, int32 size, int32 zoom, int32 start, int32 end, int32 anim /* =-1 */, int32 cam /* =1 */);
+void combat_damageship(int32 s, int32 src, int32 dmg, int32 t, t_shipweapon *wep, int32 deb /* =0 */);
 void combat_gethardpoint(t_ship *ship, int32 hdp, int32 *rx, int32 *ry);
-void combat_killship(int32 s, int32 t, int32 quiet=0);
+void combat_killship(int32 s, int32 t, int32 quiet /* =0 */);
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_COMBAT_H */
+

@@ -100,7 +100,7 @@ void starmap()
 
 	ik_inkey();
 	start_ik_timer(0, 1000/STARMAP_FRAMERATE); t0 = t = 0; upd=1;
-	Play_Sound(WAV_BRIDGE, 15, 1, 50);
+	Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 
 	starmap_tutorialtype = tut_starmap;
 
@@ -116,10 +116,10 @@ void starmap()
 		if (must_quit)
 		{
 			must_quit = 0;
-			Play_SoundFX(WAV_DESELECT);
+			Play_SoundFX1(WAV_DESELECT);
 			if (!interface_popup(font_6x8, 240, 200, 160, 72, STARMAP_INTERFACE_COLOR, 0, 
 					textstring[STR_QUIT_TITLE], textstring[STR_QUIT_CONFIRM], 
-					textstring[STR_YES], textstring[STR_NO]))
+					textstring[STR_YES], textstring[STR_NO], NULL))
 			{	must_quit = 1; player.death = 666; }
 		}
 
@@ -142,12 +142,12 @@ void starmap()
 				{
 					if (mx > SM_MAP_X+394 && mx < SM_MAP_X+406)
 					{	
-						Play_SoundFX(WAV_WAIT);
+						Play_SoundFX1(WAV_WAIT);
 						starmap_advancedays(1);
 					}
 					else if (mx > SM_MAP_X+412 && mx < SM_MAP_X+430)
 					{
-						Play_SoundFX(WAV_WAIT);
+						Play_SoundFX1(WAV_WAIT);
 						s = 0;
 						for (d = 0; d < 12; d++)
 							if (player.stardate%365 >= months[d].sd)
@@ -156,7 +156,7 @@ void starmap()
 					}
 					else if (mx > SM_MAP_X+436 && mx < SM_MAP_X+460)
 					{
-						Play_SoundFX(WAV_WAIT);
+						Play_SoundFX1(WAV_WAIT);
 						starmap_advancedays(365);
 					}
 				}
@@ -168,7 +168,7 @@ void starmap()
 						d = 1;
 						while (s--)
 							d*=10;
-						Play_SoundFX(WAV_WAIT);
+						Play_SoundFX1(WAV_WAIT);
 						starmap_advancedays(d);
 					}
 				}
@@ -216,7 +216,7 @@ void starmap()
 							{
 								Stop_Sound(15);
 								probe_exploreplanet(1);
-								Play_Sound(WAV_BRIDGE, 15, 1, 50);
+								Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 							}
 							mx2 = 1;
 						}
@@ -231,10 +231,10 @@ void starmap()
 							if (ecards[c].type == card_ally) 
 							{
 								mx2 = 1;
-								Play_Sound(WAV_ALLY, 15, 1);
+								Play_Sound3(WAV_ALLY, 15, 1);
 								sprintf(texty, textstring[STR_MERC_DEAL], hulls[shiptypes[ecards[c].parm].hull].name, shiptypes[ecards[c].parm].name);
 								if (!interface_popup(font_6x8, 224, 192, 192, 96, STARMAP_INTERFACE_COLOR, 0, 
-																		textstring[STR_MERC_TITLE], texty, textstring[STR_YES], textstring[STR_NO]))
+																		textstring[STR_MERC_TITLE], texty, textstring[STR_YES], textstring[STR_NO], NULL))
 								{
 									Stop_Sound(15);
 									player.ships[player.num_ships] = ecards[c].parm;
@@ -251,7 +251,7 @@ void starmap()
 													hulls[shiptypes[player.ships[player.num_ships-1]].hull].name,
 													shiptypes[player.ships[player.num_ships-1]].name,
 													hisher);
-									if (pay_item(textstring[STR_MERC_BILLING], texty, shiptypes[ecards[c].parm].race) == -1)
+									if (pay_item(textstring[STR_MERC_BILLING], texty, shiptypes[ecards[c].parm].race, 0) == -1)
 									{
 										starmap_removeship(player.num_ships-1);
 										starmap_tutorialtype = tut_starmap;
@@ -260,20 +260,20 @@ void starmap()
 										sm_stars[player.target].card = 0;
 									player.sel_ship = 0;
 								}
-								Play_Sound(WAV_BRIDGE, 15, 1, 50);
+								Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 							}
 #ifndef DEMO_VERSION
 							else if	(ecards[c].type == card_lifeform)
 							{
 								mx2 = 1;
-								Play_SoundFX(WAV_LIFEFORM);
+								Play_SoundFX1(WAV_LIFEFORM);
 								s = ecards[c].parm;
 								if (s > -1 && itemtypes[s].flag && lifeform_hard)
 								{
 									my2 = itemtypes[s].cost/10 + (player.target*7)%(itemtypes[s].cost/10);
 									starmap_additem(s, 0);
 									sprintf(texty, textstring[STR_LIFEFORM_HUNT], itemtypes[s].name, my2);
-									if (!interface_popup(font_6x8, 224, 192, 192, 0, STARMAP_INTERFACE_COLOR, 0, textstring[STR_LIFEFORM_HUNTT], texty, textstring[STR_YES], textstring[STR_NO]))
+									if (!interface_popup(font_6x8, 224, 192, 192, 0, STARMAP_INTERFACE_COLOR, 0, textstring[STR_LIFEFORM_HUNTT], texty, textstring[STR_YES], textstring[STR_NO], NULL))
 									{
 										starmap_advancedays(my2);
 										sm_stars[player.system].card = 0;
@@ -282,7 +282,7 @@ void starmap()
 										starmap_removeitem(player.num_items-1);
 									Stop_All_Sounds();
 								}
-								Play_Sound(WAV_BRIDGE, 15, 1, 50);
+								Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 							}
 #endif
 						}
@@ -298,10 +298,10 @@ void starmap()
 						{
 							player.distance = starmap_stardist(player.system, player.target);
 							player.nebula = starmap_nebuladist(player.system, player.target);
-							Play_SoundFX(WAV_SELECTSTAR);
+							Play_SoundFX1(WAV_SELECTSTAR);
 						}
 						else
-							Play_SoundFX(WAV_DESELECT);
+							Play_SoundFX1(WAV_DESELECT);
 					}
 				}
 			}
@@ -318,7 +318,7 @@ void starmap()
 						{
 							d = (mx-16-SM_SHIP_X)/16;
 							if (d < player.num_ships)
-							{	player.sel_ship = d; player.sel_ship_time = t; Play_SoundFX(WAV_SELECTSHIP,t); }
+							{	player.sel_ship = d; player.sel_ship_time = t; Play_SoundFX2(WAV_SELECTSHIP,t); }
 						}
 						// repair hull
 						if (mx > SM_SHIP_X + 80 && mx < SM_SHIP_X + 144 && my > SM_SHIP_Y + 24 && my < SM_SHIP_Y + 40)
@@ -330,10 +330,10 @@ void starmap()
 									if (shipsystems[shiptypes[player.ships[player.sel_ship]].system[d]].type == sys_damage)
 										sp1 = 2;
 
-								Play_SoundFX(WAV_INSTALL, t);
+								Play_SoundFX2(WAV_INSTALL, t);
 								sprintf(texty, textstring[STR_INV_REPAIR_HULL], sp1);
 								sp2 = interface_popup(font_6x8, SM_SHIP_X + 32*(SM_SHIP_X==0) - 64*(SM_SHIP_X>0), SM_SHIP_Y+40, 192, 72, STARMAP_INTERFACE_COLOR, 0, 
-																		textstring[STR_INV_REPAIR_TITLE], texty, textstring[STR_YES], textstring[STR_NO]);
+																		textstring[STR_INV_REPAIR_TITLE], texty, textstring[STR_YES], textstring[STR_NO], NULL);
 								if (!sp2)
 								{
 									starmap_advancedays(sp1);
@@ -349,14 +349,14 @@ void starmap()
 								upd = shipsystems[shiptypes[player.ships[player.sel_ship]].system[(my2-168)/8]].item;
 								if (upd > -1)
 								{
-									Play_SoundFX(WAV_INFO);
+									Play_SoundFX1(WAV_INFO);
 									interface_popup(font_6x8, SM_SHIP_X + 32*(SM_SHIP_X==0) - 64*(SM_SHIP_X>0), SM_SHIP_Y+24, 192, 112, STARMAP_INTERFACE_COLOR, 0, 
-																	itemtypes[upd].name, itemtypes[upd].text, textstring[STR_OK]);
+																	itemtypes[upd].name, itemtypes[upd].text, textstring[STR_OK], NULL, NULL);
 									upd=1;
 								}
 								else
 								{
-									Play_SoundFX(WAV_DESELECT, t);
+									Play_SoundFX2(WAV_DESELECT, t);
 									upd = 1;
 								}
 							}
@@ -366,7 +366,7 @@ void starmap()
 								{
 									if (player.sel_ship == 0)
 									{
-										Play_SoundFX(WAV_INSTALL, t);					
+										Play_SoundFX2(WAV_INSTALL, t);
 										starmap_uninstallsystem( (my2-168)>>3, 0);
 									}
 								}
@@ -374,9 +374,9 @@ void starmap()
 								{
 									sp1 = (int32)(sqrt(itemtypes[shipsystems[shiptypes[player.ships[player.sel_ship]].system[(my-168)>>3]].item].cost)*.75);
 									sprintf(texty, textstring[STR_INV_REPAIR_SYS], itemtypes[shipsystems[shiptypes[player.ships[player.sel_ship]].system[(my-168)>>3]].item].name, sp1);
-									Play_SoundFX(WAV_INSTALL, t);
+									Play_SoundFX2(WAV_INSTALL, t);
 									sp2 = interface_popup(font_6x8, SM_SHIP_X + 32*(SM_SHIP_X==0) - 64*(SM_SHIP_X>0), SM_SHIP_Y+160, 192, 72, STARMAP_INTERFACE_COLOR, 0, 
-																	textstring[STR_INV_REPAIR_TITLE], texty, textstring[STR_YES], textstring[STR_NO]);
+																	textstring[STR_INV_REPAIR_TITLE], texty, textstring[STR_YES], textstring[STR_NO], NULL);
 									if (!sp2)
 									{
 										shiptypes[player.ships[player.sel_ship]].sysdmg[(my-168)>>3] = 0;
@@ -413,20 +413,20 @@ void starmap()
 									{
 										if (player.sel_ship == 0)	// your ship
 										{
-											Play_SoundFX(WAV_INSTALL, t);
+											Play_SoundFX2(WAV_INSTALL, t);
 											starmap_installitem(hud.invselect);
 											upd=1;
 										}
 										else
 										{
-											Play_SoundFX(WAV_DESELECT);
+											Play_SoundFX1(WAV_DESELECT);
 											if (ally_install(player.sel_ship, player.items[d], 0) > -1)
 												starmap_removeitem(d);
 										}
 									}
 									else if (itemtypes[player.items[d]].type == item_device)
 									{
-										Play_SoundFX(WAV_INFO);
+										Play_SoundFX1(WAV_INFO);
 										d = itemtypes[player.items[hud.invselect]].flag;
 										if (d & device_beacon)
 										{	// beacon
@@ -435,21 +435,21 @@ void starmap()
 												klakar_trade();
 											else
 											{
-												Play_SoundFX(WAV_INFO);
-												Play_Sound(WAV_MESSAGE, 15, 1);
+												Play_SoundFX1(WAV_INFO);
+												Play_Sound3(WAV_MESSAGE, 15, 1);
 												sprintf(texty, textstring[STR_KLAK_UNSAFE], sm_stars[player.system].starname);
 												interface_popup(font_6x8, SM_INV_X + 32*(SM_INV_X==0) - 64*(SM_INV_X>0), SM_INV_Y+24, 192, 112, STARMAP_INTERFACE_COLOR, 0, 
-																		textstring[STR_KLAK_UNAVAIL], texty, textstring[STR_OK]);
+																		textstring[STR_KLAK_UNAVAIL], texty, textstring[STR_OK], NULL, NULL);
 												upd=1;
 											}
-											Play_Sound(WAV_BRIDGE, 15, 1, 50);
+											Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 										}
 										else if (d & device_probe)
 										{
 											Stop_Sound(15);
 											if (stellar_probe(itemtypes[player.items[hud.invselect]].name))
 												starmap_removeitem(hud.invselect);
-											Play_Sound(WAV_BRIDGE, 15, 1, 50);
+											Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 										}
 #ifndef DEMO_VERSION
 										else if (d & device_collapser)
@@ -464,43 +464,44 @@ void starmap()
 										{
 											Stop_Sound(15);
 											eledras_mirror(itemtypes[player.items[hud.invselect]].name);
-											Play_Sound(WAV_BRIDGE, 15, 1, 50);
+											Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 										}
 										else if (d & device_bauble)
 										{
 											Stop_Sound(15);
 											if (eledras_bauble(itemtypes[player.items[hud.invselect]].name))
 												starmap_removeitem(hud.invselect);
-											Play_Sound(WAV_BRIDGE, 15, 1, 50);
+											Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 										}
 										else if (d & device_conograph)
 										{
 											Stop_Sound(15);
 											use_conograph(itemtypes[player.items[hud.invselect]].name);
-											Play_Sound(WAV_BRIDGE, 15, 1, 50);
+											Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 										}
 #endif
 									}
 								}
 								else 
 								{
-									Play_SoundFX(WAV_INFO);
+									Play_SoundFX1(WAV_INFO);
 									interface_popup(font_6x8, SM_INV_X + 32*(SM_INV_X==0) - 64*(SM_INV_X>0), SM_INV_Y+24, 192, 112, STARMAP_INTERFACE_COLOR, 0, 
-																	itemtypes[player.items[hud.invselect]].name, itemtypes[player.items[hud.invselect]].text, textstring[STR_OK]);
+																	itemtypes[player.items[hud.invselect]].name, itemtypes[player.items[hud.invselect]].text,
+                                                                    textstring[STR_OK], NULL, NULL);
 									upd=1;
 								}
 							}
 							else
 							{
 								hud.invselect = -1;
-								Play_SoundFX(WAV_DESELECT);
+								Play_SoundFX1(WAV_DESELECT);
 							}
 						}
 						else if (mx2 > 136 && mx2 < 144 && my2 < 120)
 						{
 							if (player.num_items > 12)
 							{
-								Play_SoundFX(WAV_SLIDER);
+								Play_SoundFX1(WAV_SLIDER);
 								if (my2 > 32 && my2 < 112)
 									hud.invslider = MIN(((my2 - 32)*(player.num_items-12)+40) / 80, player.num_items-12);
 								else if (my2 < 32)
@@ -518,9 +519,10 @@ void starmap()
 			{
 				if (player.target == homesystem) // going home
 				{
-					Play_SoundFX(WAV_DESELECT);
+					Play_SoundFX1(WAV_DESELECT);
 					if (!interface_popup(font_4x8, 240, 200, 160, 72, STARMAP_INTERFACE_COLOR, 0, 
-							textstring[STR_ENDGAME_CONFIRM1], textstring[STR_ENDGAME_CONFIRM2], textstring[STR_YES], textstring[STR_NO]))
+							textstring[STR_ENDGAME_CONFIRM1], textstring[STR_ENDGAME_CONFIRM2],
+                            textstring[STR_YES], textstring[STR_NO], NULL))
 					{
 						t0 = t;
 						t = get_ik_timer(0);
@@ -546,9 +548,9 @@ void starmap()
                         strcpy(texty, textstring[STR_DRIVE_BROKEN2]);
 					}
 
-					Play_SoundFX(WAV_DESELECT);
+					Play_SoundFX1(WAV_DESELECT);
 					if (!interface_popup(font_4x8, 240, 200, 160, 72, STARMAP_INTERFACE_COLOR, 0, 
-							topic, texty, textstring[STR_YES], textstring[STR_NO]))
+							topic, texty, textstring[STR_YES], textstring[STR_NO], NULL))
 					{
 						t0 = t;
 						t = get_ik_timer(0);
@@ -569,9 +571,9 @@ void starmap()
 							{
 								if (sm_stars[player.system].novadate>0 && player.stardate - player.hypdate < 60 )
 								{	// attempting to hyper out of nova
-									Play_SoundFX(WAV_DESELECT);
+									Play_SoundFX1(WAV_DESELECT);
 									if (!interface_popup(font_4x8, 240, 200, 160, 72, STARMAP_INTERFACE_COLOR, 0, 
-											textstring[STR_DRIVE_NOVA1], textstring[STR_DRIVE_NOVA3], textstring[STR_YES], textstring[STR_NO]))
+											textstring[STR_DRIVE_NOVA1], textstring[STR_DRIVE_NOVA3], textstring[STR_YES], textstring[STR_NO], NULL))
 									{
 										t0 = t;
 										t = get_ik_timer(0);
@@ -591,7 +593,7 @@ void starmap()
 							if (player.enroute)
 							{
 								player.foldate = player.stardate;
-								Play_SoundFX(WAV_FOLDSPACE, t);
+								Play_SoundFX2(WAV_FOLDSPACE, t);
 							}
 						}
 						else
@@ -600,9 +602,9 @@ void starmap()
 							{	
 								if (sm_stars[player.system].novadate>player.stardate && player.stardate - player.hypdate < 60 )
 								{	// attempting to hyper out of nova
-									Play_SoundFX(WAV_DESELECT);
+									Play_SoundFX1(WAV_DESELECT);
 									if (!interface_popup(font_4x8, 240, 200, 160, 72, STARMAP_INTERFACE_COLOR, 0, 
-											textstring[STR_DRIVE_NOVA1], textstring[STR_DRIVE_NOVA2], textstring[STR_YES], textstring[STR_NO]))
+											textstring[STR_DRIVE_NOVA1], textstring[STR_DRIVE_NOVA2], textstring[STR_YES], textstring[STR_NO], NULL))
 									{
 										t0 = t;
 										t = get_ik_timer(0);
@@ -622,7 +624,7 @@ void starmap()
 							if (player.enroute)
 							{
 								player.hypdate = player.stardate;
-								Play_SoundFX(WAV_HYPERDRIVE, t);
+								Play_SoundFX2(WAV_HYPERDRIVE, t);
 							}
 						}
 
@@ -632,7 +634,7 @@ void starmap()
 					else
 #endif
 					{
-						Play_SoundFX(WAV_DEPART, t);
+						Play_SoundFX2(WAV_DEPART, t);
 					}
 					ik_print_log("Set course for %s system.\n", sm_stars[player.target].starname);
 				}
@@ -693,7 +695,7 @@ void starmap()
 						starmap_advancedays(4);
 					}
 					if (player.enroute >= player.distance-640 && s < player.distance-640)
-						Play_SoundFX(WAV_ARRIVE, t);
+						Play_SoundFX2(WAV_ARRIVE, t);
 
 					// find black holes?
 					for (s = 0; s < num_holes; s++)
@@ -706,7 +708,7 @@ void starmap()
 							{
 								Stop_Sound(15);
 								d = starmap_explorehole(s, t);
-								Play_Sound(WAV_BRIDGE, 15, 1, 50);
+								Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 								// returns 0 if [go back], 1 if [continue]
 								if (!d) // turn around
 								{
@@ -799,7 +801,7 @@ void starmap()
 				starmap_flee();
 			}
 			upd=1;
-			Play_Sound(WAV_BRIDGE, 15, 1, 50);
+			Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 		}
 
 #ifndef DEMO_VERSION
@@ -835,7 +837,7 @@ void starmap()
 				if (kawangi_score < 2)
 				{
 					kawangi_message(s, 1);
-					Play_Sound(WAV_BRIDGE, 15, 1, 50);
+					Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 				}
 			}
 
@@ -867,18 +869,18 @@ void starmap()
 		{
 			if (timer_warning == 1)
 			{
-				Play_SoundFX(WAV_TIMER);
+				Play_SoundFX1(WAV_TIMER);
 				interface_popup(font_6x8, 224, 200, 192, 80, STARMAP_INTERFACE_COLOR, 0, 
-												textstring[STR_TIMER_TITLE], textstring[STR_TIMER_WARN1], textstring[STR_OK]);
+												textstring[STR_TIMER_TITLE], textstring[STR_TIMER_WARN1], textstring[STR_OK], NULL, NULL);
 			}
 			else if (timer_warning == 2)
 			{
-				Play_SoundFX(WAV_TIMER);
+				Play_SoundFX1(WAV_TIMER);
 				interface_popup(font_6x8, 224, 200, 192, 80, STARMAP_INTERFACE_COLOR, 0, 
-												textstring[STR_TIMER_TITLE], textstring[STR_TIMER_WARN2], textstring[STR_OK]);
+												textstring[STR_TIMER_TITLE], textstring[STR_TIMER_WARN2], textstring[STR_OK], NULL, NULL);
 			}
 			timer_warning = 0;
-			Play_Sound(WAV_BRIDGE, 15, 1, 50);
+			Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 		}
 
 		if (player.num_ships == 0 || sm_stars[homesystem].planet == 10 || sm_stars[homesystem].color == -2)
@@ -903,17 +905,17 @@ void starmap()
 		end = 0;
 		if (player.death == 2)
 		{
-			Play_SoundFX(WAV_BLACKHOLEDEATH, get_ik_timer(0));
+			Play_SoundFX2(WAV_BLACKHOLEDEATH, get_ik_timer(0));
 			player.num_ships = 0;
 		}
 		else if (player.death == 1)
 		{
-			Play_SoundFX(WAV_EXPLO2, t);
+			Play_SoundFX2(WAV_EXPLO2, t);
 			player.num_ships = 0;
 		}
 		else if (player.num_ships == 0 && player.death < 6)
 		{
-			Play_SoundFX(WAV_EXPLO2, t);
+			Play_SoundFX2(WAV_EXPLO2, t);
 		}
 
 		if (player.death == 7 || player.death == 3)
@@ -993,23 +995,23 @@ void starmap_displayship(int32 t, int32 st)
 		{
 			case sys_weapon:				// weapons
 				ik_print(screen, font_4x8, cx + 32, y, 1*(shipsystems[s].item>-1 && shiptypes[player.ships[player.sel_ship]].sysdmg[z]==0),   "%s", shipsystems[s].name);
-				ik_drawline(screen, cx + 22, y + 3, cy + 20 - z*4, y + 3, 27, 0, 255);
-				ik_drawline(screen, cx + 20 - z*4, y + 3, cy + 20 - z*4, cy + 46 - z*4, 27, 0, 255);
-				ik_drawline(screen, cx + 20 - z*4, cy + 46 - z*4, cx + 16+hull->hardpts[z].x*2, cy + 46 - z*4, 27, 0, 255);
-				ik_drawline(screen, cx + 16+hull->hardpts[z].x*2, cy + 46 - z*4, cx + 16+hull->hardpts[z].x*2, cy + 40 + hull->hardpts[z].y*2, 27, 0, 255);
+				ik_drawline(screen, cx + 22, y + 3, cy + 20 - z*4, y + 3, 27, 0, 255, 0);
+				ik_drawline(screen, cx + 20 - z*4, y + 3, cy + 20 - z*4, cy + 46 - z*4, 27, 0, 255, 0);
+				ik_drawline(screen, cx + 20 - z*4, cy + 46 - z*4, cx + 16+hull->hardpts[z].x*2, cy + 46 - z*4, 27, 0, 255, 0);
+				ik_drawline(screen, cx + 16+hull->hardpts[z].x*2, cy + 46 - z*4, cx + 16+hull->hardpts[z].x*2, cy + 40 + hull->hardpts[z].y*2, 27, 0, 255, 0);
 			break;
 			case sys_thruster:	// thrusters			
 				ik_print(screen, font_4x8, cx + 32, y, 2*(shiptypes[player.ships[player.sel_ship]].sysdmg[z]==0),   "%s", shipsystems[s].name);
-				ik_drawline(screen, cx + 34 + strlen(shipsystems[s].name)*4, y + 3, cx + 140, y + 3, 43, 0, 255);
-				ik_drawline(screen, cx + 140, y + 3, cx + 140, cy + 166, 43, 0, 255);
+				ik_drawline(screen, cx + 34 + strlen(shipsystems[s].name)*4, y + 3, cx + 140, y + 3, 43, 0, 255, 0);
+				ik_drawline(screen, cx + 140, y + 3, cx + 140, cy + 166, 43, 0, 255, 0);
 				x = 64;
 				for (c = 0; c < hulls[shiptypes[player.ships[player.sel_ship]].hull].numh; c++)
 					if (hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].type==hdpThruster)
 						x = MIN(x, hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x);
-				ik_drawline(screen, cx + 16+x*2, cy + 166, cx + 140, cy + 166, 43, 0, 255);
+				ik_drawline(screen, cx + 16+x*2, cy + 166, cx + 140, cy + 166, 43, 0, 255, 0);
 				for (c = 0; c < hulls[shiptypes[player.ships[player.sel_ship]].hull].numh; c++)
 					if (hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].type==hdpThruster)
-						ik_drawline(screen, cx + 16+hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 166, cx + 16 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 40 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].y*2, 43, 0, 255);
+						ik_drawline(screen, cx + 16+hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 166, cx + 16 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 40 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].y*2, 43, 0, 255, 0);
 			break;
 			case sys_engine:	// engine
 				a = 64; x = 64;
@@ -1019,12 +1021,12 @@ void starmap_displayship(int32 t, int32 st)
 						x = MIN(x, hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x);	}
 				a -= 8;
 				ik_print(screen, font_4x8, cx + 32, y, 3*(shiptypes[player.ships[player.sel_ship]].sysdmg[z]==0), "%s", shipsystems[s].name);
-				ik_drawline(screen, cx + 34 + strlen(shipsystems[s].name)*4, y + 3, cx + 144, y + 3, 59, 0, 255);
-				ik_drawline(screen, cx + 144, y + 3, cx + 144, cy+40+a*2, 59, 255);
-				ik_drawline(screen, cx + 144, cy + 40 + a*2, cx + 16 + x*2, cy+40+a*2, 59, 255);
+				ik_drawline(screen, cx + 34 + strlen(shipsystems[s].name)*4, y + 3, cx + 144, y + 3, 59, 0, 255, 0);
+				ik_drawline(screen, cx + 144, y + 3, cx + 144, cy+40+a*2, 59, 255, 255, 0);
+				ik_drawline(screen, cx + 144, cy + 40 + a*2, cx + 16 + x*2, cy+40+a*2, 59, 255, 255, 0);
 				for (c = 0; c < hulls[shiptypes[player.ships[player.sel_ship]].hull].numh; c++)
 					if (hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].type==hdpEngine)
-						ik_drawline(screen, cx + 16+hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 40 + a*2, cx + 16 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 40 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].y*2, 59, 0, 255);
+						ik_drawline(screen, cx + 16+hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 40 + a*2, cx + 16 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].x*2, cy + 40 + hulls[shiptypes[player.ships[player.sel_ship]].hull].hardpts[c].y*2, 59, 0, 255, 0);
 			break;
 			
 			default:	// misc systems
@@ -1228,7 +1230,7 @@ void starmap_display(int32 t)
 		{
 			if (sm_stars[c].novatime == 0)
 			{
-				Play_SoundFX(WAV_EXPLO2);
+				Play_SoundFX1(WAV_EXPLO2);
 				sm_stars[c].novatime = ti2;
 			}
 			a = ti2 - sm_stars[c].novatime;

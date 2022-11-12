@@ -197,13 +197,13 @@ int modconfig_main() {
                         if (c == 0) { // clicked on start game.
                             modconfig_clearAllMods();
                             end = 1;
-                            Play_SoundFX(0, 0, 100);
+                            Play_SoundFX3(0, 0, 100);
                         } else if (c == 1) { // switch to mod list.
                             mode = 1;
-                            Play_SoundFX(0, 0, 100);
+                            Play_SoundFX3(0, 0, 100);
                         } else if (c == 2) { // quit.
                             must_quit = 1;
-                            Play_SoundFX(0, 0, 100);
+                            Play_SoundFX3(0, 0, 100);
                         }
                     }
                     break;
@@ -213,16 +213,16 @@ int modconfig_main() {
                         c = mscr + (my - (by + 36)) / 8;
                         if (c >= 0 && c < allModDirectories.size()) {
                             msel = c;
-                            Play_SoundFX(0, 0, 100);
+                            Play_SoundFX3(0, 0, 100);
                         }
                     }
                     if (mx > bx + 16 && mx < bx + 80 && my > by + h - 32 && my < by + h - 16) { // back to main menu.
                         mode = 0;
-                        Play_SoundFX(0, 0, 100);
+                        Play_SoundFX3(0, 0, 100);
                     }
                     if (mx > bx + 176 && mx < bx + 240 && my > by + h - 32 && my < by + h - 16) { // clicked start.
                         modconfig_setMod(msel);
-                        Play_SoundFX(0, 0, 100);
+                        Play_SoundFX3(0, 0, 100);
                         end = 1;
                     }
                     break;
@@ -277,7 +277,7 @@ int modconfig_main() {
                         interface_drawslider(screen, bx + 228, by + 44, 1, 64, allModDirectories.size() - 10, mscr,
                                              MOD_INTERFACE_COLOR);
                     }
-                    interface_thinborder(screen, bx + 16, by + 32, bx + 240, by + 120, MOD_INTERFACE_COLOR);
+                    interface_thinborder(screen, bx + 16, by + 32, bx + 240, by + 120, MOD_INTERFACE_COLOR, -1);
 
                     interface_drawbutton(screen, bx + 16, by + h - 32, 64, MOD_INTERFACE_COLOR, "CANCEL");
                     interface_drawbutton(screen, bx + 256 - 80, by + h - 32, 64, MOD_INTERFACE_COLOR, "RUN MOD");

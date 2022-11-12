@@ -282,7 +282,7 @@ void game_over()
 		if (!w)
 		{
 			ik_print(screen, font_4x8, bx+16, by+24+y*8, 0, textstring[STR_ENDGAME_MUCRON7]);
-			Play_Sound(WAV_MUS_VICTORY, 15, 1);
+			Play_Sound3(WAV_MUS_VICTORY, 15, 1);
 
 			sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG1], edate);
 		}
@@ -292,7 +292,7 @@ void game_over()
 			ik_dsprite(screen, bx+16, by+24+y*8, spr_SMraces->spr[race_kawangi], 0);
 			ik_dsprite(screen, bx+16, by+24+y*8, spr_IFborder->spr[18], 2+(STARMAP_INTERFACE_COLOR<<8));
 			y += 1 + MAX(8,interface_textbox(screen, font_4x8, bx+84, by+24+y*8, 160, 128, 0, textstring[STR_ENDGAME_KAWANGI]));
-			Play_Sound(WAV_KAWANGI, 15, 1);
+			Play_Sound3(WAV_KAWANGI, 15, 1);
 
 			sprintf(player.deathmsg, "%s %s", textstring[STR_ENDGAME_MSG7], edate);
 		}
@@ -371,7 +371,7 @@ void game_over()
 		y = MAX(9, y);
 		sprintf(texty, textstring[STR_ENDGAME_SCORE], val);
 		y += 1 + interface_textbox(screen, font_4x8, bx+16, by+24+y*8, 224, 128, 0, texty);
-		Play_Sound(WAV_MUS_DEATH, 15, 1);
+		Play_Sound3(WAV_MUS_DEATH, 15, 1);
 	}
 
 	ik_blit();
@@ -379,7 +379,7 @@ void game_over()
 	update_palette();
 
 	start_ik_timer(1, 20);
-//	Play_Sound(WAV_MUS_TITLE, 15, 1, 0);
+//	Play_Sound4(WAV_MUS_TITLE, 15, 1, 0);
 
 	end = 0;
 	while (!end && !must_quit)

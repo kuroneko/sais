@@ -14,6 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+#ifndef SAIS_INTERFACE_H
+#define SAIS_INTERFACE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // ----------------
 //    CONSTANTS
 // ----------------
@@ -75,7 +83,7 @@ void interface_drawborder(t_ik_image *img,
                           const char *title);
 void interface_thinborder(t_ik_image *img, 
 													int32 left, int32 top, int32 right, int32 bottom,
-													int32 color, int32 fill = -1);
+													int32 color, int32 fill /* = -1 */);
 int32 interface_textbox(t_ik_image *img, t_ik_font *fnt,
 											 int32 left, int32 top, int32 w, int32 h,
 											 int32 color, 
@@ -87,9 +95,15 @@ int32 interface_popup(t_ik_font *fnt,
 										 int32 left, int32 top, int32 w, int32 h,
 										 int32 co1, int32 co2, 
 										 char *label, char *text,
-										 char *button1 = nullptr, char *button2 = nullptr, char *button3 = nullptr);
+										 char *button1 /* = nullptr */, char *button2 /* = nullptr */, char *button3 /* = nullptr */);
 void interface_drawslider(t_ik_image *img, int32 left, int32 top, int32 a, int32 l, int32 rng, int32 val, int32 color);
 void interface_drawbutton(t_ik_image *img, int32 left, int32 top, int32 l, int32 color, const char *text);
 
 void interface_cleartuts();
 void interface_tutorial(int n);
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_INTERFACE_H */

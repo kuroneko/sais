@@ -103,7 +103,7 @@ int32 startgame()
 				if (mx > 16 && mx < 64) // cancel
 					end = 1;
 				else if (mx > 176 && mx < 224) // ok
-				{	end = 2; Play_SoundFX(WAV_DOT); }
+				{	end = 2; Play_SoundFX1(WAV_DOT); }
 			}
 			else if (my > 32 && my < 40) // captain
 			{
@@ -121,7 +121,7 @@ int32 startgame()
 				else
 				{
 					settings.random_names ^= 1;
-					Play_SoundFX(WAV_LOCK,0);
+					Play_SoundFX2(WAV_LOCK,0);
 				}
 				upd = 1;must_quit=0;
 			}
@@ -141,26 +141,26 @@ int32 startgame()
 				else
 				{
 					settings.random_names ^= 2;
-					Play_SoundFX(WAV_LOCK,0);
+					Play_SoundFX2(WAV_LOCK,0);
 				}
 				upd = 1;must_quit=0;
 			}
 			else if (my > 64 && my < 96)	// ship
 			{
 				settings.dif_ship = (mx - 16)/72;
-				Play_SoundFX(WAV_SLIDER,0);
+				Play_SoundFX2(WAV_SLIDER,0);
 				upd = 1; 
 			}
 			else if (my > 112 && my < 176) // nebula
 			{
 				settings.dif_nebula = (mx - 16)/72;
-				Play_SoundFX(WAV_SLIDER,0);
+				Play_SoundFX2(WAV_SLIDER,0);
 				upd = 1; 
 			}
 			else if (my > 192 && my < 224) // enemies
 			{
 				settings.dif_enemies = (mx - 16)/72;
-				Play_SoundFX(WAV_SLIDER,0);
+				Play_SoundFX2(WAV_SLIDER,0);
 				upd = 1; 
 			}
 			else if (my > 232 && my < 240)	// easy/hard
@@ -171,14 +171,14 @@ int32 startgame()
 				settings.dif_nebula = (c+1)/2;
 				settings.dif_enemies = c/2;
 				upd = 1;
-				Play_SoundFX(WAV_SLIDER,0);
+				Play_SoundFX2(WAV_SLIDER,0);
 			}
 			else if (my > 256 && my < 264)	// enable tutorial
 			{
 				if (mx > 16 && mx < 24)
 				{
 					settings.random_names ^= 4;
-					Play_SoundFX(WAV_LOCK,0);
+					Play_SoundFX2(WAV_LOCK,0);
 					upd = 1;
 				}
 			}
@@ -385,12 +385,12 @@ int32 waitclick(int left, int top, int right, int bottom)
 		c = ik_inkey();
 		mc = ik_mclick();
 		if (c==13 || c==32)
-		{	end = 2; Play_SoundFX(WAV_DOT); }
+		{	end = 2; Play_SoundFX1(WAV_DOT); }
 
 		if (mc & 1)
 		{
 			if (ik_mouse_x >= left && ik_mouse_x < right && ik_mouse_y >= top && ik_mouse_y < bottom)
-			{	end = 2; Play_SoundFX(WAV_DOT); }
+			{	end = 2; Play_SoundFX1(WAV_DOT); }
 		}
 
 		c = t;

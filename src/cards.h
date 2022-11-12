@@ -14,6 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+#ifndef SAIS_CARDS_H
+#define SAIS_CARDS_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // ----------------
 //     TYPEDEFS
 // ----------------
@@ -63,3 +71,9 @@ extern int32					num_ecards;
 void cards_init();
 void cards_deinit();
 void card_display(int n);
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_CARDS_H */

@@ -136,7 +136,7 @@ void eventhandler()
 				case SDLK_RCTRL:
 				case SDLK_LCTRL:
 					settings.opt_mousemode ^= 4;
-					Play_SoundFX(WAV_LOCK,0);
+					Play_SoundFX2(WAV_LOCK,0);
 					break;
 				case SDLK_ESCAPE :
 					must_quit=1;

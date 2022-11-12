@@ -431,12 +431,12 @@ int32 interface_popup(t_ik_font *fnt,
 	if (button1 && button2)	// yes/no
 	{
 		if (end == 1)
-			Play_SoundFX(WAV_YES, get_ik_timer(0));
+			Play_SoundFX2(WAV_YES, get_ik_timer(0));
 		else if (end == 2)
-			Play_SoundFX(WAV_NO, get_ik_timer(0));
+			Play_SoundFX2(WAV_NO, get_ik_timer(0));
 	}
 	else
-		Play_SoundFX(WAV_DOT, get_ik_timer(0));
+		Play_SoundFX2(WAV_DOT, get_ik_timer(0));
 
 	prep_screen();
 	ik_dsprite(screen, left, top, bg, 4);
@@ -652,7 +652,7 @@ void interface_tutorial(int n)
 	r = interface_popup(font_6x8, -1, -1, 288, 0, 12, 0, 
 			textstring[STR_TUT_TSTARMAP + n],
 			textstring[STR_TUT_STARMAP + n], 
-			textstring[STR_OK], textstring[STR_TUT_END]);
+			textstring[STR_OK], textstring[STR_TUT_END], NULL);
 
 	if (r)
 		settings.random_names -= (settings.random_names & 4);

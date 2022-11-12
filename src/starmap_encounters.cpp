@@ -87,7 +87,7 @@ int32 starmap_entersystem()
 		m = 0;
 		if (races[sm_fleets[c].race].met == 2)
 			m = 1;
-		else if (fleet_encounter(c))
+		else if (fleet_encounter(c, 0))
 			m = 1;
 
 		if (m)
@@ -225,7 +225,7 @@ void starmap_exploreplanet()
 #ifndef DEMO_VERSION
 		if (!strcmp(ecards[c].name, textstring[STR_EVENT_DEVA]))
 		{
-			Play_Sound(WAV_NOPLANET, 15, 1);
+			Play_Sound3(WAV_NOPLANET, 15, 1);
 			sprintf(texty, ecards[c].text, sm_stars[player.target].starname);
 		}
 #endif
@@ -244,7 +244,7 @@ void starmap_exploreplanet()
 			}
 	
 			sh = player.ships[sh];
-			Play_Sound(WAV_FLARE, 15, 1);
+			Play_Sound3(WAV_FLARE, 15, 1);
 			s = 0;
 			for (n = 0; n < shiptypes[sh].num_systems; n++)
 			{
@@ -279,7 +279,7 @@ void starmap_exploreplanet()
 		}
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_THIEF]))
 		{
-			Play_Sound(WAV_SPY, 15, 1);
+			Play_Sound3(WAV_SPY, 15, 1);
 			s = -1;
 			for (n = 0; n < player.num_items; n++)
 			{
@@ -303,7 +303,7 @@ void starmap_exploreplanet()
 #ifndef DEMO_VERSION
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_NOVA]))
 		{
-			Play_Sound(WAV_NOVA, 15, 1);
+			Play_Sound3(WAV_NOVA, 15, 1);
 			sprintf(texty, ecards[c].text, sm_stars[player.system].starname);
 			sm_stars[player.system].novadate = player.stardate+30;
 			sm_stars[player.system].novatype = 0;
@@ -337,7 +337,7 @@ void starmap_exploreplanet()
 		}
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_SABOT]))
 		{
-			Play_Sound(WAV_SABOTEUR, 15, 1);
+			Play_Sound3(WAV_SABOTEUR, 15, 1);
 			s = -1;
 			if (shiptypes[0].num_systems > 0)
 			{
@@ -368,15 +368,15 @@ void starmap_exploreplanet()
 		}
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_WHALE]))
 		{
-			Play_Sound(WAV_WHALES, 15);
+			Play_Sound2(WAV_WHALES, 15);
 		}
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_GIANT]))
 		{
-			Play_Sound(WAV_GASGIANT, 15, 1);
+			Play_Sound3(WAV_GASGIANT, 15, 1);
 		}
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_CONE]))
 		{
-			Play_Sound(WAV_CUBE, 15, 1);
+			Play_Sound3(WAV_CUBE, 15, 1);
 
 			ik_print(screen, font_4x8, bx+16, by+h-48, 0, textstring[STR_EVENT_CONE2]);
 			for (s = 0; s < 2; s++)
@@ -423,7 +423,7 @@ void starmap_exploreplanet()
 		}
 		else if (!strcmp(ecards[c].name, textstring[STR_EVENT_HULK]))
 		{
-			Play_Sound(WAV_SPACEHULK, 15, 1);
+			Play_Sound3(WAV_SPACEHULK, 15, 1);
 
 			ik_print(screen, font_4x8, bx+16, by+h-48, 0, textstring[STR_EVENT_HULK2]);
 			for (s = 0; s < 2; s++)
@@ -498,9 +498,9 @@ void starmap_exploreplanet()
 											bx+16, by+128, 160, 64, 0,
 											itemtypes[it].text);
 		if (itemtypes[it].sound<0)
-			Play_Sound(-itemtypes[it].sound, 15, 1);
+			Play_Sound3(-itemtypes[it].sound, 15, 1);
 		else
-			Play_Sound(itemtypes[it].sound, 15);
+			Play_Sound2(itemtypes[it].sound, 15);
 	}
 
 	interface_drawbutton(screen, bx+144, by+h-24, 32, STARMAP_INTERFACE_COLOR, textstring[STR_OK]);
@@ -517,7 +517,7 @@ void starmap_exploreplanet()
 		starmap_meetrace(r);
 		prep_screen();
 		ik_blit();
-		Play_Sound(WAV_ALLY, 15, 1);
+		Play_Sound3(WAV_ALLY, 15, 1);
 	}
 
 	while (!must_quit && !end)
@@ -550,14 +550,14 @@ void starmap_exploreplanet()
 			}
 
 			if (ik_mouse_y > by+h-24 && ik_mouse_y < by+h-8 && ik_mouse_x > bx+144 && ik_mouse_x < bx+176)
-			{	end = 1; Play_SoundFX(WAV_DOT, get_ik_timer(0)); }
+			{	end = 1; Play_SoundFX2(WAV_DOT, get_ik_timer(0)); }
 			if (cu)
 			{
 				if (ik_mouse_x > bx+16 && ik_mouse_x < bx+176 && ik_mouse_y > by+h-40 && ik_mouse_y < by+h-24)
 				{
-					Play_SoundFX(WAV_INFO);
+					Play_SoundFX1(WAV_INFO);
 					interface_popup(font_6x8, bx+16, by+h-112, 192, 96, STARMAP_INTERFACE_COLOR, 0, 
-												itemtypes[i[(ik_mouse_y-(by+h-40))/8]].name, itemtypes[i[(ik_mouse_y-(by+h-40))/8]].text);
+												itemtypes[i[(ik_mouse_y-(by+h-40))/8]].name, itemtypes[i[(ik_mouse_y-(by+h-40))/8]].text, NULL, NULL, NULL);
 				}				
 			}
 		}
@@ -590,7 +590,7 @@ void starmap_exploreplanet()
 							hulls[shiptypes[ecards[c].parm].hull].name,
 							shiptypes[ecards[c].parm].name,
 							hisher);
-			n = pay_item(textstring[STR_MERC_BILLING], texty, r);
+			n = pay_item(textstring[STR_MERC_BILLING], texty, r, 0);
 
 			if (n == -1)
 			{
@@ -611,7 +611,7 @@ void starmap_exploreplanet()
 		{
 			h = itemtypes[it].cost/10 + rand()%(itemtypes[it].cost/10);
 			sprintf(texty, textstring[STR_LIFEFORM_HARD], itemtypes[it].name, h);
-			if (!interface_popup(font_6x8, bx+16, by+96, 192, 0, STARMAP_INTERFACE_COLOR, 0, textstring[STR_LIFEFORM_HARDT], texty, textstring[STR_YES], textstring[STR_NO]))
+			if (!interface_popup(font_6x8, bx+16, by+96, 192, 0, STARMAP_INTERFACE_COLOR, 0, textstring[STR_LIFEFORM_HARDT], texty, textstring[STR_YES], textstring[STR_NO], NULL))
 			{
 				starmap_advancedays(h);
 				sm_stars[player.system].card = 0;
@@ -666,7 +666,7 @@ int32 starmap_explorehole(int32 h, int32 t)
 	player.bonusdata += 200;
 
 	z = 148;
-	Play_Sound(WAV_BLACKHOLE, 15, 1);
+	Play_Sound3(WAV_BLACKHOLE, 15, 1);
 
 	while (!must_quit && !end)
 	{
@@ -719,9 +719,9 @@ int32 starmap_explorehole(int32 h, int32 t)
 			if (my > z-24 && my < z-8)
 			{
 				if (mx > 208-80 && mx < 192)
-				{	end = 2; Play_SoundFX(WAV_ACCEPT, get_ik_timer(0)); }
+				{	end = 2; Play_SoundFX2(WAV_ACCEPT, get_ik_timer(0)); }
 				if (mx > 16 && mx < 80)
-				{	end = 1; Play_SoundFX(WAV_DECLINE, get_ik_timer(0)); }
+				{	end = 1; Play_SoundFX2(WAV_DECLINE, get_ik_timer(0)); }
 			}
 		}
 	}
@@ -772,7 +772,7 @@ int32 fleet_encounter(int32 flt, int32 inc)
 		sy[c] =	by + 56 + rand()%16;
 	}
 
-	Play_Sound(WAV_RADAR, 15, 1);
+	Play_Sound3(WAV_RADAR, 15, 1);
 
 	st = t = get_ik_timer(0);
 	while (!must_quit && !end)
@@ -782,9 +782,9 @@ int32 fleet_encounter(int32 flt, int32 inc)
 		t0 = t; t = get_ik_timer(0);
 		mx = ik_mouse_x - bx; my = ik_mouse_y - by;
 		if (mc == 1 && mx > 16 && mx < 64 && my > 160 && my < 176)
-		{	end = 1; Play_SoundFX(WAV_DECLINE, get_ik_timer(0)); }
+		{	end = 1; Play_SoundFX2(WAV_DECLINE, get_ik_timer(0)); }
 		if (mc == 1 && mx > 96 && mx < 144 && my > 160 && my < 176)
-		{	end = 2; Play_SoundFX(WAV_ACCEPT, get_ik_timer(0)); }
+		{	end = 2; Play_SoundFX2(WAV_ACCEPT, get_ik_timer(0)); }
 		if (must_quit)
 		{
 			end = 1;
@@ -840,7 +840,7 @@ int32 fleet_encounter(int32 flt, int32 inc)
 				interface_tutorial(tut_encounter);
 			}
 //			if (t/50 > t0/50)
-//				Play_Sound(WAV_RADAR, 15, 1);
+//				Play_Sound3(WAV_RADAR, 15, 1);
 
 		}
 
@@ -888,7 +888,7 @@ void starmap_meetrace(int32 r)
 
 	ik_blit();
 
-	Play_Sound(WAV_KLAKAR + r - race_klakar, 15, 1);
+	Play_Sound3(WAV_KLAKAR + r - race_klakar, 15, 1);
 
 	while (!must_quit && !end)
 	{
@@ -898,7 +898,7 @@ void starmap_meetrace(int32 r)
 		mx = ik_mouse_x - bx; my = ik_mouse_y - by;
 
 		if (mc == 1 && mx > 160 && mx < 192 && my > 124 && my < 140)
-		{	end = 1; Play_SoundFX(WAV_DOT, get_ik_timer(0)); }
+		{	end = 1; Play_SoundFX2(WAV_DOT, get_ik_timer(0)); }
 
 		c = t; t = get_ik_timer(2);
 		if (t != c)
@@ -947,7 +947,7 @@ void starmap_mantle(int32 flt)
 		if (r == race_muktian || r == race_garthan || r == race_urluquai)
 		{
 			races[r].met = 2;
-			Play_SoundFX(WAV_MANTLE, 0);
+			Play_SoundFX2(WAV_MANTLE, 0);
 			sm_fleets[flt].explored = 2;
 
 			halfbritescreen();
@@ -989,7 +989,7 @@ void starmap_mantle(int32 flt)
 				mx = ik_mouse_x - bx; my = ik_mouse_y - by;
 
 				if (mc == 1 && mx > 160 && mx < 192 && my > h-24 && my < h-8)
-				{	end = 1; Play_SoundFX(WAV_DOT, get_ik_timer(0)); }
+				{	end = 1; Play_SoundFX2(WAV_DOT, get_ik_timer(0)); }
 
 				c = t; t = get_ik_timer(2);
 				if (t != c)
@@ -1094,9 +1094,9 @@ void enemy_encounter(int32 r)
 	ik_blit();
 
 #ifndef DEMO_VERSION
-	Play_Sound(WAV_MESSAGE+(r==race_tanru), 15, 1);
+	Play_Sound3(WAV_MESSAGE+(r==race_tanru), 15, 1);
 #else
-	Play_Sound(WAV_MESSAGE, 15, 1);
+	Play_Sound3(WAV_MESSAGE, 15, 1);
 #endif
 
 	while (!must_quit && !end)
@@ -1107,7 +1107,7 @@ void enemy_encounter(int32 r)
 		mx = ik_mouse_x - bx; my = ik_mouse_y - by;
 
 		if (mc == 1 && mx > 160 && mx < 192 && my > 116 && my < 132)
-		{	end = 1; Play_SoundFX(WAV_DOT, get_ik_timer(0)); }
+		{	end = 1; Play_SoundFX2(WAV_DOT, get_ik_timer(0)); }
 
 		c = t; t = get_ik_timer(2);
 		if (t != c)
@@ -1182,7 +1182,7 @@ int32 muktian_encounter()
 
 	ik_blit();
 
-	Play_Sound(WAV_MESSAGE, 15, 1);
+	Play_Sound3(WAV_MESSAGE, 15, 1);
 
 	while (!must_quit && !end)
 	{
@@ -1198,9 +1198,9 @@ int32 muktian_encounter()
 		}
 
 		if (mc == 1 && mx > 16 && mx < 80 && my > 116 && my < 132)
-		{	end = 1+o; Play_SoundFX(WAV_DECLINE, get_ik_timer(0));	}
+		{	end = 1+o; Play_SoundFX2(WAV_DECLINE, get_ik_timer(0));	}
 		if (mc == 1 && mx > 128 && mx < 192 && my > 116 && my < 132)
-		{	end = 2-o; Play_SoundFX(WAV_ACCEPT, get_ik_timer(0));	}
+		{	end = 2-o; Play_SoundFX2(WAV_ACCEPT, get_ik_timer(0));	}
 
 		c = t; t = get_ik_timer(2);
 		if (t != c)
@@ -1217,10 +1217,10 @@ int32 muktian_encounter()
 	{
 		if (end == 2)	// pick up ambassador
 		{
-			Play_Sound(WAV_MUKTIAN, 15, 1);
+			Play_Sound3(WAV_MUKTIAN, 15, 1);
 
 			interface_popup(font_6x8, 224, 192, 192, 0, STARMAP_INTERFACE_COLOR, 0, 
-											textstring[STR_AMBASSADORT], textstring[STR_AMBASSADOR], textstring[STR_OK]);
+											textstring[STR_AMBASSADORT], textstring[STR_AMBASSADOR], textstring[STR_OK], NULL, NULL);
 			Stop_Sound(15);
 			for (c = 0; c < num_itemtypes; c++)
 			if (itemtypes[c].flag & lifeform_ambassador) 
@@ -1268,7 +1268,7 @@ void klakar_encounter()
 
 	ik_blit();
 
-	Play_Sound(WAV_MESSAGE, 15, 1);
+	Play_Sound3(WAV_MESSAGE, 15, 1);
 
 	while (!must_quit && !end)
 	{
@@ -1284,9 +1284,9 @@ void klakar_encounter()
 		}
 
 		if (mc == 1 && mx > 16 && mx < 80 && my > 116 && my < 132)
-		{	end = 1; Play_SoundFX(WAV_DECLINE, get_ik_timer(0)); }
+		{	end = 1; Play_SoundFX2(WAV_DECLINE, get_ik_timer(0)); }
 		if (mc == 1 && mx > 128 && mx < 192 && my > 116 && my < 132)
-		{	end = 2; Play_SoundFX(WAV_ACCEPT, get_ik_timer(0)); }
+		{	end = 2; Play_SoundFX2(WAV_ACCEPT, get_ik_timer(0)); }
 
 		c = t; t = get_ik_timer(2);
 		if (t != c)
@@ -1355,7 +1355,7 @@ void kawangi_warning()
 
 	ik_blit();
 
-	Play_Sound(WAV_WARNING, 15, 1);
+	Play_Sound3(WAV_WARNING, 15, 1);
 
 	while (!must_quit && !end)
 	{
@@ -1365,7 +1365,7 @@ void kawangi_warning()
 		mx = ik_mouse_x - bx; my = ik_mouse_y - by;
 
 		if (mc == 1 && mx > 144 && mx < 192 && my > h-24 && my < h-8)
-		{	end = 1; Play_SoundFX(WAV_DOT); }
+		{	end = 1; Play_SoundFX1(WAV_DOT); }
 
 		c = t; t = get_ik_timer(2);
 		if (t != c)
@@ -1375,7 +1375,7 @@ void kawangi_warning()
 	Stop_Sound(15);
 
 	must_quit = 0;
-	Play_Sound(WAV_BRIDGE, 15, 1, 50);
+	Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 
 	reshalfbritescreen();
 }
@@ -1395,7 +1395,7 @@ void kawangi_message(int32 flt, int32 m)
 	switch (m)
 	{
 		case 0:	// destroyed
-		Play_Sound(WAV_MUS_ROCK, 15, 1);
+		Play_Sound3(WAV_MUS_ROCK, 15, 1);
 
 		if (sm_fleets[flt].explored < 2)	// don't know it's the kawangi
 		{
@@ -1410,7 +1410,7 @@ void kawangi_message(int32 flt, int32 m)
 		break;
 
 		case 1:	// detect explosion
-		Play_Sound(WAV_OPTICALS, 15, 1);
+		Play_Sound3(WAV_OPTICALS, 15, 1);
 
 		if (kawangi_score == 0)
 		{
@@ -1453,7 +1453,7 @@ void kawangi_message(int32 flt, int32 m)
 		mx = ik_mouse_x - bx; my = ik_mouse_y - by;
 
 		if (mc == 1 && mx > 144 && mx < 192 && my > h-24 && my < h-8)
-		{	end = 1; Play_SoundFX(WAV_DOT); }
+		{	end = 1; Play_SoundFX1(WAV_DOT); }
 
 		c = t; t = get_ik_timer(2);
 		if (t != c)
@@ -1462,7 +1462,7 @@ void kawangi_message(int32 flt, int32 m)
 
 	must_quit = 0;
 	Stop_Sound(15);
-	Play_Sound(WAV_BRIDGE, 15, 1, 50);
+	Play_Sound4(WAV_BRIDGE, 15, 1, 50);
 
 	reshalfbritescreen();
 }

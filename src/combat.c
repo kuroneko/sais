@@ -18,9 +18,9 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstdio>
-#include <ctime>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -114,11 +114,11 @@ int32 combat(int32 flt, int32 sim)
 	t_move = 0; t_disp = 0; pause = 0; end = 0; rett=0;
 
 	if (simulated)
-		Play_Sound(WAV_MUS_SIMULATOR, 15, 1, 85);	
+		Play_Sound4(WAV_MUS_SIMULATOR, 15, 1, 85);
 	else if (!nebula)
-		Play_Sound(WAV_MUS_COMBAT, 15, 1);
+		Play_Sound3(WAV_MUS_COMBAT, 15, 1);
 	else
-		Play_Sound(WAV_MUS_NEBULA, 15, 1);
+		Play_Sound3(WAV_MUS_NEBULA, 15, 1);
 	start_ik_timer(1, 1000/COMBAT_FRAMERATE); t0 = t = 0;
 	while (!must_quit && (t<end || end==0))
 	{
@@ -129,19 +129,19 @@ int32 combat(int32 flt, int32 sim)
 		if (must_quit)
 		{
 			must_quit = 0;
-			Play_SoundFX(WAV_DESELECT);
+			Play_SoundFX1(WAV_DESELECT);
 			if (simulated)
 			{
 				if (!interface_popup(font_6x8, 240, 200, 160, 72, COMBAT_INTERFACE_COLOR, 0, 
 						textstring[STR_QUIT_TITLE], textstring[STR_QUIT_SIMULATION], 
-						textstring[STR_YES], textstring[STR_NO]))
+						textstring[STR_YES], textstring[STR_NO], NULL))
 				{	must_quit = 1; player.death = 666; }
 			}
 			else
 			{
 				if (!interface_popup(font_6x8, 240, 200, 160, 72, COMBAT_INTERFACE_COLOR, 0, 
 						textstring[STR_QUIT_TITLE], textstring[STR_QUIT_CONFIRM], 
-						textstring[STR_YES], textstring[STR_NO]))
+						textstring[STR_YES], textstring[STR_NO], NULL))
 				{	must_quit = 1; player.death = 666; }
 			}
 			ik_eventhandler();  // always call every frame
@@ -217,14 +217,14 @@ int32 combat(int32 flt, int32 sim)
 		if ((f == 1 || cships[playership].type==-1) && retreat)
 		{
 			retreat = 0;
-			Play_SoundFX(WAV_SELECT, t);
+			Play_SoundFX2(WAV_SELECT, t);
 
 			if (simulated)
-				Play_Sound(WAV_MUS_SIMULATOR, 15, 1, 85);	
+				Play_Sound4(WAV_MUS_SIMULATOR, 15, 1, 85);
 			else if (!nebula)
-				Play_Sound(WAV_MUS_COMBAT, 15, 1);
+				Play_Sound3(WAV_MUS_COMBAT, 15, 1);
 			else
-				Play_Sound(WAV_MUS_NEBULA, 15, 1);
+				Play_Sound3(WAV_MUS_NEBULA, 15, 1);
 			for (s = 0; s < MAX_COMBAT_SHIPS; s++)
 			{
 				if ((cships[s].own&1) == 0 && s != playership)
@@ -253,19 +253,19 @@ int32 combat(int32 flt, int32 sim)
 					case 0: 				// cloak button
 					if (cships[playership].clo_type>0 && cships[playership].syshits[cships[playership].sys_clo]>=5 && t_move>cships[playership].cloaktime+100)
 					{
-						Play_SoundFX(WAV_DOT, 0);
+						Play_SoundFX2(WAV_DOT, 0);
 						if (cships[playership].cloaked)	// uncloak
 						{
 							cships[playership].cloaked = 0;
 							cships[playership].cloaktime = t_move;
-							//Play_SoundFX(WAV_CLOAKOUT, t);
+							//Play_SoundFX2(WAV_CLOAKOUT, t);
 						}
 						else	// cloak
 						{
 
 							cships[playership].cloaked = 1;
 							cships[playership].cloaktime = t_move;
-							//Play_SoundFX(WAV_CLOAKIN, t);
+							//Play_SoundFX2(WAV_CLOAKIN, t);
 						}
 					}
 					break;
@@ -285,8 +285,8 @@ int32 combat(int32 flt, int32 sim)
 						{
 							retreat = 1;
 							rett = t_move;
-							Play_SoundFX(WAV_SELECT, t);
-							Play_Sound(WAV_FLARE, 15, 1);
+							Play_SoundFX2(WAV_SELECT, t);
+							Play_Sound3(WAV_FLARE, 15, 1);
 							
 							for (s = 0; s < MAX_COMBAT_SHIPS; s++)
 							if ((cships[s].own&1) == 0)
@@ -295,13 +295,13 @@ int32 combat(int32 flt, int32 sim)
 						else
 						{
 							retreat = 0;
-							Play_SoundFX(WAV_SELECT, t);
+							Play_SoundFX2(WAV_SELECT, t);
 							if (simulated)
-								Play_Sound(WAV_MUS_SIMULATOR, 15, 1, 85);	
+								Play_Sound4(WAV_MUS_SIMULATOR, 15, 1, 85);
 							else if (!nebula)
-								Play_Sound(WAV_MUS_COMBAT, 15, 1);
+								Play_Sound3(WAV_MUS_COMBAT, 15, 1);
 							else
-								Play_Sound(WAV_MUS_NEBULA, 15, 1);
+								Play_Sound3(WAV_MUS_NEBULA, 15, 1);
 
 							for (s = 0; s < MAX_COMBAT_SHIPS; s++)
 							{
@@ -500,7 +500,7 @@ int32 combat(int32 flt, int32 sim)
 						t_move++; 
 						combat_movement(t_move);
 						if (t_move==klaktime+1 && klaktime>0) 
-							Play_SoundFX(WAV_HYPERDRIVE, get_ik_timer(1));
+							Play_SoundFX2(WAV_HYPERDRIVE, get_ik_timer(1));
 					}
 				}
 			}
@@ -549,7 +549,7 @@ void combat_start(int32 flt)
 	int nc, rc, nf;
 	int32 angle;
 
-	srand( (unsigned int)time( nullptr ) );
+	srand( (unsigned int)time( NULL ) );
 
 	retreat = 0;
 
@@ -577,11 +577,11 @@ void combat_start(int32 flt)
 		cships[t].flee = 0;
 	}
 	for (t = 0; t < MAX_COMBAT_PROJECTILES; t++)
-		cprojs[t].wep = nullptr;
+		cprojs[t].wep = NULL;
 	for (t = 0; t < MAX_COMBAT_BEAMS; t++)
-		cbeams[t].wep = nullptr;
+		cbeams[t].wep = NULL;
 	for (t = 0; t < MAX_COMBAT_EXPLOS; t++)
-		cexplo[t].spr = nullptr;
+		cexplo[t].spr = NULL;
 	camera.x = 0;
 	camera.y = 0;
 	camera.z = 4096;
@@ -818,7 +818,7 @@ void klakar_pissoff()
 
 	ik_blit();
 
-	Play_Sound(WAV_MESSAGE, 15, 1);
+	Play_Sound3(WAV_MESSAGE, 15, 1);
 
 	while (!must_quit && !end)
 	{
@@ -828,7 +828,7 @@ void klakar_pissoff()
 		mx = ik_mouse_x - bx; my = ik_mouse_y - by;
 
 		if (mc == 1 && mx > 128 && mx < 192 && my > 116 && my < 132)
-		{	end = 2; Play_SoundFX(WAV_DOT, get_ik_timer(0)); }
+		{	end = 2; Play_SoundFX2(WAV_DOT, get_ik_timer(0)); }
 
 		c = t; t = get_ik_timer(2);
 		if (t != c)
@@ -869,9 +869,9 @@ void combat_sim_end()
 		return;
 
 	Stop_All_Sounds();
-	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
+	bg = ik_load_pcx("graphics/starback.pcx", NULL);
 
-	Play_SoundFX(WAV_ENDSIMULATION);
+	Play_SoundFX1(WAV_ENDSIMULATION);
 
 	end = 0; t = get_ik_timer(2);
 	while (!end && !must_quit)
@@ -887,7 +887,7 @@ void combat_sim_end()
 
 		if (mc & 1)
 			if (mx > 240-64 && mx < 240-16 && my > h-24 && my < h-8)
-			{	end = 1; Play_SoundFX(WAV_DOT2, 0, 50); }
+			{	end = 1; Play_SoundFX3(WAV_DOT2, 0, 50); }
 
 		ot = t;
 		t = get_ik_timer(2);
@@ -1082,7 +1082,7 @@ void combat_end(int32 flt)
 	{	// system was destroyed
 		sprintf(texty, textstring[STR_SYSTEM_DESTROYED], player.shipname, shipsystems[de].name);
 		interface_popup(font_6x8, 224, 192, 192, 96, STARMAP_INTERFACE_COLOR, 0, 
-										textstring[STR_COMBAT_SYSDMG], texty, textstring[STR_OK]);
+										textstring[STR_COMBAT_SYSDMG], texty, textstring[STR_OK], NULL, NULL);
 	}
 
 }
@@ -1111,9 +1111,9 @@ void combat_movement(int32 t)
 		if (cships[c].cloaktime > 0 && t == cships[c].cloaktime+1)
 		{
 			if (cships[c].cloaked)
-				combat_SoundFX(WAV_CLOAKIN, cships[c].x);
+				combat_SoundFX(WAV_CLOAKIN, cships[c].x, -1, -1);
 			else
-				combat_SoundFX(WAV_CLOAKOUT, cships[c].x);
+				combat_SoundFX(WAV_CLOAKOUT, cships[c].x, -1, -1);
 		}
 #endif
 
@@ -1126,7 +1126,7 @@ void combat_movement(int32 t)
 				cships[c].tel_x = 0;
 				cships[c].tel_y = 0;
 				//cexplo[combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 0, 96, 1, t, t+24, 1)].str = t-8;
-				combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4);
+				combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4, -1);
 			}
 		}
 
@@ -1142,7 +1142,7 @@ void combat_movement(int32 t)
 							a++;
 				if (a < 3)	// don't launch more than 3 at once
 				{
-					combat_SoundFX(WAV_FIGHTERLAUNCH, cships[c].x);
+					combat_SoundFX(WAV_FIGHTERLAUNCH, cships[c].x, -1, -1);
 					cships[c].launchtime = t + 200;
 				}
 			}
@@ -1156,7 +1156,7 @@ void combat_movement(int32 t)
 			if (t < cships[c].bong_end)
 			{
 				if (t == cships[c].bong_start + 50)
-					Play_SoundFX(WAV_FIERYFURY, t);
+					Play_SoundFX2(WAV_FIERYFURY, t);
 				else if (t > cships[c].bong_start + 50)
 				{
 					d = t % 5;
@@ -1190,8 +1190,8 @@ void combat_movement(int32 t)
 					cships[c].vx = cships[c].vy = 0;
 				}
 
-				combat_SoundFX(WAV_EXPLO1, cships[c].x);
-				combat_killship(c, t);
+				combat_SoundFX(WAV_EXPLO1, cships[c].x, -1, -1);
+				combat_killship(c, t, 0);
 			}
 		}
 #endif
@@ -1253,7 +1253,7 @@ void combat_movement(int32 t)
 					{
 						cships[c].syshits[sys]++;
 						if (cships[c].syshits[sys]==10 && c==playership)	// fixed
-							Play_SoundFX(WAV_SYSFIXED, get_ik_timer(1));
+							Play_SoundFX2(WAV_SYSFIXED, get_ik_timer(1));
 
 						cships[c].dmgc_time = t + 50/p;
 					}
@@ -1298,7 +1298,7 @@ void combat_movement(int32 t)
 							{
 								cships[c].cloaked = 0;
 								cships[c].cloaktime = t;
-//								Play_SoundFX(WAV_CLOAKOUT, get_ik_timer(1));
+//								Play_SoundFX2(WAV_CLOAKOUT, get_ik_timer(1));
 							}
 						}
 						else
@@ -1307,7 +1307,7 @@ void combat_movement(int32 t)
 							{
 								cships[c].cloaked = 1;
 								cships[c].cloaktime = t;
-//								Play_SoundFX(WAV_CLOAKIN, get_ik_timer(1));
+//								Play_SoundFX2(WAV_CLOAKIN, get_ik_timer(1));
 							}
 						}
 					}
@@ -1345,9 +1345,9 @@ void combat_movement(int32 t)
 						cships[c].tel_x = wx - cships[c].x;
 						cships[c].tel_y = wy - cships[c].y;
 						cships[c].teltime = t;
-						combat_SoundFX(WAV_TELEPORT, cships[c].x);
+						combat_SoundFX(WAV_TELEPORT, cships[c].x, -1, -1);
 						//cexplo[combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 0, 96, 1, t, t+24, 1)].str = t-8;
-						combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4);
+						combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4, -1);
 					}
 				}
 #endif
@@ -1389,7 +1389,7 @@ void combat_movement(int32 t)
 							{
 								if (shiptypes[cships[cships[c].target].type].flag & 256)
 								{
-									combat_SoundFX(WAV_BOARD, cships[c].x);
+									combat_SoundFX(WAV_BOARD, cships[c].x, -1, -1);
 									cships[cships[c].target].active = 0;
 									cships[cships[c].target].hits = 0;
 								}
@@ -1417,9 +1417,9 @@ void combat_movement(int32 t)
 							cships[c].tel_x = cships[c].wp_x - cships[c].x;
 							cships[c].tel_y = cships[c].wp_y - cships[c].y;
 							cships[c].teltime = t;
-							combat_SoundFX(WAV_TELEPORT, cships[c].x);
+							combat_SoundFX(WAV_TELEPORT, cships[c].x, -1, -1);
 							//cexplo[combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 0, 96, 1, t, t+24, 1)].str = t-8;
-							combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4);
+							combat_addexplo(cships[c].x, cships[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4, -1);
 						}
 					}
 #endif
@@ -1504,7 +1504,7 @@ void combat_movement(int32 t)
 				{
 					cships[c].cloaked = 0;
 					cships[c].cloaktime = t;
-					combat_SoundFX(WAV_CLOAKOUT, cships[c].x);
+					combat_SoundFX(WAV_CLOAKOUT, cships[c].x, -1, -1);
 				}
 #endif
 
@@ -1512,13 +1512,13 @@ void combat_movement(int32 t)
 				if (!(rand()%16) || cships[c].hits < -hull->hits)
 				{
 					cships[c].hits--;
-					combat_SoundFX(WAV_EXPLO1, cships[c].x, 50); 
+					combat_SoundFX(WAV_EXPLO1, cships[c].x, 50, -1);
 					combat_addexplo(cships[c].x + ((rand()%hull->size-hull->size/2)<<9), 
 													cships[c].y + ((rand()%hull->size-hull->size/2)<<9), 
-													spr_explode1, 5, hull->size/2, 0, t, t+32);
+													spr_explode1, 5, hull->size/2, 0, t, t+32, -1, -1);
 					if (cships[c].hits <= -hull->hits)
 					{
-						combat_killship(c, t);
+						combat_killship(c, t, 0);
 					}
 				}
 			}
@@ -1543,28 +1543,28 @@ void combat_movement(int32 t)
 		{
 			if (cbeams[c].dst)
 			{
-				combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_explode1, 5, 32, 0, t, t+32);
+				combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_explode1, 5, 32, 0, t, t+32, -1, -1);
 				a = shiptonum(cbeams[c].dst);
-				combat_damageship(a, 0, cbeams[c].wep->damage, t, cbeams[c].wep);
+				combat_damageship(a, 0, cbeams[c].wep->damage, t, cbeams[c].wep, 0);
 				cbeams[c].dmt += 500;
 				d = ((cbeams[c].wep->flags & wpfShock1)>0)+2*((cbeams[c].wep->flags & wpfShock2)>0);
 				if (d==1)
 				{
-					cexplo[combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 0, 96, 1, t, t+24, 1)].str = t-8;
+					cexplo[combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 0, 96, 1, t, t+24, 1, -1)].str = t-8;
 					if (settings.opt_lensflares)
-						combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 1, 112, 0, t, t+10, 4);
+						combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 1, 112, 0, t, t+10, 4, -1);
 				}
 				else if (d==2)
 				{
-					cexplo[combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 0, 96, 1, t, t+32, 3)].str = t-8;
+					cexplo[combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 0, 96, 1, t, t+32, 3, -1)].str = t-8;
 					if (settings.opt_lensflares)
-						combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 1, 144, 0, t, t+16, 4);
+						combat_addexplo(cbeams[c].dst->x, cbeams[c].dst->y, spr_shockwave, 1, 144, 0, t, t+16, 4, -1);
 				}
 			}
 		}
 		if (t > cbeams[c].end)
 		{
-			cbeams[c].wep = nullptr;
+			cbeams[c].wep = NULL;
 		}
 	}
 
@@ -1573,7 +1573,7 @@ void combat_movement(int32 t)
 	{
 		if ( cprojs[c].wep->flags & wpfHoming)
 		{
-			if (cprojs[c].dst!=nullptr)
+			if (cprojs[c].dst!=NULL)
 			{
 				a = get_direction ( (cprojs[c].dst->x>>10)-(cprojs[c].x>>10), (cprojs[c].dst->y>>10)-(cprojs[c].y>>10) );
 				a = (a + 1024 - cprojs[c].a) & 1023;
@@ -1609,11 +1609,11 @@ void combat_movement(int32 t)
 				{
 					a = shipsystems[cprojs[c].dst->ecm_type].par[0];
 					if (rand()%300 < a)
-						cprojs[c].dst = nullptr;
+						cprojs[c].dst = NULL;
 				}*/
-				if (cprojs[c].dst != nullptr)
+				if (cprojs[c].dst != NULL)
 					if (cprojs[c].dst->cloaked)
-						cprojs[c].dst = nullptr;
+						cprojs[c].dst = NULL;
 			}
 			
 			cprojs[c].vx = (cprojs[c].vx * 15 + ((sin1k[cprojs[c].a] * cprojs[c].wep->speed / COMBAT_FRAMERATE) >> 6)) >> 4;
@@ -1695,48 +1695,48 @@ void combat_movement(int32 t)
 					else
 						d = 1;	// now gives damage one point at a time - much cooler!
 					//if (d > cprojs[c].hits) d = cprojs[c].hits;
-					combat_damageship(p, 0, d, t, cprojs[c].wep);
+					combat_damageship(p, 0, d, t, cprojs[c].wep, 0);
 					cprojs[c].hits -= d;
 					a = hulls[shiptypes[cships[p].type].hull].size>>1;
 					combat_addexplo(cships[p].x + ((rand()%(a*2) - a)<<8), 
 													cships[p].y + ((rand()%(a*2) - a)<<8), 
-													spr_explode1, 5, 32, 0, t, t+32);
+													spr_explode1, 5, 32, 0, t, t+32, -1, -1);
 					if (cprojs[c].hits <= 0)
-					{	cprojs[c].wep = nullptr; break; }
+					{	cprojs[c].wep = NULL; break; }
 				}
 				else
 				{
-					combat_damageship(p, 0, cprojs[c].wep->damage, t, cprojs[c].wep);
-					combat_addexplo(cprojs[c].x, cprojs[c].y, spr_explode1, 5, 32, 0, t, t+32);
+					combat_damageship(p, 0, cprojs[c].wep->damage, t, cprojs[c].wep, 0);
+					combat_addexplo(cprojs[c].x, cprojs[c].y, spr_explode1, 5, 32, 0, t, t+32, -1, -1);
 					d = ((cprojs[c].wep->flags & wpfShock1)>0)+2*((cprojs[c].wep->flags & wpfShock2)>0);
 					if (d==1)
 					{
-						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 96, 1, t-8, t+24, 1);
+						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 96, 1, t-8, t+24, 1, -1);
 						if (settings.opt_lensflares)
-							combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4);
+							combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 1, 112, 0, t, t+10, 4, -1);
 					}
 					else if (d==2)
 					{
-						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 96, 1, t-8, t+32, 3);
+						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 96, 1, t-8, t+32, 3, -1);
 						if (settings.opt_lensflares)
-							combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 1, 144, 0, t, t+16, 4);
+							combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 1, 144, 0, t, t+16, 4, -1);
 					}
 					if (cprojs[c].wep->flags & wpfNova)
 					{
-						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 96, 1, t-8, t+16, 1);
-						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 256, 1, t-8, t+40, 2);
+						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 96, 1, t-8, t+16, 1, -1);
+						combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 0, 256, 1, t-8, t+40, 2, -1);
 						if (settings.opt_lensflares)
-							combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 1, 160, 0, t, t+24, 4);
+							combat_addexplo(cprojs[c].x, cprojs[c].y, spr_shockwave, 1, 160, 0, t, t+24, 4, -1);
 						if (cships[p].hits <= 0)
 							cships[p].hits = 1 - hulls[shiptypes[cships[p].type].hull].hits;
 					}
-					cprojs[c].wep = nullptr;
+					cprojs[c].wep = NULL;
 					break;
 				}
 			}
 		}
 
-		if (t > cprojs[c].end && cprojs[c].wep != nullptr)
+		if (t > cprojs[c].end && cprojs[c].wep != NULL)
 		{
 			if (cprojs[c].wep->flags & wpfSplit)	// end split ("flak")
 				if (!(cprojs[c].wep->flags & wpfHoming))
@@ -1752,7 +1752,7 @@ void combat_movement(int32 t)
 						combat_launchstages(c, 3, t);
 				}
 			
-			cprojs[c].wep = nullptr;
+			cprojs[c].wep = NULL;
 		}
 	}
 }
@@ -2167,10 +2167,10 @@ void combat_summon_klakar(int32 t)
 	}
 	if (b == -1)
 	{
-		Play_SoundFX(WAV_DESELECT, get_ik_timer(1)); 	
+		Play_SoundFX2(WAV_DESELECT, get_ik_timer(1));
 		return;
 	}
-	Play_SoundFX(WAV_DOT, 0);
+	Play_SoundFX2(WAV_DOT, 0);
 	sm_fleets[b].system = player.system;
 
 	b = -1;
@@ -2206,7 +2206,7 @@ void combat_summon_klakar(int32 t)
 
 	combat_findstuff2do(s, 0);
 
-//	Play_SoundFX(WAV_HYPERDRIVE, get_ik_timer(1));
+//	Play_SoundFX2(WAV_HYPERDRIVE, get_ik_timer(1));
 	klaktime = t;
 }
 
@@ -2226,7 +2226,7 @@ void combat_launch_fighter(int32 s, int32 t)
 
 	if (b >= 3)	// don't launch more than 3 at once
 		return;
-	Play_SoundFX(WAV_FIGHTERLAUNCH);
+	Play_SoundFX1(WAV_FIGHTERLAUNCH);
 	*/
 
 	b = -1;
@@ -2273,7 +2273,7 @@ int32 combat_use_gong(int32 t)
 	if (b==-1)
 		return 1;
 #ifndef DEMO_VERSION
-	Play_SoundFX(WAV_GONG, t);
+	Play_SoundFX2(WAV_GONG, t);
 #endif
 
 	// mark ship for extreme death
@@ -2291,7 +2291,7 @@ void combat_help_screen()
 	int32 x, y;
 	t_ik_image *bg;
 
-	bg = ik_load_pcx("graphics/helpc.pcx", nullptr);
+	bg = ik_load_pcx("graphics/helpc.pcx", NULL);
 
 	prep_screen();
 	ik_copybox(bg, screen, 0, 0, 640, 480, 0,0);
@@ -2406,5 +2406,5 @@ void combat_SoundFX(int id, int srcx, int volume, int rate)
 	if (pan > 10000)
 		pan = 10000;
 
-	Play_SoundFX(id, 0, volume, rate, pan);
+	Play_SoundFX(id, 0, volume, rate, pan, 30);
 }

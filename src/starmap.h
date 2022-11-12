@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef SAIS_STARMAP_H
+#define SAIS_STARMAP_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // ----------------
 //    CONSTANTS
 // ----------------
@@ -421,7 +428,7 @@ void starmap_exploreplanet();
 int32 starmap_explorehole(int32 h, int32 t);
 
 // alien encounters
-int32 fleet_encounter(int32 flt, int32 inc=0);
+int32 fleet_encounter(int32 flt, int32 inc /* =0 */);
 void starmap_meetrace(int32 r);
 void klakar_encounter();
 void enemy_encounter(int32 r);
@@ -454,7 +461,7 @@ int32 item_colorcode(int32 it);
 void klakar_trade();
 
 // mercenary
-int32 pay_item(char *title, char *text, int r, char klak = 0);
+int32 pay_item(char *title, char *text, int r, char klak /* = 0 */);
 
 // use artifact
 #ifndef DEMO_VERSION
@@ -468,3 +475,10 @@ void use_conograph(char *title);
 int32 probe_fleet_encounter(int32 flt);
 void probe_exploreplanet(int32 probe);
 int32 stellar_probe(char *title);
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_STARMAP_H */
+

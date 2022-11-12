@@ -18,9 +18,9 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -608,7 +608,7 @@ void combat_display(int32 t)
 		{
 			if (!cprojs[cbeams[c].stg].wep)
 			{
-				cbeams[c].wep = nullptr;
+				cbeams[c].wep = NULL;
 				continue;
 			}
 			sx = cprojs[cbeams[c].stg].x; 
@@ -701,7 +701,7 @@ void combat_display(int32 t)
 									spr_shockwave->spr[4], a);
 
 //		if (t > cprojs[c].end)
-//			cprojs[c].wep = nullptr;
+//			cprojs[c].wep = NULL;
 	}
 
 	// check for fiery furies (gong)
@@ -759,7 +759,7 @@ void combat_display(int32 t)
 								cexplo[c].spr->spr[p], 
 								5+(l<<8));
 		if (t > cexplo[c].end)
-			cexplo[c].spr = nullptr;
+			cexplo[c].spr = NULL;
 	}
 
 	if (camera.ship_sel > -1)

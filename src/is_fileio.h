@@ -21,41 +21,54 @@
 #ifndef IS_FILEIO_H
 #define IS_FILEIO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <physfs.h>
+#include <stdbool.h>
 
-typedef PHYSFS_File *   IS_FileHdl;
+typedef PHYSFS_File *IS_FileHdl;
 
-inline IS_FileHdl IS_Open_Read(const char *filename) {
+inline IS_FileHdl IS_Open_Read(const char *filename)
+{
     return PHYSFS_openRead(filename);
 }
 
-inline IS_FileHdl IS_Open_Write(const char *filename) {
+inline IS_FileHdl IS_Open_Write(const char *filename)
+{
     return PHYSFS_openWrite(filename);
 }
 
-inline IS_FileHdl IS_Open_Append(const char *filename) {
+inline IS_FileHdl IS_Open_Append(const char *filename)
+{
     return PHYSFS_openAppend(filename);
 }
 
 extern void IS_Close(IS_FileHdl fileHandle);
 
-inline size_t IS_Read(void *dest, size_t elem, size_t count, IS_FileHdl fileHandle) {
-    return PHYSFS_readBytes(fileHandle, dest, elem*count);
+inline size_t IS_Read(void *dest, size_t elem, size_t count, IS_FileHdl fileHandle)
+{
+    return PHYSFS_readBytes(fileHandle, dest, elem * count);
 }
 
-inline size_t IS_Write(void *src, size_t elem, size_t count, IS_FileHdl fileHandle) {
-    return PHYSFS_writeBytes(fileHandle, src, elem*count);
+inline size_t IS_Write(void *src, size_t elem, size_t count, IS_FileHdl fileHandle)
+{
+    return PHYSFS_writeBytes(fileHandle, src, elem * count);
 }
 
-inline bool IS_EOF(IS_FileHdl fileHandle) {
+inline bool IS_EOF(IS_FileHdl fileHandle)
+{
     return PHYSFS_eof(fileHandle);
 }
 
-inline bool IS_exists(const char *filename) {
+inline bool IS_exists(const char *filename)
+{
     return PHYSFS_exists(filename);
 }
 
-inline void IS_Skip(IS_FileHdl fileHdl, size_t offset) {
+inline void IS_Skip(IS_FileHdl fileHdl, size_t offset)
+{
     PHYSFS_seek(fileHdl, PHYSFS_tell(fileHdl) + offset);
 }
 
@@ -70,5 +83,9 @@ void ik_print_log(const char *format, ...);
 extern IS_FileHdl logfile;
 extern int last_logdate;
 extern char moddir[256];
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif /* IS_FILEIO_H */

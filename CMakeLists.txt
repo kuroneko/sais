@@ -40,9 +40,9 @@ else()
 endif()
 
 set(SAIS_SRC
-    src/cards.cpp
-    src/combat.cpp
-    src/combat_display.cpp
+        src/cards.c
+        src/combat.c
+        src/combat_display.c
     src/combat_init.cpp
     src/combat_sim.cpp
     src/combat_weapons.cpp
