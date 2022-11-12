@@ -21,14 +21,13 @@ All DIRECTDRAW stuff here
 
 */
 
-#include <cstdlib>
-#include <cstring>
-#include <cstdarg>
-#include <cstdio>
-#include <cmath>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <math.h>
 
 #include <SDL.h>
-#include <algorithm>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -54,8 +53,9 @@ int sdl_x_offset = 0;
 int sdl_y_offset = 0;
 float sdl_screen_scale = 1.0f;
 
-void gfx_refresh_screen() {
-    int outw,outh,inw,inh,render_offx,render_offy;
+void gfx_refresh_screen()
+{
+    int outw, outh, inw, inh, render_offx, render_offy;
     float render_scale = 1.0f;
     SDL_GetWindowSize(sdlWind, &inw, &inh);
     SDL_GetRendererOutputSize(sdlRend, &outw, &outh);
@@ -65,14 +65,14 @@ void gfx_refresh_screen() {
         // for pixel perfect scaling, use integer ratios only.
         int yrat = outh / sdlsurf->h;
         int xrat = outw / sdlsurf->w;
-        render_scale = static_cast<float>(std::min<int>(xrat, yrat));
+        render_scale = (float) (MIN(xrat, yrat));
         if (render_scale < 1) {
             render_scale = 1;
         }
     } else {
-        float yrat = static_cast<float>(outh) / static_cast<float>(sdlsurf->h);
-        float xrat = static_cast<float>(outw) / static_cast<float>(sdlsurf->w);
-        render_scale = std::min<float>(xrat, yrat);
+        float yrat = (float) (outh) / (float) (sdlsurf->h);
+        float xrat = (float) (outw) / (float) (sdlsurf->w);
+        render_scale = MIN(xrat, yrat);
     }
 
     // damnit SDL!  When we're on a HighDPI device, we have to work in two separate scales.
@@ -82,56 +82,58 @@ void gfx_refresh_screen() {
     // this means we need to calculate our ratios twice - once to position the actual output rect
     // and the second time to get the equivalent input transform information.
 
-    sdl_screen_scale = render_scale * static_cast<float>(inw) / static_cast<float>(outw);
+    sdl_screen_scale = render_scale * (float) (inw) / (float) (outw);
 
-    int targetXSize = static_cast<int>(sdlsurf->w * sdl_screen_scale);
-    int targetYSize = static_cast<int>(sdlsurf->h * sdl_screen_scale);
+    int targetXSize = (int) (sdlsurf->w * sdl_screen_scale);
+    int targetYSize = (int) (sdlsurf->h * sdl_screen_scale);
     sdl_x_offset = (inw - targetXSize) / 2;
     sdl_y_offset = (inh - targetYSize) / 2;
 
-    targetXSize = static_cast<int>(sdlsurf->w * render_scale);
-    targetYSize = static_cast<int>(sdlsurf->h * render_scale);
+    targetXSize = (int) (sdlsurf->w * render_scale);
+    targetYSize = (int) (sdlsurf->h * render_scale);
     render_offx = (outw - targetXSize) / 2;
     render_offy = (outh - targetYSize) / 2;
 
 
-    SDL_Rect destRect{
-            render_offx,
-            render_offy,
-            targetXSize,
-            targetYSize,
+    SDL_Rect destRect = {
+        render_offx,
+        render_offy,
+        targetXSize,
+        targetYSize,
     };
     // clear the surface first.
     SDL_RenderClear(sdlRend);
 
     // now, blit the 8I surface to the RGBA32 surface
-    if (SDL_BlitSurface(sdlsurf, nullptr, blitIntermedSurf, nullptr)) {
+    if (SDL_BlitSurface(sdlsurf, NULL, blitIntermedSurf, NULL)) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Blit to correct format failed: %s", SDL_GetError());
         abort();
     }
 
     // now, copy the surface data to the texture.
-    char *TexPixelData = nullptr; int pitch = 0;
-    if (!SDL_LockTexture(sdlWindTexture, nullptr, reinterpret_cast<void**>(&TexPixelData), &pitch)) {
+    char *TexPixelData = NULL;
+    int pitch = 0;
+    if (!SDL_LockTexture(sdlWindTexture, NULL, (void**)&TexPixelData, &pitch)) {
         SDL_LockSurface(blitIntermedSurf);
         const int lineLength = blitIntermedSurf->format->BytesPerPixel * blitIntermedSurf->w;
         for (int y = 0; y < blitIntermedSurf->h; y++) {
             const int lOffset = pitch * y;
             const int sOffset = blitIntermedSurf->pitch * y;
-            memcpy(TexPixelData + lOffset, reinterpret_cast<char *>(blitIntermedSurf->pixels) + sOffset, lineLength);
+            memcpy(TexPixelData + lOffset, (char *)(blitIntermedSurf->pixels) + sOffset, lineLength);
         }
         SDL_UnlockSurface(blitIntermedSurf);
         SDL_UnlockTexture(sdlWindTexture);
     }
 
     // and blat the texture onto the screen.
-    SDL_RenderCopy(sdlRend, sdlWindTexture, nullptr, &destRect);
+    SDL_RenderCopy(sdlRend, sdlWindTexture, NULL, &destRect);
     SDL_RenderPresent(sdlRend);
 }
 
 // blit screen
-void ik_blit() {
-    t_ik_sprite *cs = nullptr;
+void ik_blit()
+{
+    t_ik_sprite *cs = NULL;
 
     // take screenshots here (!)
 #ifdef MOVIE
@@ -179,7 +181,8 @@ void ik_blit() {
 }
 
 // palette stuff
-void update_palette() {
+void update_palette()
+{
     SDL_Color spal[256];
     int i;
 
@@ -192,16 +195,18 @@ void update_palette() {
     SDL_SetPaletteColors(sdlsurf->format->palette, spal, 0, 256);
 }
 
-void set_palette_entry(int n, int r, int g, int b) {
+void set_palette_entry(int n, int r, int g, int b)
+{
     currentpal[n * 3] = r;
     currentpal[n * 3 + 1] = g;
     currentpal[n * 3 + 2] = b;
 }
 
-int get_palette_entry(int n) {
+int get_palette_entry(int n)
+{
     return currentpal[n * 3] * 65536 +
-           currentpal[n * 3 + 1] * 256 +
-           currentpal[n * 3 + 2];
+        currentpal[n * 3 + 1] * 256 +
+        currentpal[n * 3 + 2];
 }
 
 void prep_screen() // call before drawing stuff to *screen
@@ -220,7 +225,8 @@ void free_screen() // call after drawing, before blit
     SDL_UnlockSurface(sdlsurf);
 }
 
-int gfx_checkswitch() {
+int gfx_checkswitch()
+{
     /*
     // implement windowed/fullscreen switch here?
     */

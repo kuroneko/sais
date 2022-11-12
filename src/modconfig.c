@@ -142,6 +142,8 @@ void modconfig_init()
 {
     IS_FileHdl fil;
 
+    IS_DumpSearchPath();
+
     // read mod names
     PHYSFS_enumerate("mods", modconfig_enumerate_cb, NULL);
 

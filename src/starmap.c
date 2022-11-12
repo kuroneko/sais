@@ -18,10 +18,10 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 #include "Typedefs.h"
 #include "is_fileio.h"
@@ -1149,7 +1149,7 @@ void starmap_display(int32 t)
 #endif
 		if (player.explore != c+1)
 		{
-			if ( int32(cx+sm_holes[c].x + 12 + strlen(sm_holes[c].name)*4) < int32(cx + 232))
+			if ( (int32)(cx+sm_holes[c].x + 12 + strlen(sm_holes[c].name)*4) < (int32)(cx + 232))
 				ik_print(screen, font_4x8, cx + sm_holes[c].x + 12, cy - sm_holes[c].y - 3, 0, sm_holes[c].name);
 			else
 				ik_print(screen, font_4x8, cx + sm_holes[c].x - 12 - strlen(sm_holes[c].name)*4, cy - sm_holes[c].y - 3, 0, sm_holes[c].name);
@@ -1172,7 +1172,7 @@ void starmap_display(int32 t)
 			ik_drsprite(screen, sm_stars[c].ds_x, sm_stars[c].ds_y,
 									0, 32, spr_SMstars->spr[sm_stars[c].color], 2);
 		}
-		if ( int32(sm_stars[c].ds_x + 12 + strlen(sm_stars[c].starname)*4) < int32(cx + 232))
+		if ( (int32)(sm_stars[c].ds_x + 12 + strlen(sm_stars[c].starname)*4) < (int32)(cx + 232))
 			ik_print(screen, font_4x8, sm_stars[c].ds_x + 12, sm_stars[c].ds_y - 3, 0, sm_stars[c].starname);
 		else
 			ik_print(screen, font_4x8, sm_stars[c].ds_x - 12 - strlen(sm_stars[c].starname)*4, sm_stars[c].ds_y - 3, 0, sm_stars[c].starname);
@@ -2348,7 +2348,7 @@ void help_screen()
 	int32 x, y;
 	t_ik_image *bg;
 
-	bg = ik_load_pcx("graphics/help.pcx", nullptr);
+	bg = ik_load_pcx("graphics/help.pcx", NULL);
 
 	prep_screen();
 	ik_copybox(bg, screen, 0, 0, 640, 480, 0,0);

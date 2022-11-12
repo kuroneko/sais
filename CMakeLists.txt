@@ -3,14 +3,10 @@ cmake_minimum_required(VERSION 3.15)
 # This enables the new MSVC runtime library selection mechanism.
 cmake_policy(SET CMP0091 NEW)
 
-# Whislt we're not using C++14 much in the codebase, that is our assumed target.
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED 14)
-
 # on macos, target 10.11
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
 
-project(strange VERSION 1.6.3 LANGUAGES C CXX)
+project(strange VERSION 1.6.3 LANGUAGES C)
 
 option(USE_CONAN "Use conan for dependencies" OFF)
 
@@ -20,6 +16,9 @@ option(BUILD_DEMO "Build the Demo Version of SAIS" OFF)
 
 # This relates to SAIS's original internal logging, not the GPL version's SDL Logging which is always on.
 option(USE_LOG "Enable game logging" OFF)
+
+# work out if we need libm.
+find_library(LIBM NAMES m)
 
 if(USE_CONAN)
     include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -50,40 +49,40 @@ set(SAIS_SRC
         src/font.c
         src/gfx.c
         src/interface.c
-    src/is_fileio.cpp
+        src/is_fileio.c
         src/main.c
         src/modconfig.c
     src/physfsrwops.c
-    src/sdl_iface.cpp
-    src/sdl_main.cpp
-    src/sound.cpp
-    src/sprites.cpp
-    src/starmap.cpp
-    src/starmap_encounters.cpp
-    src/starmap_init.cpp
-    src/starmap_inventory.cpp
+        src/sdl_iface.c
+        src/sdl_main.c
+        src/sound.c
+        src/sprites.c
+        src/starmap.c
+        src/starmap_encounters.c
+        src/starmap_init.c
+        src/starmap_inventory.c
         src/startgame.c
         src/textstr.c
-    src/w32_gfx.cpp
-    src/w32_sound.cpp
+        src/w32_gfx.c
+        src/w32_sound.c
     src/safe_cstr.h
     src/port.h)
 
 ### OS specific sources
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
     set(SAIS_SYS_SRCS
-        src/portable/safe_cstr.cpp
-        src/portable/abort.cpp
+            src/portable/safe_cstr.c
+            src/portable/abort.c
     )
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
     set(SAIS_SYS_SRCS
-        src/portable/safe_cstr.cpp
-        src/portable/abort.cpp
+            src/portable/safe_cstr.c
+            src/portable/abort.c
     )
 else()
     set(SAIS_SYS_SRCS
-        src/portable/safe_cstr.cpp
-        src/portable/abort.cpp
+            src/portable/safe_cstr.c
+            src/portable/abort.c
     )
 endif()
 
@@ -92,7 +91,8 @@ if(BUILD_DEMO)
     target_link_directories(strangedemo PRIVATE ${SAIS_LIB_DIRS})
     target_link_libraries(strangedemo
         PRIVATE
-        ${SAIS_LIBS})
+        ${SAIS_LIBS}
+        ${LIBM})
     target_include_directories(strangedemo PRIVATE ${SAIS_INCLUDES})
     target_compile_definitions(strangedemo PRIVATE DEMO_VERSION=1)
 
@@ -105,7 +105,8 @@ else()
     target_link_directories(strange PRIVATE ${SAIS_LIB_DIRS})
     target_link_libraries(strange
         PRIVATE
-        ${SAIS_LIBS})
+        ${SAIS_LIBS}
+        ${LIBM})
     target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
     install(TARGETS strange RUNTIME DESTINATION . BUNDLE DESTINATION .)
     install(DIRECTORY full/ DESTINATION .)

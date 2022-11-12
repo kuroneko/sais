@@ -56,6 +56,8 @@ extern int read_line1(IS_FileHdl in, char *out1);
 extern void ik_start_log();
 extern void ik_print_log(const char *format, ...);
 
+extern void IS_DumpSearchPath();
+
 extern IS_FileHdl logfile;
 extern int last_logdate;
 extern char moddir[256];

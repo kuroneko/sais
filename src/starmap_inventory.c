@@ -18,11 +18,11 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <ctime>
-#include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
 
 #include "Typedefs.h"
 #include "is_fileio.h"

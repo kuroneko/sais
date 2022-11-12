@@ -18,8 +18,8 @@
 
 #include "../safe_cstr.h"
 
-#include <cstdarg>
-#include <cstdio>
+#include <stdarg.h>
+#include <stdio.h>
 
 void safe_strncpy(char *dest, const char *src, size_t n) {
     if (n>0) {
@@ -30,15 +30,15 @@ void safe_strncpy(char *dest, const char *src, size_t n) {
 
 int safe_snprintf(char *dest, size_t n, const char *format, ...) {
     int rv = -1;
-    std::va_list arglist;
+    va_list arglist;
     va_start(arglist, format);
     rv = safe_vsnprintf(dest, n, format, arglist);
     va_end(arglist);
     return rv;
 }
 
-int safe_vsnprintf(char *dest, size_t n, const char *format, std::va_list args) {
-    auto rv = vsnprintf(dest, n, format, args);
+int safe_vsnprintf(char *dest, size_t n, const char *format, va_list args) {
+    int rv = vsnprintf(dest, n, format, args);
     dest[n-1] = '\0';
     return rv;
 }

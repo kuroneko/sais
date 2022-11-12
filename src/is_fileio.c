@@ -18,11 +18,9 @@
 //     INCLUDES
 // ----------------
 
-#include <vector>
-
-#include <cstdio>
-#include <cstring>
-#include <cstdarg>
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 
 #include <physfs.h>
 #include <SDL.h>
@@ -41,6 +39,16 @@ char moddir[256];
 // ----------------
 // GLOBAL FUNCTIONS
 // ----------------
+
+void IS_DumpSearchPath()
+{
+    SDL_Log("PHYSFS Search Path");
+    char **searchPath = PHYSFS_getSearchPath();
+    for (char **sIter = searchPath; *sIter != NULL; sIter++) {
+        SDL_Log("* %s", *sIter);
+    }
+    PHYSFS_freeList(searchPath);
+}
 
 void IS_Close(IS_FileHdl fileHandle) {
     if (!PHYSFS_close(fileHandle)) {
@@ -147,7 +155,7 @@ void ik_start_log() {
     IS_FileHdl fil;
     char fname[32];
 
-    logfile = nullptr;
+    logfile = NULL;
 
     n = 0;
     while (n < 1000) {
@@ -168,17 +176,23 @@ IS_Printf(IS_FileHdl fileHdl, const char *format, ...)
     size_t lineOutLen;
     va_list ap;
     va_list ap2;
+    char *bufOut = NULL;
+    int rv;
     va_start(ap, format);
     va_copy(ap2, ap);
-    lineOutLen = vsnprintf(nullptr, 0, format, ap);
+    lineOutLen = vsnprintf(NULL, 0, format, ap);
     va_end(ap);
 
+    bufOut = (char*)malloc(lineOutLen+1);
+
     // build the buffer. - must include 1 extra for NUL storage
-    std::vector<char>   bufOut(lineOutLen+1);
-    vsnprintf(bufOut.data(), lineOutLen, format, ap2);
+    vsnprintf(bufOut, lineOutLen, format, ap2);
     va_end(ap2);
 
-    return IS_Write(bufOut.data(), lineOutLen, 1, fileHdl);
+    rv = IS_Write(bufOut, lineOutLen, 1, fileHdl);
+
+    free(bufOut);
+    return rv;
 }
 
 int
@@ -186,14 +200,18 @@ IS_VPrintf(IS_FileHdl fileHdl, const char *format, va_list arglist)
 {
     size_t lineOutLen;
     va_list ap2;
+    int rv;
+    char *bufOut;
+
     va_copy(ap2, arglist);
-    lineOutLen = vsnprintf(nullptr, 0, format, ap2);
+    lineOutLen = vsnprintf(NULL, 0, format, ap2);
     va_end(ap2);
     // build the buffer. - must include 1 extra for NUL storage
-    std::vector<char>   bufOut(lineOutLen+1);
-    vsnprintf(bufOut.data(), lineOutLen, format, arglist);
-
-    return IS_Write(bufOut.data(), lineOutLen, 1, fileHdl);
+    bufOut = (char*)malloc(lineOutLen+1);
+    vsnprintf(bufOut, lineOutLen, format, arglist);
+    rv = IS_Write(bufOut, lineOutLen, 1, fileHdl);
+    free(bufOut);
+    return rv;
 }
 
 
