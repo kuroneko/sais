@@ -43,16 +43,16 @@ set(SAIS_SRC
         src/cards.c
         src/combat.c
         src/combat_display.c
-    src/combat_init.cpp
-    src/combat_sim.cpp
-    src/combat_weapons.cpp
-    src/endgame.cpp
-    src/font.cpp
-    src/gfx.cpp
-    src/interface.cpp
+        src/combat_init.c
+        src/combat_sim.c
+        src/combat_weapons.c
+        src/endgame.c
+        src/font.c
+        src/gfx.c
+        src/interface.c
     src/is_fileio.cpp
-    src/main.cpp
-    src/modconfig.cpp
+        src/main.c
+        src/modconfig.c
     src/physfsrwops.c
     src/sdl_iface.cpp
     src/sdl_main.cpp
@@ -62,8 +62,8 @@ set(SAIS_SRC
     src/starmap_encounters.cpp
     src/starmap_init.cpp
     src/starmap_inventory.cpp
-    src/startgame.cpp
-    src/textstr.cpp
+        src/startgame.c
+        src/textstr.c
     src/w32_gfx.cpp
     src/w32_sound.cpp
     src/safe_cstr.h

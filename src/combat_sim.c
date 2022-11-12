@@ -18,8 +18,8 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdio>
-#include <cstring>
+#include <stdio.h>
+#include <string.h>
 
 #include "Typedefs.h"
 #include "is_fileio.h"
@@ -201,7 +201,7 @@ int32 cs_setupbattle()
 	int32 f = 0;
 	t_ik_image *bg;
 
-	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
+	bg = ik_load_pcx("graphics/starback.pcx", NULL);
 
 	if (player.ships[0]>0 && player.ships[0]<4)
 		pship = player.ships[0]-1;

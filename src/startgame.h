@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef SAIS_STARTGAME_H
+#define SAIS_STARTGAME_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // ----------------
 //    CONSTANTS
 // ----------------
@@ -37,3 +44,9 @@ void startgame_deinit();
 
 void loadconfig();
 void saveconfig();
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_STARTGAME_H */

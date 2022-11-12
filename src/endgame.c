@@ -18,9 +18,9 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "Typedefs.h"
 #include "is_fileio.h"
@@ -90,7 +90,7 @@ void game_over()
 	};
 	t_ik_sprite *deathpic;
 
-	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
+	bg = ik_load_pcx("graphics/starback.pcx", NULL);
 
 	Stop_All_Sounds();
 

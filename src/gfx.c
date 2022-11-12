@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cmath>
-#include <cstdint>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <stdint.h>
 #include <SDL.h>
 
 #include "Typedefs.h"
@@ -245,7 +245,7 @@ void calc_color_tables(uint8 *pal) {
     gfx_transbuffer = (unsigned char *) malloc(65536);
     gfx_lightbuffer = (unsigned char *) malloc(65536);
 
-    if (gfx_transbuffer == nullptr || gfx_lightbuffer == nullptr || gfx_addbuffer == nullptr)
+    if (gfx_transbuffer == NULL || gfx_lightbuffer == NULL || gfx_addbuffer == NULL)
         return;  // fail
 
     colormap = IS_Open_Read("graphics/colormap.dat");
@@ -290,7 +290,7 @@ t_ik_image *new_image(int32 w, int32 h) {
 
     img = (t_ik_image *) calloc(1, sizeof(t_ik_image));
     if (!img) {
-        return nullptr;
+        return NULL;
     }
 
     img->w = w;
@@ -301,7 +301,7 @@ t_ik_image *new_image(int32 w, int32 h) {
     img->data = (uint8 *) calloc(w * h, sizeof(uint8));
     if (!img->data) {
         free(img);
-        return nullptr;
+        return NULL;
     }
 
     return img;
@@ -349,7 +349,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal) {
 
     img = IS_Open_Read(fname);
     if (!img)
-        return nullptr;
+        return NULL;
 
     // load header
     IS_Read(&pcxHeader, sizeof(pcxHeader), 1, img);
@@ -381,7 +381,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal) {
     {
         SDL_Log("tried to load PCX %s of bad format: bpp:%d, planes:%d", fname, bpp, planecount);
         IS_Close(img);
-        return nullptr;
+        return NULL;
     }
 
     // read palette from the end
@@ -394,7 +394,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal) {
     image = new_image(img_w, img_h);
     if (!image) {
         IS_Close(img);
-        return nullptr;
+        return NULL;
     }
 
     buffer = image->data;
@@ -441,7 +441,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal) {
     uint8 hdr[18];
 
     fil = IS_Open_Read(fname);
-    if (!fil) return nullptr;
+    if (!fil) return NULL;
 
     IS_Read(hdr, 1, 18, fil);
     p = 1;
@@ -454,7 +454,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal) {
     if (!p) {
         IS_Close(fil);
         SDL_Log("ERROR: Bad TGA format %s", fname);
-        return nullptr;
+        return NULL;
     }
 
     // read palette
@@ -471,7 +471,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal) {
     img = new_image(hdr[13] * 256 + hdr[12], hdr[15] * 256 + hdr[14]);
     if (!img) {
         IS_Close(fil);
-        return nullptr;
+        return NULL;
     }
 
     for (p = img->h; p > 0; p--) {
@@ -628,7 +628,7 @@ void reshalfbritescreen() {
     num_dims--;
     ik_copybox(dims[num_dims], screen, 0, 0, screen->w, screen->h, 0, 0);
     del_image(dims[num_dims]);
-    dims[num_dims] = nullptr;
+    dims[num_dims] = NULL;
 
     free_screen();
 }
@@ -643,7 +643,7 @@ void resallhalfbritescreens() {
         num_dims--;
         ik_copybox(dims[num_dims], screen, 0, 0, screen->w, screen->h, 0, 0);
         del_image(dims[num_dims]);
-        dims[num_dims] = nullptr;
+        dims[num_dims] = NULL;
     }
     free_screen();
 }

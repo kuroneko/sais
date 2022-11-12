@@ -30,55 +30,31 @@ extern "C" {
 
 typedef PHYSFS_File *IS_FileHdl;
 
-inline IS_FileHdl IS_Open_Read(const char *filename)
-{
-    return PHYSFS_openRead(filename);
-}
+extern IS_FileHdl IS_Open_Read(const char *filename);
 
-inline IS_FileHdl IS_Open_Write(const char *filename)
-{
-    return PHYSFS_openWrite(filename);
-}
+extern IS_FileHdl IS_Open_Write(const char *filename);
 
-inline IS_FileHdl IS_Open_Append(const char *filename)
-{
-    return PHYSFS_openAppend(filename);
-}
+extern IS_FileHdl IS_Open_Append(const char *filename);
 
 extern void IS_Close(IS_FileHdl fileHandle);
 
-inline size_t IS_Read(void *dest, size_t elem, size_t count, IS_FileHdl fileHandle)
-{
-    return PHYSFS_readBytes(fileHandle, dest, elem * count);
-}
+extern size_t IS_Read(void *dest, size_t elem, size_t count, IS_FileHdl fileHandle);
 
-inline size_t IS_Write(void *src, size_t elem, size_t count, IS_FileHdl fileHandle)
-{
-    return PHYSFS_writeBytes(fileHandle, src, elem * count);
-}
+extern size_t IS_Write(void *src, size_t elem, size_t count, IS_FileHdl fileHandle);
 
-inline bool IS_EOF(IS_FileHdl fileHandle)
-{
-    return PHYSFS_eof(fileHandle);
-}
+extern bool IS_EOF(IS_FileHdl fileHandle);
 
-inline bool IS_exists(const char *filename)
-{
-    return PHYSFS_exists(filename);
-}
+extern bool IS_exists(const char *filename);
 
-inline void IS_Skip(IS_FileHdl fileHdl, size_t offset)
-{
-    PHYSFS_seek(fileHdl, PHYSFS_tell(fileHdl) + offset);
-}
+extern void IS_Skip(IS_FileHdl fileHdl, size_t offset);
 
 extern int IS_Printf(IS_FileHdl fileHdl, const char *format, ...);
 extern int IS_VPrintf(IS_FileHdl fileHdl, const char *format, va_list arglist);
 
-int read_line(IS_FileHdl in, char *out1, char *out2);
-int read_line1(IS_FileHdl in, char *out1);
-void ik_start_log();
-void ik_print_log(const char *format, ...);
+extern int read_line(IS_FileHdl in, char *out1, char *out2);
+extern int read_line1(IS_FileHdl in, char *out1);
+extern void ik_start_log();
+extern void ik_print_log(const char *format, ...);
 
 extern IS_FileHdl logfile;
 extern int last_logdate;

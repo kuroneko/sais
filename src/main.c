@@ -18,10 +18,10 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-#include <ctime>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <time.h>
 
 #include <SDL.h>
 
@@ -100,8 +100,8 @@ int my_main()
 		must_quit = 1;
 
 	SDL_Log("PHYSFS Search Path");
-	auto **searchPath = PHYSFS_getSearchPath();
-    for (auto **sIter = searchPath; *sIter != nullptr; sIter++) {
+	char **searchPath = PHYSFS_getSearchPath();
+    for (char **sIter = searchPath; *sIter != NULL; sIter++) {
         SDL_Log("* %s", *sIter);
     }
 	PHYSFS_freeList(searchPath);
@@ -138,9 +138,9 @@ void splash_screen()
 	t_ik_image *bg[3];
 	int32 zap;
 
-	bg[0] = ik_load_pcx("graphics/cheapass.pcx", nullptr);
-	bg[1] = ik_load_pcx("graphics/digieel.pcx", nullptr);
-	bg[2] = ik_load_pcx("graphics/title.pcx", nullptr);
+	bg[0] = ik_load_pcx("graphics/cheapass.pcx", NULL);
+	bg[1] = ik_load_pcx("graphics/digieel.pcx", NULL);
+	bg[2] = ik_load_pcx("graphics/title.pcx", NULL);
 
 	prep_screen();
 	ik_drawbox(screen, 0, 0, 640, 480, 0);
@@ -373,9 +373,9 @@ void credits_screen()
 
 	must_quit = 0;
 
-	bg[0] = ik_load_pcx("graphics/credits1.pcx", nullptr);
-	bg[1] = ik_load_pcx("graphics/credits2.pcx", nullptr);
-	bg[2] = ik_load_pcx("graphics/credits3.pcx", nullptr);
+	bg[0] = ik_load_pcx("graphics/credits1.pcx", NULL);
+	bg[1] = ik_load_pcx("graphics/credits2.pcx", NULL);
+	bg[2] = ik_load_pcx("graphics/credits3.pcx", NULL);
 
 	prep_screen();
 	ik_drawbox(screen, 0, 0, 640, 480, 0);
@@ -559,7 +559,7 @@ void main_init()
 	endgame_init();
 	gfx_initmagnifier();
 
-	srand( (unsigned)time( nullptr ) );
+	srand( (unsigned)time( NULL ) );
 
 	//s_volume = 85;
 	got_hiscore = -2;
@@ -639,7 +639,7 @@ int32 intro_screen()
 	else
 		Play_Sound3(WAV_MUS_THEME, 15, 1);
 
-	backy = ik_load_pcx("graphics/titback.pcx", nullptr);
+	backy = ik_load_pcx("graphics/titback.pcx", NULL);
 	
 
 	nebby = new_image(640, 480);

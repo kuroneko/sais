@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef SAIS_TEXTSTR_H
+#define SAIS_TEXTSTR_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define STRINGBUFFER_SIZE 128*1024
 
 #ifndef DEMO_VERSION
@@ -532,3 +539,9 @@ extern char *textstring[STR_MAX];
 
 void textstrings_init();
 void textstrings_deinit();
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_TEXTSTR_H */

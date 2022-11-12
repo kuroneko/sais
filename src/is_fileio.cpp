@@ -228,3 +228,43 @@ void ik_print_log(const char *format, ...) {
     va_end(ap2);
     va_end(ap);
 }
+
+IS_FileHdl IS_Open_Read(const char *filename)
+{
+    return PHYSFS_openRead(filename);
+}
+
+IS_FileHdl IS_Open_Write(const char *filename)
+{
+    return PHYSFS_openWrite(filename);
+}
+
+IS_FileHdl IS_Open_Append(const char *filename)
+{
+    return PHYSFS_openAppend(filename);
+}
+
+size_t IS_Read(void *dest, size_t elem, size_t count, IS_FileHdl fileHandle)
+{
+    return PHYSFS_readBytes(fileHandle, dest, elem * count);
+}
+
+size_t IS_Write(void *src, size_t elem, size_t count, IS_FileHdl fileHandle)
+{
+    return PHYSFS_writeBytes(fileHandle, src, elem * count);
+}
+
+bool IS_EOF(IS_FileHdl fileHandle)
+{
+    return PHYSFS_eof(fileHandle);
+}
+
+bool IS_exists(const char *filename)
+{
+    return PHYSFS_exists(filename);
+}
+
+void IS_Skip(IS_FileHdl fileHdl, size_t offset)
+{
+    PHYSFS_seek(fileHdl, PHYSFS_tell(fileHdl) + offset);
+}

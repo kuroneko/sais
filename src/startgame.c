@@ -38,7 +38,7 @@
 
 #include "startgame.h"
 
-int32 waitclick(int left = 0, int top = 0, int right = 640, int bottom = 480);
+int32 waitclick(int left, int top, int right, int bottom);
 
 
 int32 startgame()
@@ -75,7 +75,7 @@ int32 startgame()
 	if (settings.random_names & 2)
 		strcpy(settings.shipname, shipnames[rand()%num_shipnames]);
 
-	bg = ik_load_pcx("graphics/starback.pcx", nullptr);
+	bg = ik_load_pcx("graphics/starback.pcx", NULL);
 
 	end = 0; ti = get_ik_timer(2);
 	while (!end && !must_quit)

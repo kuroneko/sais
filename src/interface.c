@@ -18,8 +18,8 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdio>
-#include <cstring>
+#include <stdio.h>
+#include <string.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -473,11 +473,11 @@ void interface_initsprites()
 	spr_IFdifnebula = load_sprites("graphics/ifdifneb.spr");
 	spr_IFdifenemy = load_sprites("graphics/ifdifnmy.spr");
 
-	pcx = nullptr;
+	pcx = NULL;
 
 	if (!spr_IFborder)
 	{
-		pcx = ik_load_pcx("interfce.pcx", nullptr);
+		pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFborder = new_spritepak(30);
 		for (n=0;n<3;n++)
 		{
@@ -513,7 +513,7 @@ void interface_initsprites()
 	if (!spr_IFdifnebula)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("interfce.pcx", nullptr);
+			pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFdifnebula = new_spritepak(3);
 		for (n=0;n<3;n++)
 		{
@@ -526,7 +526,7 @@ void interface_initsprites()
 	if (!spr_IFdifenemy)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("interfce.pcx", nullptr);
+			pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFdifenemy = new_spritepak(6);
 		for (n=0;n<3;n++)
 		{
@@ -540,7 +540,7 @@ void interface_initsprites()
 	if (!spr_IFbutton)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("interfce.pcx", nullptr);
+			pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFbutton = new_spritepak(22);
 		for (n=0;n<7;n++)
 		{
@@ -565,7 +565,7 @@ void interface_initsprites()
 	if (!spr_IFslider)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("interfce.pcx", nullptr);
+			pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFslider = new_spritepak(10);
 		for (n=0;n<10;n++)
 		{
@@ -578,7 +578,7 @@ void interface_initsprites()
 	if (!spr_IFarrows)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("interfce.pcx", nullptr);
+			pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFarrows = new_spritepak(16);
 		for (n=0;n<16;n++)
 		{
@@ -591,7 +591,7 @@ void interface_initsprites()
 	if (!spr_IFsystem)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("interfce.pcx", nullptr);
+			pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFsystem = new_spritepak(17);
 		for (n=0;n<17;n++)
 		{
@@ -604,7 +604,7 @@ void interface_initsprites()
 	if (!spr_IFtarget)
 	{
 		if (!pcx)
-			pcx = ik_load_pcx("interfce.pcx", nullptr);
+			pcx = ik_load_pcx("interfce.pcx", NULL);
 		spr_IFtarget = new_spritepak(10);
 		for (n=0;n<9;n++)
 		{

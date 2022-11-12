@@ -18,9 +18,9 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -161,7 +161,7 @@ int32 combat_addbeam(t_shipweapon *wep, t_ship *src, int32 hdp, t_ship *trg, int
 	}
 	else
 	{
-		cbeams[b].dst = nullptr;
+		cbeams[b].dst = NULL;
 		cbeams[b].ang = get_direction( trg->x - src->x, trg->y - src->y );
 		cbeams[b].len = wep->range;
 	}
@@ -328,7 +328,7 @@ int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 			if (rand()%30 < a)
 			{
 				//Play_SoundFX1(WAV_SYSFIXED);
-				cprojs[b].dst = nullptr;
+				cprojs[b].dst = NULL;
 				cprojs[b].va = (rand()%4) + 1;
 				if (rand()&1) cprojs[b].va = -cprojs[b].va;
 			}
@@ -445,7 +445,7 @@ void combat_launchstages(int32 p, int32 num, int32 start)
 				if (rand()%30 < a)
 				{
 					Play_SoundFX2(WAV_SYSFIXED, get_ik_timer(1));
-					cprojs[b].dst = nullptr;
+					cprojs[b].dst = NULL;
 					cprojs[b].va = (rand()%5 + 4)*((rand()&1)*2-1);
 				}
 			}
@@ -597,20 +597,20 @@ void combat_killship(int32 s, int32 t, int32 quiet)
 	}
 
 	for (c = 0; c < MAX_COMBAT_PROJECTILES; c++)
-	if (cprojs[c].wep != nullptr)
+	if (cprojs[c].wep != NULL)
 	{
 		if (cprojs[c].wep->flags & wpfHoming)
 			if (cprojs[c].dst == &cships[s])
-				cprojs[c].dst = nullptr;
+				cprojs[c].dst = NULL;
 	}
 
 	for (c = 0; c < MAX_COMBAT_BEAMS; c++)
-	if (cbeams[c].wep != nullptr)
+	if (cbeams[c].wep != NULL)
 	{
 		if (cbeams[c].dst == &cships[s])
-			cbeams[c].wep = nullptr;
+			cbeams[c].wep = NULL;
 		if (cbeams[c].src == &cships[s])
-			cbeams[c].wep = nullptr;
+			cbeams[c].wep = NULL;
 	}
 
 

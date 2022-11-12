@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef SAIS_ENDGAME_H
+#define SAIS_ENDGAME_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // ----------------
 //    CONSTANTS
 // ----------------
@@ -56,3 +63,9 @@ void game_over();
 
 void endgame_init();
 void endgame_deinit();
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_ENDGAME_H */
