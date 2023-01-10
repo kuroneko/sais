@@ -27,6 +27,7 @@ extern "C" {
 
 #include <physfs.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 typedef PHYSFS_File *IS_FileHdl;
 

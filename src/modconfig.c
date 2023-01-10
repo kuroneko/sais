@@ -84,7 +84,7 @@ modDirectory_mapInPHYSFS(struct modDirectory *modDir)
         if (PHYSFS_mount(modPath, NULL, 0)) {
             modDir->isMapped = true;
         } else {
-            SDL_Log("Failed to mount mod: %s", PHYSFS_getLastError());
+            SDL_Log("Failed to mount mod: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         }
     } else {
         SDL_Log("Couldn't find mod directory");
@@ -110,7 +110,12 @@ modconfig_enumerate_cb(void *data, const char *origdir, const char *fname)
     sprintf(fullFilename, "%s/%s", origdir, fname);
     strcpy(sfName, fname);
     // is it a directory or an archive?
-    if (PHYSFS_isDirectory(fullFilename)) {
+    PHYSFS_Stat fileStat;
+    if (!PHYSFS_stat(fullFilename, &fileStat)) {
+        SDL_Log("Unable to stat \"%s\": %s", fullFilename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return PHYSFS_ENUM_OK;
+    }
+    if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY) {
         size_t idx = allModDirectoriesCount++;
         modDirectory_init(&allModDirectories[idx], fname, fullFilename);
     } else {

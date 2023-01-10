@@ -52,7 +52,8 @@ void IS_DumpSearchPath()
 
 void IS_Close(IS_FileHdl fileHandle) {
     if (!PHYSFS_close(fileHandle)) {
-        SDL_Log("Error trying to close file: %s", PHYSFS_getLastError());
+        PHYSFS_ErrorCode physfsErr = PHYSFS_getLastErrorCode();
+        SDL_Log("Error trying to close file: %s", PHYSFS_getErrorByCode(physfsErr));
     }
 }
 

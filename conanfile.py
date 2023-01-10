@@ -6,9 +6,9 @@ class SaisConan(ConanFile):
     license = "GPL"
     settings = "os", "compiler", "build_type", "arch"
     requires = [
-        'sdl2/2.0.12@bincrafters/stable',
-        'sdl2_mixer/2.0.4@bincrafters/stable',
-        'physfs/3.0.2@xsquawkbox/testing',
+        'sdl/2.26.1',
+        'sdl_mixer/2.0.4',
+        'physfs/3.0.2',
     ]
     default_options = {
         "*:shared": False,

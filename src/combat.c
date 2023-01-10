@@ -50,7 +50,7 @@ int32 numships;
 int32 playership;
 int32 sortship[MAX_COMBAT_SHIPS];
 
-int32 t_move, t_disp, pause;
+int32 t_move, t_disp, c_pause;
 
 int32 nebula;
 int32 retreat;
@@ -111,7 +111,7 @@ int32 combat(int32 flt, int32 sim)
 
 	ik_inkey();
 
-	t_move = 0; t_disp = 0; pause = 0; end = 0; rett=0;
+	t_move = 0; t_disp = 0; c_pause = 0; end = 0; rett=0;
 
 	if (simulated)
 		Play_Sound4(WAV_MUS_SIMULATOR, 15, 1, 85);
@@ -156,14 +156,14 @@ int32 combat(int32 flt, int32 sim)
 		klak = klakavail;
 
 		if (IsMinimized)
-			pause=1;
+			c_pause=1;
 
 		if (c==32)
 		{
-			if (pause==1)
-				pause=0;
+			if (c_pause==1)
+				c_pause=0;
 			else
-				pause=1;
+				c_pause=1;
 		}
 
 		if (key_pressed(key_f[0]))
@@ -330,11 +330,11 @@ int32 combat(int32 flt, int32 sim)
 				if (mc & 1)
 				{
 					if (ik_mouse_x < 186)
-						pause = 1;
+						c_pause = 1;
 					else if (ik_mouse_x > 202)
-						pause = -1;
+						c_pause = -1;
 					else
-						pause = 0;
+						c_pause = 0;
 				}
 			}
 			else if ( mc & 1 )
@@ -489,12 +489,12 @@ int32 combat(int32 flt, int32 sim)
 
 			ik_drawbox(screen, 0, 0, 640, 480, 0);
 
-			if (pause < 1)
+			if (c_pause < 1)
 			{
 				while (t0<t)
 				{
 					t0++;
-					s = 1 + 2*(pause == -1);
+					s = 1 + 2*(c_pause == -1);
 					while (s--)
 					{
 						t_move++; 
@@ -504,7 +504,7 @@ int32 combat(int32 flt, int32 sim)
 					}
 				}
 			}
-			if (t_move > t_disp || (pause==1))
+			if (t_move > t_disp || (c_pause==1))
 			{
 				t_disp = t_move;
 				combat_display(t_disp);

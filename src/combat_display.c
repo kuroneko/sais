@@ -942,9 +942,9 @@ void combat_display(int32 t)
 	ik_dsprite(screen, 186, 456, spr_IFbutton->spr[5], 2+(COMBAT_INTERFACE_COLOR<<8));
 	ik_dsprite(screen, 202, 456, spr_IFbutton->spr[6], 2+(COMBAT_INTERFACE_COLOR<<8));
 
-	ik_dsprite(screen, 177, 456, spr_IFbutton->spr[7+(pause!=1)], 2+(COMBAT_INTERFACE_COLOR<<8));
-	ik_dsprite(screen, 190, 456, spr_IFbutton->spr[9+(pause!=0)], 2+(COMBAT_INTERFACE_COLOR<<8));
-	ik_dsprite(screen, 199, 456, spr_IFbutton->spr[17+(pause!=-1)], 2+(COMBAT_INTERFACE_COLOR<<8));
+	ik_dsprite(screen, 177, 456, spr_IFbutton->spr[7+(c_pause!=1)], 2+(COMBAT_INTERFACE_COLOR<<8));
+	ik_dsprite(screen, 190, 456, spr_IFbutton->spr[9+(c_pause!=0)], 2+(COMBAT_INTERFACE_COLOR<<8));
+	ik_dsprite(screen, 199, 456, spr_IFbutton->spr[17+(c_pause!=-1)], 2+(COMBAT_INTERFACE_COLOR<<8));
 
 	// race portraits
 	for (x = 1; x < player.num_ships; x++)

@@ -421,7 +421,7 @@ extern int32 numships;
 extern int32 playership;
 extern int32 sortship[MAX_COMBAT_SHIPS];
 
-extern int32 t_move, t_disp, pause;
+extern int32 t_move, t_disp, c_pause;
 
 extern int32 nebula;
 extern int32 retreat;

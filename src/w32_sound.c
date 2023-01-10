@@ -66,7 +66,7 @@ Mix_Chunk *lsnd(int32 name)
 	{
 	    SDL_RWops * wavOps = PHYSFSRWOPS_openRead(wavesnd[name].name);
         if (wavOps == NULL) {
-            SDL_Log("Failed to find WAV %s: %s", wavesnd[name].name, PHYSFS_getLastError());
+            SDL_Log("Failed to find WAV %s: %s", wavesnd[name].name, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return NULL;
         }
         wavesnd[name].wave = Mix_LoadWAV_RW(wavOps, 1);

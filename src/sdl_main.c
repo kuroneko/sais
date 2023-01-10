@@ -103,7 +103,7 @@ save_globalsettings()
     IS_FileHdl gsFile = IS_Open_Write("globalsettings.dat");
     if (NULL == gsFile) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't open globalsettings.dat for write: %s",
-            PHYSFS_getLastError());
+            PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return;
     }
     IS_Write(&globalsettings, sizeof(globalsettings), 1, gsFile);
@@ -124,7 +124,8 @@ main(int argc, char *argv[])
     c_maxy = gfx_height;
 
     if (!PHYSFS_init(argv[0])) {
-        SYS_abort("PhysFS failed to initialise: %s", PHYSFS_getLastError());
+        PHYSFS_ErrorCode physfsErr = PHYSFS_getLastErrorCode();
+        SYS_abort("PhysFS failed to initialise: %s", PHYSFS_getErrorByCode(physfsErr));
     }
 
 #if TARGET_OS_OSX
@@ -136,10 +137,10 @@ main(int argc, char *argv[])
     const char *prefDirCStr = PHYSFS_getPrefDir("FreeSAIS", "SAIS");
 
     if (!PHYSFS_mount(prefDirCStr, "/", 0)) {
-        SYS_abort("Failed to mount write directory \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+        SYS_abort("Failed to mount write directory \"%s\": %s", prefDirCStr, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
     if (!PHYSFS_setWriteDir(prefDirCStr)) {
-        SYS_abort("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+        SYS_abort("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
     char resourcePath[1024];
     strcpy(resourcePath, PHYSFS_getBaseDir());
@@ -149,11 +150,11 @@ main(int argc, char *argv[])
     strcat(resourcePath, "Contents/Resources/saisdata.zip");
 #endif
     if (!PHYSFS_mount(resourcePath, "/", 1)) {
-        SYS_abort("Failed to mount data archive \"%s\": %s", resourcePath, PHYSFS_getLastError());
+        SYS_abort("Failed to mount data archive \"%s\": %s", resourcePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 #else
     if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 0)) {
-        SYS_abort("PhysFS failed to set default env: %s", PHYSFS_getLastError());
+        SYS_abort("PhysFS failed to set default env: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 #endif
 
