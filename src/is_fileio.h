@@ -22,6 +22,7 @@
 #define IS_FILEIO_H
 
 #include <physfs.h>
+#include <stdarg.h>
 
 typedef PHYSFS_File *   IS_FileHdl;
 
