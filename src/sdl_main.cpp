@@ -101,8 +101,9 @@ void
 save_globalsettings() {
     auto gsFile = IS_Open_Write("globalsettings.dat");
     if (nullptr == gsFile) {
+        auto physfsErr = PHYSFS_getLastErrorCode();
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't open globalsettings.dat for write: %s",
-                     PHYSFS_getLastError());
+                     PHYSFS_getErrorByCode(physfsErr));
         return;
     }
     IS_Write(&globalsettings, sizeof(globalsettings), 1, gsFile);
@@ -121,7 +122,8 @@ int main(int argc, char *argv[]) {
     c_maxy = gfx_height;
 
     if (!PHYSFS_init(argv[0])) {
-        SYS_abort("PhysFS failed to initialise: %s", PHYSFS_getLastError());
+        auto physfsErr = PHYSFS_getLastErrorCode();
+        SYS_abort("PhysFS failed to initialise: %s", PHYSFS_getErrorByCode(physfsErr));
     }
 
 #if TARGET_OS_OSX
@@ -133,10 +135,10 @@ int main(int argc, char *argv[]) {
     const char *prefDirCStr = PHYSFS_getPrefDir("FreeSAIS", "SAIS");
 
     if (!PHYSFS_mount(prefDirCStr, "/", 0)) {
-        SYS_abort("Failed to mount write directory \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+        SYS_abort("Failed to mount write directory \"%s\": %s", prefDirCStr, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
     if (!PHYSFS_setWriteDir(prefDirCStr)) {
-        SYS_abort("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getLastError());
+        SYS_abort("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
     std::string resourcePath(PHYSFS_getBaseDir());
 #ifdef DEMO_VERSION
@@ -145,11 +147,11 @@ int main(int argc, char *argv[]) {
     resourcePath += "Contents/Resources/saisdata.zip";
 #endif
     if (!PHYSFS_mount(resourcePath.c_str(), "/", 1)) {
-        SYS_abort("Failed to mount data archive \"%s\": %s", resourcePath.c_str(), PHYSFS_getLastError());
+        SYS_abort("Failed to mount data archive \"%s\": %s", resourcePath.c_str(), PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 #else
     if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 0)) {
-        SYS_abort("PhysFS failed to set default env: %s", PHYSFS_getLastError());
+        SYS_abort("PhysFS failed to set default env: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 #endif
 

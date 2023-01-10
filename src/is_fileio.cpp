@@ -44,7 +44,8 @@ char moddir[256];
 
 void IS_Close(IS_FileHdl fileHandle) {
     if (!PHYSFS_close(fileHandle)) {
-        SDL_Log("Error trying to close file: %s", PHYSFS_getLastError());
+        auto physfsErr = PHYSFS_getLastErrorCode();
+        SDL_Log("Error trying to close file: %s", PHYSFS_getErrorByCode(physfsErr));
     }
 }
 

@@ -67,7 +67,8 @@ struct modDirectory {
             if (PHYSFS_mount(modPath.c_str(), nullptr, 0)) {
                 isMapped = true;
             } else {
-                SDL_Log("Failed to mount mod: %s", PHYSFS_getLastError());
+                auto physfsErr = PHYSFS_getLastErrorCode();
+                SDL_Log("Failed to mount mod: %s", PHYSFS_getErrorByCode(physfsErr));
             }
         } else {
             SDL_Log("Couldn't find mod directory");
@@ -90,7 +91,12 @@ modconfig_enumerate_cb(void *data, const char *origdir, const char *fname) {
     std::string fullFilename = std::string(origdir) + "/" + std::string(fname);
     std::string sfName = fname;
     // is it a directory or an archive?
-    if (PHYSFS_isDirectory(fullFilename.c_str())) {
+    PHYSFS_Stat fileStat;
+    if (!PHYSFS_stat(fullFilename.c_str(), &fileStat)) {
+        SDL_Log("Unable to stat \"%s\": %s", fullFilename.c_str(), PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return PHYSFS_ENUM_OK;
+    }
+    if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY) {
         allModDirectories.emplace_back(std::make_shared<modDirectory>(fname, fullFilename));
     } else if ((sfName.length() >= 5 && sfName.substr(sfName.length()-4) == ".zip")) {
       std::string displayName = sfName.substr(0, sfName.length()-4);
