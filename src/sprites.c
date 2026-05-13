@@ -18,18 +18,18 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdio>
-#include <cstdlib>
-#include <cmath>
-#include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <math.h>
+#include <string.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
 #include "gfx.h"
 #include "is_fileio.h"
 #include "snd.h"
-
-#include <SDL.h>
+#include "log.h"
 
 //		FILE *loggy;
 
@@ -43,7 +43,7 @@ t_ik_sprite *new_sprite(int32 w, int32 h) {
 
     spr = (t_ik_sprite *) malloc(sizeof(t_ik_sprite));
     if (!spr)
-        return nullptr;
+        return NULL;
 
     spr->data = (uint8 *) malloc(w * h);
     spr->w = w;
@@ -90,11 +90,11 @@ t_ik_sprite *get_sprite(t_ik_image *img, int32 x, int32 y, int32 w, int32 h) {
     int32 x1, y1;
 
     if (!img)
-        return nullptr;
+        return NULL;
 
     spr = new_sprite(w, h);
     if (!spr)
-        return nullptr;
+        return NULL;
 
     for (y1 = 0; y1 < h; y1++)
         for (x1 = 0; x1 < w; x1++)
@@ -126,7 +126,7 @@ t_ik_spritepak *new_spritepak(int32 num) {
 
     pak = (t_ik_spritepak *) calloc(1, sizeof(t_ik_spritepak));
     if (!pak)
-        return nullptr;
+        return NULL;
 
     pak->num = num;
     pak->spr = (t_ik_sprite **) calloc(num, sizeof(t_ik_sprite *));
@@ -142,28 +142,28 @@ void free_spritepak(t_ik_spritepak *pak) {
 
     for (x = 0; x < pak->num; x++) {
         free_sprite(pak->spr[x]);
-        pak->spr[x] = nullptr;
+        pak->spr[x] = NULL;
     }
     free(pak->spr);
     free(pak);
 }
 
-const uint16_t MAX_FRAMES = 256;
+#define MAX_FRAMES 256
 struct spriteData {
-    bool replacedFrames[MAX_FRAMES];
+    int replacedFrames[MAX_FRAMES];
     uint16_t lastFrame;
 };
 
 static PHYSFS_EnumerateCallbackResult
 sprite_override_cb(void *data, const char *origdir, const char *fname) {
     int fnum;
-    auto *sd = reinterpret_cast<spriteData *>(data);
+    struct spriteData *sd = data;
 
-    SDL_Log("considering %s", fname);
+    SYS_Log("considering %s", fname);
     if (strncmp("frame", fname, 5) == 0 && strcmp(fname+strlen(fname)-4, ".tga") == 0) {
         sscanf(fname + 5, "%03d", &fnum);
         if (fnum < 256) {
-            SDL_Log("found override frame %s: fnum=%d", fname, fnum);
+            SYS_Log("found override frame %s: fnum=%d", fname, fnum);
 
             sd->replacedFrames[fnum] = true;
             if (fnum + 1 > sd->lastFrame)
@@ -178,7 +178,7 @@ t_ik_spritepak *load_sprites(const char *fname) {
     char spritedir[256];
     char framename[256];
     char *sdp;
-    spriteData sd{};
+    struct spriteData sd = {};
     t_ik_image *img;
     uint8 *buffu;
 
@@ -202,13 +202,13 @@ t_ik_spritepak *load_sprites(const char *fname) {
     strncpy(spritedir, fname, 255);
     sdp = spritedir + strlen(spritedir) - 4;
     sdp[0] = 0;
-    SDL_Log("Looking for sprite override frames in %s", spritedir);
+    SYS_Log("Looking for sprite override frames in %s", spritedir);
     // and if so, try to find the frames.
     PHYSFS_enumerate(spritedir, sprite_override_cb, &sd);
 
     fil = IS_Open_Read(fname);
-    if (fil == nullptr) {
-        return nullptr;
+    if (fil == NULL) {
+        return NULL;
     }
     PHYSFS_readSLE16(fil, &num);
 
@@ -218,7 +218,7 @@ t_ik_spritepak *load_sprites(const char *fname) {
     pak = new_spritepak(sd.lastFrame);
     if (!pak) {
         IS_Close(fil);
-        return nullptr;
+        return NULL;
     }
 
     for (x = 0; x < sd.lastFrame; x++) {
@@ -241,7 +241,7 @@ t_ik_spritepak *load_sprites(const char *fname) {
         }
         if (sd.replacedFrames[x]) {
             snprintf(framename, sizeof(framename), "%s/frame%03d.tga", spritedir, x);
-            img = ik_load_tga(framename, nullptr);
+            img = ik_load_tga(framename, NULL);
             if (img) {
                 pak->spr[x] = get_sprite(img, 0, 0, img->w, img->h);
                 del_image(img);
@@ -463,7 +463,7 @@ void ik_dspriteline(t_ik_image *img, int32 xb, int32 yb, int32 xe, int32 ye, int
     uint8 *p1;
 
     if (s <= 2) {
-        ik_drawline(img, xb, yb, xe, ye, spr->co);
+        ik_drawline(img, xb, yb, xe, ye, spr->co, 0, 255, 0);
         return;
     }
 

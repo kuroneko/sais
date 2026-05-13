@@ -17,13 +17,14 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <physfs.h>
-#include <string>
+#include <string.h>
 
 #include "Typedefs.h"
 #include "gfx.h"
 #include "iface_globals.h"
 #include "is_fileio.h"
 #include "port.h"
+#include "log.h"
 
 int my_main();
 
@@ -31,20 +32,18 @@ int sound_init();
 
 extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
-SDL_Surface *blitIntermedSurf = nullptr;
-SDL_Renderer *sdlRend = nullptr;
-SDL_Texture *sdlWindTexture = nullptr;
+SDL_Surface *blitIntermedSurf = NULL;
+SDL_Renderer *sdlRend = NULL;
+SDL_Texture *sdlWindTexture = NULL;
 // directory paths for our core.
-
-std::string fsBaseDir;
-std::string fsPreferencesDir;
 
 static int8 isPixelPerfect = -1;
 static int8 isFullscreen = -1;
 
 int
-vid_reset_settings() {
-    if (sdlWind != nullptr) {
+vid_reset_settings()
+{
+    if (sdlWind != NULL) {
         if (isFullscreen != globalsettings.opt_fullscreen) {
             isFullscreen = globalsettings.opt_fullscreen;
             if (isFullscreen) {
@@ -58,24 +57,25 @@ vid_reset_settings() {
                 sdl_y_offset = 0;
             }
         }
-        if (sdlRend != nullptr) {
+        if (sdlRend != NULL) {
             if (globalsettings.opt_whole_multiple_rescale_ratio != isPixelPerfect
-                || sdlWindTexture == nullptr) {
+                || sdlWindTexture == NULL) {
                 isPixelPerfect = globalsettings.opt_whole_multiple_rescale_ratio;
                 if (isPixelPerfect) {
                     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
                 } else {
                     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
                 }
-                if (sdlWindTexture != nullptr) {
+                if (sdlWindTexture != NULL) {
                     SDL_DestroyTexture(sdlWindTexture);
-                    sdlWindTexture = nullptr;
+                    sdlWindTexture = NULL;
                 }
                 // and create the streaming texture.
                 sdlWindTexture = SDL_CreateTexture(sdlRend, blitIntermedSurf->format->format,
-                                                   SDL_TEXTUREACCESS_STREAMING, 640, 480);
-                if (sdlWindTexture == nullptr) {
-                    SYS_abort("Failed to create intermediate window texture (for fullscreen scaling): %s", SDL_GetError());
+                    SDL_TEXTUREACCESS_STREAMING, 640, 480);
+                if (sdlWindTexture == NULL) {
+                    SYS_abort("Failed to create intermediate window texture (for fullscreen scaling): %s",
+                        SDL_GetError());
                 }
             }
         }
@@ -84,10 +84,11 @@ vid_reset_settings() {
 }
 
 void
-load_globalsettings() {
+load_globalsettings()
+{
     memset(&globalsettings, 0, sizeof(globalsettings));
-    auto gsFile = IS_Open_Read("globalsettings.dat");
-    if (nullptr == gsFile) {
+    IS_FileHdl gsFile = IS_Open_Read("globalsettings.dat");
+    if (NULL == gsFile) {
         memset(&globalsettings, 0, sizeof(globalsettings));
         return;
     }
@@ -98,12 +99,12 @@ load_globalsettings() {
 }
 
 void
-save_globalsettings() {
-    auto gsFile = IS_Open_Write("globalsettings.dat");
-    if (nullptr == gsFile) {
-        auto physfsErr = PHYSFS_getLastErrorCode();
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't open globalsettings.dat for write: %s",
-                     PHYSFS_getErrorByCode(physfsErr));
+save_globalsettings()
+{
+    IS_FileHdl gsFile = IS_Open_Write("globalsettings.dat");
+    if (NULL == gsFile) {
+        SYS_LogError( "Couldn't open globalsettings.dat for write: %s",
+            PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return;
     }
     IS_Write(&globalsettings, sizeof(globalsettings), 1, gsFile);
@@ -111,7 +112,9 @@ save_globalsettings() {
 }
 
 
-int main(int argc, char *argv[]) {
+int
+main(int argc, char *argv[])
+{
     gfx_width = 640;
     gfx_height = 480;
     gfx_fullscreen = 0;
@@ -122,7 +125,7 @@ int main(int argc, char *argv[]) {
     c_maxy = gfx_height;
 
     if (!PHYSFS_init(argv[0])) {
-        auto physfsErr = PHYSFS_getLastErrorCode();
+        PHYSFS_ErrorCode physfsErr = PHYSFS_getLastErrorCode();
         SYS_abort("PhysFS failed to initialise: %s", PHYSFS_getErrorByCode(physfsErr));
     }
 
@@ -140,14 +143,15 @@ int main(int argc, char *argv[]) {
     if (!PHYSFS_setWriteDir(prefDirCStr)) {
         SYS_abort("Failed to set write directory to \"%s\": %s", prefDirCStr, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
-    std::string resourcePath(PHYSFS_getBaseDir());
+    char resourcePath[1024];
+    strcpy(resourcePath, PHYSFS_getBaseDir());
 #ifdef DEMO_VERSION
-    resourcePath += "Contents/Resources/saisdemo.zip";
+    strcat(resourcePath, "Contents/Resources/saisdemo.zip");
 #else
-    resourcePath += "Contents/Resources/saisdata.zip";
+    strcat(resourcePath, "Contents/Resources/saisdata.zip");
 #endif
-    if (!PHYSFS_mount(resourcePath.c_str(), "/", 1)) {
-        SYS_abort("Failed to mount data archive \"%s\": %s", resourcePath.c_str(), PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+    if (!PHYSFS_mount(resourcePath, "/", 1)) {
+        SYS_abort("Failed to mount data archive \"%s\": %s", resourcePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 #else
     if (!PHYSFS_setSaneConfig("FreeSAIS", "SAIS", "zip", 0, 0)) {
@@ -175,11 +179,11 @@ int main(int argc, char *argv[]) {
     }
 
     sdlWind = SDL_CreateWindow("Strange Adventures In Infinite Space",
-                               SDL_WINDOWPOS_UNDEFINED,
-                               SDL_WINDOWPOS_UNDEFINED,
-                               640, 480,
-                               sdlFlags);
-    if (sdlWind == nullptr) {
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        640, 480,
+        sdlFlags);
+    if (sdlWind == NULL) {
         SYS_abort("Failed to create SDL Window: %s", SDL_GetError());
     }
     SDL_SetWindowMinimumSize(sdlWind, 640, 480);
@@ -187,19 +191,19 @@ int main(int argc, char *argv[]) {
 
     // create the SDL Renderer we use to stream from the intermed blitting surface to the window.
     sdlRend = SDL_CreateRenderer(sdlWind, -1, SDL_RENDERER_ACCELERATED);
-    if (sdlRend == nullptr) {
+    if (sdlRend == NULL) {
         SYS_abort("Failed to create SDL Renderer: %s", SDL_GetError());
     }
 
     // create the i8 surface
     sdlsurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 8, SDL_PIXELFORMAT_INDEX8);
-    if (sdlsurf == nullptr) {
+    if (sdlsurf == NULL) {
         SYS_abort("Failed to create INDEX8 Surface: %s", SDL_GetError());
     }
 
     // create the intermediate blitting surface (needed for fullscreen support)
     blitIntermedSurf = SDL_CreateRGBSurfaceWithFormat(0, 640, 480, 32, SDL_PIXELFORMAT_RGBA8888);
-    if (blitIntermedSurf == nullptr) {
+    if (blitIntermedSurf == NULL) {
         SYS_abort("Failed to create intermediate target surface: %s", SDL_GetError());
     }
 

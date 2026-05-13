@@ -19,12 +19,20 @@
 #ifndef STRANGE_SAFE_CSTR_H
 #define STRANGE_SAFE_CSTR_H
 
-#include <cstdint>
-#include <cstring>
-#include <cstdarg>
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <stdint.h>
+#include <string.h>
+#include <stdarg.h>
 
 void safe_strncpy(char *dest, const char *src, size_t n);
 int safe_snprintf(char *dest, size_t n, const char *format, ...);
-int safe_vsnprintf(char *dest, size_t n, const char *format, std::va_list args);
+int safe_vsnprintf(char *dest, size_t n, const char *format, va_list args);
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif //STRANGE_SAFE_CSTR_H

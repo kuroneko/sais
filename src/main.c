@@ -18,12 +18,11 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-#include <ctime>
-
-#include <SDL.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <time.h>
+#include <math.h>
 
 #include "Typedefs.h"
 #include "is_fileio.h"
@@ -46,7 +45,6 @@ extern int movrecord;
 #endif
 
 //		extern FILE* loggy;
-extern SDL_Surface *sdlsurf;
 
 // ----------------
 // GLOBAL VARIABLES
@@ -85,7 +83,7 @@ int modconfig_main();
 
 int my_main()
 {
-	Game_Init();
+	Game_Init(NULL);
 
 #ifdef MOVIE
 	movrecord = 0;
@@ -98,13 +96,6 @@ int my_main()
 	ik_hidecursor();
 	if (!modconfig_main())
 		must_quit = 1;
-
-	SDL_Log("PHYSFS Search Path");
-	auto **searchPath = PHYSFS_getSearchPath();
-    for (auto **sIter = searchPath; *sIter != nullptr; sIter++) {
-        SDL_Log("* %s", *sIter);
-    }
-	PHYSFS_freeList(searchPath);
 #endif
 
 #ifdef MOVIE
@@ -124,7 +115,7 @@ int my_main()
 		main_deinit();
 	}
 
-	Game_Shutdown();
+	Game_Shutdown(NULL);
 
 	return 0;
 }
@@ -138,9 +129,9 @@ void splash_screen()
 	t_ik_image *bg[3];
 	int32 zap;
 
-	bg[0] = ik_load_pcx("graphics/cheapass.pcx", nullptr);
-	bg[1] = ik_load_pcx("graphics/digieel.pcx", nullptr);
-	bg[2] = ik_load_pcx("graphics/title.pcx", nullptr);
+	bg[0] = ik_load_pcx("graphics/cheapass.pcx", NULL);
+	bg[1] = ik_load_pcx("graphics/digieel.pcx", NULL);
+	bg[2] = ik_load_pcx("graphics/title.pcx", NULL);
 
 	prep_screen();
 	ik_drawbox(screen, 0, 0, 640, 480, 0);
@@ -160,7 +151,7 @@ void splash_screen()
 			end = 1;
 	}
 
-	Play_SoundFX(WAV_LOGO);
+	Play_SoundFX1(WAV_LOGO);
 
 	end = 0;
 #ifdef MOVIE
@@ -215,7 +206,7 @@ void splash_screen()
 	ik_drawbox(screen, 0, 0, 640, 480, 0);
 	ik_blit();
 
-	Play_Sound(WAV_MUS_START, 15, 1);
+	Play_Sound3(WAV_MUS_START, 15, 1);
 
 	end = 0;
 	while (!end && !must_quit)
@@ -248,17 +239,17 @@ void splash_screen()
 			{
 				c++;
 				if (c == 80)
-					Play_SoundFX(WAV_TITLE1);
+					Play_SoundFX1(WAV_TITLE1);
 				if (c == 180)
-					Play_SoundFX(WAV_TITLE2);
+					Play_SoundFX1(WAV_TITLE2);
 				if (c == 260)
-					Play_SoundFX(WAV_TITLE3);
+					Play_SoundFX1(WAV_TITLE3);
 
 				if (c == 340)
-					Play_Sound(WAV_MUS_SPLASH, 15, 1);
+					Play_Sound3(WAV_MUS_SPLASH, 15, 1);
 
 				if (c == zap)
-					Play_SoundFX(WAV_TITLE4+(rand()&1), 0, 50);
+					Play_SoundFX3(WAV_TITLE4+(rand()&1), 0, 50);
 				if (c == zap + 100)
 					zap += 150+rand()%150;
 			}
@@ -373,16 +364,16 @@ void credits_screen()
 
 	must_quit = 0;
 
-	bg[0] = ik_load_pcx("graphics/credits1.pcx", nullptr);
-	bg[1] = ik_load_pcx("graphics/credits2.pcx", nullptr);
-	bg[2] = ik_load_pcx("graphics/credits3.pcx", nullptr);
+	bg[0] = ik_load_pcx("graphics/credits1.pcx", NULL);
+	bg[1] = ik_load_pcx("graphics/credits2.pcx", NULL);
+	bg[2] = ik_load_pcx("graphics/credits3.pcx", NULL);
 
 	prep_screen();
 	ik_drawbox(screen, 0, 0, 640, 480, 0);
 	ik_blit();
 	update_palette();
 
-	Play_Sound(WAV_MUS_SPLASH, 15, 1);
+	Play_Sound3(WAV_MUS_SPLASH, 15, 1);
 
 	end = 0;
 #ifdef MOVIE
@@ -424,7 +415,7 @@ void credits_screen()
 			{
 				c++;
 				if (c == 1700)
-					Play_SoundFX(WAV_TITLE4+(rand()&1));
+					Play_SoundFX1(WAV_TITLE4+(rand()&1));
 			}
 
 			prep_screen();
@@ -559,7 +550,7 @@ void main_init()
 	endgame_init();
 	gfx_initmagnifier();
 
-	srand( (unsigned)time( nullptr ) );
+	srand( (unsigned)time( NULL ) );
 
 	//s_volume = 85;
 	got_hiscore = -2;
@@ -633,13 +624,13 @@ int32 intro_screen()
 
 	if (got_hiscore > -1)
 	{
-		Play_Sound(WAV_MUS_HISCORE, 15, 1);
+		Play_Sound3(WAV_MUS_HISCORE, 15, 1);
 		hiscmusic = 1;
 	}
 	else
-		Play_Sound(WAV_MUS_THEME, 15, 1);
+		Play_Sound3(WAV_MUS_THEME, 15, 1);
 
-	backy = ik_load_pcx("graphics/titback.pcx", nullptr);
+	backy = ik_load_pcx("graphics/titback.pcx", NULL);
 	
 
 	nebby = new_image(640, 480);
@@ -666,7 +657,7 @@ int32 intro_screen()
 		my = ik_mouse_y;
 
 		if (c == 13 || c == 32)
-		{	end = 2; Play_SoundFX(WAV_DOT2, 0, 50); }
+		{	end = 2; Play_SoundFX3(WAV_DOT2, 0, 50); }
 
 //		if (c == 'r')
 //		{ end = 1; still_running = 1; }
@@ -676,9 +667,9 @@ int32 intro_screen()
 			if (my > 420 && my < 436)
 			{
 				if (mx > 176 && mx < 304)	// start game
-				{	end = 2; Play_SoundFX(WAV_DOT2, 0, 50); }
+				{	end = 2; Play_SoundFX3(WAV_DOT2, 0, 50); }
 				else if (mx > 336 && mx < 464)	// combat sim
-				{ end = 3; Play_SoundFX(WAV_DOT2, 0, 50); }
+				{ end = 3; Play_SoundFX3(WAV_DOT2, 0, 50); }
 			}
 			else if (my > 440 && my < 456)
 			{
@@ -688,11 +679,11 @@ int32 intro_screen()
 						mode = 0;
 					else
 						mode = 2;
-					Play_SoundFX(WAV_DOT, 0, 50); 
+					Play_SoundFX3(WAV_DOT, 0, 50);
 					if (hiscmusic)
 					{
 						got_hiscore = -2;
-						Play_Sound(WAV_MUS_THEME, 15, 1);
+						Play_Sound(WAV_MUS_THEME, 15, 1, -1, -1, 0);
 						hiscmusic = 0;
 					}
 				}
@@ -702,11 +693,11 @@ int32 intro_screen()
 						mode = 0;
 					else
 						mode = 1;
-					Play_SoundFX(WAV_DOT, 0, 50); 
+					Play_SoundFX3(WAV_DOT, 0, 50);
 					if (hiscmusic)
 					{
 						got_hiscore = -2;
-						Play_Sound(WAV_MUS_THEME, 15, 1);
+						Play_Sound(WAV_MUS_THEME, 15, 1, -1, -1, 0);
 						hiscmusic = 0;
 					}
 				}
@@ -717,11 +708,11 @@ int32 intro_screen()
 			{
 				if (my > 112 && my < 320 && mx > 16 && mx < 624 && mode == 1)
 				{
-					Play_SoundFX(WAV_DOT, 0, 50); 
+					Play_SoundFX3(WAV_DOT, 0, 50);
 					if (hiscmusic)
 					{
 						got_hiscore = -2;
-						Play_Sound(WAV_MUS_THEME, 15, 1);
+						Play_Sound(WAV_MUS_THEME, 15, 1, -1, -1, 0);
 						hiscmusic = 0;
 					}
 					mode = 0;
@@ -787,11 +778,11 @@ int32 intro_screen()
 					settings.opt_volume = ((mx - (bx+26))*10) / 128;
 					s_volume = settings.opt_volume * 10;
 					Set_Sound_Volume(15, 100);
-					Play_SoundFX(WAV_SLIDER, 0, 50);
+					Play_SoundFX3(WAV_SLIDER, 0, 50);
 				}
 
 				if (mx > bx+192 && mx < bx+240 && my > by+h-32 && my < by+h-16) {
-                    Play_SoundFX(WAV_DOT, 0, 50);
+                    Play_SoundFX3(WAV_DOT, 0, 50);
                     mode = 0;
                     save_globalsettings();
                 }

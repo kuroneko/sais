@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <cstdio>
-#include <cstdlib>
-#include <cstdarg>
-#include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -33,15 +33,15 @@ t_ik_font *ik_load_font(const char *fname, uint8 w, uint8 h)
 	t_ik_image *pic;
 	int32 x, y, x2, y2, tmp;
 
-	pic=ik_load_pcx(fname, nullptr);
+	pic=ik_load_pcx(fname, NULL);
 	if (!pic)
-		return nullptr;
+		return NULL;
 
 	fnt=(t_ik_font *)malloc(sizeof(t_ik_font));
 	if (!fnt)
 	{
 		del_image(pic);
-		return nullptr;
+		return NULL;
 	}
 
 	fnt->w=w;
@@ -51,7 +51,7 @@ t_ik_font *ik_load_font(const char *fname, uint8 w, uint8 h)
 	{
 		free(fnt);
 		del_image(pic);
-		return nullptr;
+		return NULL;
 	}
 
 	for (y=0; y<4; y++)

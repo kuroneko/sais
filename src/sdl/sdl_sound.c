@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <cstdlib>
-#include <cstring>
-#include <cstdarg>
-#include <cstdio>
-#include <cmath>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <math.h>
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -27,6 +27,7 @@
 #include "iface_globals.h"
 #include "snd.h"
 #include "gfx.h"
+#include "log.h"
 
 #include "is_fileio.h"
 #include "physfsrwops.h"
@@ -50,7 +51,7 @@ int sound_init()
 	for (int index=0; index<WAV_MAX; index++)
 	{
 		wavesnd[index].name[0] = 0;
-		wavesnd[index].wave = nullptr;
+		wavesnd[index].wave = NULL;
 	} 
 
 	// return sucess
@@ -64,11 +65,10 @@ Mix_Chunk *lsnd(int32 name)
 	wave = (Mix_Chunk*)wavesnd[name].wave;
 	if (!wave)
 	{
-	    auto wavOps = PHYSFSRWOPS_openRead(wavesnd[name].name);
-        if (wavOps == nullptr) {
-			auto physfsErr = PHYSFS_getLastErrorCode();
-            SDL_Log("Failed to find WAV %s: %s", wavesnd[name].name, PHYSFS_getErrorByCode(physfsErr));
-            return nullptr;
+	    SDL_RWops * wavOps = PHYSFSRWOPS_openRead(wavesnd[name].name);
+        if (wavOps == NULL) {
+            SYS_Log("Failed to find WAV %s: %s", wavesnd[name].name, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            return NULL;
         }
         wavesnd[name].wave = Mix_LoadWAV_RW(wavOps, 1);
         wave = (Mix_Chunk*)wavesnd[name].wave;
@@ -242,7 +242,7 @@ int Delete_Sound(int id)
 	if (wavesnd[id].wave)
 	{
 		Mix_FreeChunk((Mix_Chunk*)wavesnd[id].wave);
-		wavesnd[id].wave = nullptr;
+		wavesnd[id].wave = NULL;
 		return(1);
   } 
 	

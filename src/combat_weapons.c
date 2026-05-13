@@ -18,9 +18,9 @@
 //     INCLUDES
 // ----------------
 
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
@@ -112,7 +112,7 @@ void combat_fire(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 
 	if (wep->type == 0)
 	{
-		combat_addbeam(wep, src, hdp, trg, start);
+		combat_addbeam(wep, src, hdp, trg, start, -1);
 	}
 	else
 	{
@@ -161,7 +161,7 @@ int32 combat_addbeam(t_shipweapon *wep, t_ship *src, int32 hdp, t_ship *trg, int
 	}
 	else
 	{
-		cbeams[b].dst = nullptr;
+		cbeams[b].dst = NULL;
 		cbeams[b].ang = get_direction( trg->x - src->x, trg->y - src->y );
 		cbeams[b].len = wep->range;
 	}
@@ -177,7 +177,7 @@ int32 combat_addbeam(t_shipweapon *wep, t_ship *src, int32 hdp, t_ship *trg, int
 			src->wepfire[hdp] = start + wep->rate * (3 + 2*(src->cpu_type<3));
 	}
 
-	combat_SoundFX(wep->sound1, src->x); 
+	combat_SoundFX(wep->sound1, src->x, -1, -1);
 	return b;
 }
 
@@ -315,7 +315,7 @@ int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 	{
 		combat_addexplo(cprojs[b].x + cprojs[b].vx * 4, 
 										cprojs[b].y + cprojs[b].vy * 4, 
-										spr_shockwave, 1, 64, 0, start, start+6, 4);
+										spr_shockwave, 1, 64, 0, start, start+6, 4, -1);
 	}
 
 	if (wep->flags & wpfHoming)
@@ -327,8 +327,8 @@ int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 			a = shipsystems[cprojs[b].dst->ecm_type].par[0] * 10;
 			if (rand()%30 < a)
 			{
-				//Play_SoundFX(WAV_SYSFIXED);
-				cprojs[b].dst = nullptr;
+				//Play_SoundFX1(WAV_SYSFIXED);
+				cprojs[b].dst = NULL;
 				cprojs[b].va = (rand()%4) + 1;
 				if (rand()&1) cprojs[b].va = -cprojs[b].va;
 			}
@@ -358,7 +358,7 @@ int32 combat_addproj(t_ship *src, int32 hdp, t_ship *trg, int32 start)
 	else
 		src->wepfire[hdp] = start + wep->rate * (3 + 2*(src->cpu_type<3));
 
-	combat_SoundFX(wep->sound1, cprojs[b].x); 
+	combat_SoundFX(wep->sound1, cprojs[b].x, -1, -1);
 	return b;
 }
 
@@ -386,7 +386,7 @@ void combat_launchstages(int32 p, int32 num, int32 start)
 	else
 		trg = cprojs[p].dst;
 
-	combat_SoundFX(wep->sound1, cprojs[p].x); 
+	combat_SoundFX(wep->sound1, cprojs[p].x, -1, -1);
 	for (n = 0; n < num; n++)
 	{
 		b = -1;
@@ -444,8 +444,8 @@ void combat_launchstages(int32 p, int32 num, int32 start)
 				a = shipsystems[cprojs[b].dst->ecm_type].par[0] * 10;
 				if (rand()%30 < a)
 				{
-					Play_SoundFX(WAV_SYSFIXED, get_ik_timer(1));
-					cprojs[b].dst = nullptr;
+					Play_SoundFX2(WAV_SYSFIXED, get_ik_timer(1));
+					cprojs[b].dst = NULL;
 					cprojs[b].va = (rand()%5 + 4)*((rand()&1)*2-1);
 				}
 			}
@@ -481,14 +481,14 @@ void combat_damageship(int32 s, int32 src, int32 dmg, int32 t, t_shipweapon *wep
 	{
 		if (cships[s].shld_type>-1 && cships[s].shld>0)
 		{
-			combat_SoundFX(WAV_SHIELD, cships[s].x); 
+			combat_SoundFX(WAV_SHIELD, cships[s].x, -1, -1);
 		}
 		else
 		{
 			if (wep->type==0) // beam
-				combat_SoundFX(WAV_EXPLO1, cships[s].x); 
+				combat_SoundFX(WAV_EXPLO1, cships[s].x, -1, -1);
 			else
-				combat_SoundFX(wep->sound2, cships[s].x); 
+				combat_SoundFX(wep->sound2, cships[s].x, -1, -1);
 		}
 		cships[s].damage_time = t;
 	}
@@ -530,10 +530,10 @@ void combat_damageship(int32 s, int32 src, int32 dmg, int32 t, t_shipweapon *wep
 				if (cships[s].syshits[sys]>0)
 				{
 					if (cships[s].syshits[sys]/5 != d1/5)	// green->yellow, yellow->red
-						combat_SoundFX(WAV_SYSHIT1+(rand()&1), cships[s].x);
+						combat_SoundFX(WAV_SYSHIT1+(rand()&1), cships[s].x, -1, -1);
 				}
 				else	// red->grey
-					combat_SoundFX(WAV_SYSDAMAGE, cships[s].x);
+					combat_SoundFX(WAV_SYSDAMAGE, cships[s].x, -1, -1);
 			}	// system damage
 		}
 	}
@@ -597,20 +597,20 @@ void combat_killship(int32 s, int32 t, int32 quiet)
 	}
 
 	for (c = 0; c < MAX_COMBAT_PROJECTILES; c++)
-	if (cprojs[c].wep != nullptr)
+	if (cprojs[c].wep != NULL)
 	{
 		if (cprojs[c].wep->flags & wpfHoming)
 			if (cprojs[c].dst == &cships[s])
-				cprojs[c].dst = nullptr;
+				cprojs[c].dst = NULL;
 	}
 
 	for (c = 0; c < MAX_COMBAT_BEAMS; c++)
-	if (cbeams[c].wep != nullptr)
+	if (cbeams[c].wep != NULL)
 	{
 		if (cbeams[c].dst == &cships[s])
-			cbeams[c].wep = nullptr;
+			cbeams[c].wep = NULL;
 		if (cbeams[c].src == &cships[s])
-			cbeams[c].wep = nullptr;
+			cbeams[c].wep = NULL;
 	}
 
 
@@ -624,11 +624,11 @@ void combat_killship(int32 s, int32 t, int32 quiet)
 		cships[s].active = 0;
 		if (!quiet)
 		{
-			combat_SoundFX(WAV_EXPLO2, cships[s].x);
+			combat_SoundFX(WAV_EXPLO2, cships[s].x, -1, -1);
 			combat_addexplo(cships[s].x, cships[s].y, spr_shockwave, 
-									5, sz*4, 1, t, t+sz/2, 0);
+									5, sz*4, 1, t, t+sz/2, 0, -1);
 			combat_addexplo(cships[s].x, cships[s].y, spr_explode1, 
-									5, sz, 0, t, t+sz/4);
+									5, sz, 0, t, t+sz/4, -1, -1);
 		}
 		cships[s].type = -1;
 	}

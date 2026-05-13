@@ -16,25 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "../safe_cstr.h"
-#include <cstdio>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 #include <SDL.h>
 
-#include "../port.h"
+#include "safe_cstr.h"
+#include "port.h"
+#include "log.h"
 
-[[noreturn]] void
+NORETURN void
 SYS_abort(const char *format, ...) {
     char messageOut[1024];
-    std::va_list        va;
+    va_list        va;
 
     va_start(va, format);
     safe_vsnprintf(messageOut, sizeof(messageOut), format, va);
     va_end(va);
 
-    if (0 != SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Strange Adventures in Infinite Space!", messageOut, nullptr)) {
-        // failed to show the dialog - log it via SDL_Log.
-        SDL_Log("ABORTING: %s", messageOut);
+    if (0 != SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Strange Adventures in Infinite Space!", messageOut, NULL)) {
+        // failed to show the dialog - log it via SDL_LogError.
+        SYS_LogError("ABORTING: %s", messageOut);
     }
     exit(1);
 }

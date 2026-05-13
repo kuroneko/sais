@@ -18,19 +18,18 @@
 //     INCLUDES
 // ----------------
 
-#include <vector>
-
-#include <cstdio>
-#include <cstring>
-#include <cstdarg>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
 
 #include <physfs.h>
-#include <SDL.h>
 
 #include "Typedefs.h"
 #include "gfx.h"
 #include "is_fileio.h"
 #include "combat.h"
+#include "log.h"
 #include "starmap.h"
 
 IS_FileHdl logfile;
@@ -42,10 +41,20 @@ char moddir[256];
 // GLOBAL FUNCTIONS
 // ----------------
 
+void IS_DumpSearchPath()
+{
+    SYS_Log("PHYSFS Search Path");
+    char **searchPath = PHYSFS_getSearchPath();
+    for (char **sIter = searchPath; *sIter != NULL; sIter++) {
+        SYS_Log("* %s", *sIter);
+    }
+    PHYSFS_freeList(searchPath);
+}
+
 void IS_Close(IS_FileHdl fileHandle) {
     if (!PHYSFS_close(fileHandle)) {
-        auto physfsErr = PHYSFS_getLastErrorCode();
-        SDL_Log("Error trying to close file: %s", PHYSFS_getErrorByCode(physfsErr));
+        PHYSFS_ErrorCode physfsErr = PHYSFS_getLastErrorCode();
+        SYS_Log("Error trying to close file: %s", PHYSFS_getErrorByCode(physfsErr));
     }
 }
 
@@ -148,7 +157,7 @@ void ik_start_log() {
     IS_FileHdl fil;
     char fname[32];
 
-    logfile = nullptr;
+    logfile = NULL;
 
     n = 0;
     while (n < 1000) {
@@ -169,17 +178,23 @@ IS_Printf(IS_FileHdl fileHdl, const char *format, ...)
     size_t lineOutLen;
     va_list ap;
     va_list ap2;
+    char *bufOut = NULL;
+    int rv;
     va_start(ap, format);
     va_copy(ap2, ap);
-    lineOutLen = vsnprintf(nullptr, 0, format, ap);
+    lineOutLen = vsnprintf(NULL, 0, format, ap);
     va_end(ap);
 
+    bufOut = (char*)malloc(lineOutLen+1);
+
     // build the buffer. - must include 1 extra for NUL storage
-    std::vector<char>   bufOut(lineOutLen+1);
-    vsnprintf(bufOut.data(), lineOutLen, format, ap2);
+    vsnprintf(bufOut, lineOutLen, format, ap2);
     va_end(ap2);
 
-    return IS_Write(bufOut.data(), lineOutLen, 1, fileHdl);
+    rv = IS_Write(bufOut, lineOutLen, 1, fileHdl);
+
+    free(bufOut);
+    return rv;
 }
 
 int
@@ -187,14 +202,18 @@ IS_VPrintf(IS_FileHdl fileHdl, const char *format, va_list arglist)
 {
     size_t lineOutLen;
     va_list ap2;
+    int rv;
+    char *bufOut;
+
     va_copy(ap2, arglist);
-    lineOutLen = vsnprintf(nullptr, 0, format, ap2);
+    lineOutLen = vsnprintf(NULL, 0, format, ap2);
     va_end(ap2);
     // build the buffer. - must include 1 extra for NUL storage
-    std::vector<char>   bufOut(lineOutLen+1);
-    vsnprintf(bufOut.data(), lineOutLen, format, arglist);
-
-    return IS_Write(bufOut.data(), lineOutLen, 1, fileHdl);
+    bufOut = (char*)malloc(lineOutLen+1);
+    vsnprintf(bufOut, lineOutLen, format, arglist);
+    rv = IS_Write(bufOut, lineOutLen, 1, fileHdl);
+    free(bufOut);
+    return rv;
 }
 
 
@@ -225,7 +244,47 @@ void ik_print_log(const char *format, ...) {
         }
         IS_VPrintf(logfile, format, ap);
     }
-    SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, format, ap2);
+    SYS_LogV(format, ap2);
     va_end(ap2);
     va_end(ap);
+}
+
+IS_FileHdl IS_Open_Read(const char *filename)
+{
+    return PHYSFS_openRead(filename);
+}
+
+IS_FileHdl IS_Open_Write(const char *filename)
+{
+    return PHYSFS_openWrite(filename);
+}
+
+IS_FileHdl IS_Open_Append(const char *filename)
+{
+    return PHYSFS_openAppend(filename);
+}
+
+size_t IS_Read(void *dest, size_t elem, size_t count, IS_FileHdl fileHandle)
+{
+    return PHYSFS_readBytes(fileHandle, dest, elem * count);
+}
+
+size_t IS_Write(void *src, size_t elem, size_t count, IS_FileHdl fileHandle)
+{
+    return PHYSFS_writeBytes(fileHandle, src, elem * count);
+}
+
+bool IS_EOF(IS_FileHdl fileHandle)
+{
+    return PHYSFS_eof(fileHandle);
+}
+
+bool IS_exists(const char *filename)
+{
+    return PHYSFS_exists(filename);
+}
+
+void IS_Skip(IS_FileHdl fileHdl, size_t offset)
+{
+    PHYSFS_seek(fileHdl, PHYSFS_tell(fileHdl) + offset);
 }

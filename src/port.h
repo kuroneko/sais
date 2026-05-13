@@ -28,13 +28,16 @@
  * failure messages, crash handling, OS specific setup.  etc.
  */
 
+/* NORETURN should indicate the function never returns */
+#define NORETURN __attribute__((noreturn))
+
 /** SYS_abort immediately causes the application to exit, displaying the given
  * message (formatted by printf) in a manner visible to the user.
  *
  * @param format The format string as per printf
  * @param ... arguments for the foramt.
  */
-[[noreturn]] void SYS_abort(const char *format, ...);
+NORETURN void SYS_abort(const char *format, ...);
 
 
 #endif //STRANGE_PORT_H

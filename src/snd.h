@@ -14,6 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef SAIS_SND_H
+#define SAIS_SND_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define CHN_SFX 0
 #define NUM_SFX 15
 
@@ -301,8 +308,15 @@ void load_all_sfx(void);
 int Delete_Sound(int id);
 int Delete_All_Sounds(void);
 
-int Play_Sound(int id, int ch, int flags=0,int volume=-1, int rate=-1, int pan=0);
-int Play_SoundFX(int id, int t=0, int volume=-1, int rate=-1, int pan=0, int cutoff=30);
+#define Play_Sound2(id,ch) Play_Sound(id,ch,0,-1,-1,0)
+#define Play_Sound3(id,ch,fl) Play_Sound(id,ch,fl,-1,-1,0)
+#define Play_Sound4(id,ch,fl,vol) Play_Sound(id,ch,fl,vol,-1,0)
+int Play_Sound(int id, int ch, int flags,int volume, int rate, int pan);
+
+#define Play_SoundFX1(id) Play_SoundFX(id, 0, -1, -1, 0, 30)
+#define Play_SoundFX2(id,t) Play_SoundFX(id, t, -1, -1, 0, 30)
+#define Play_SoundFX3(id,t,v) Play_SoundFX(id, t, v, -1, 0, 30)
+int Play_SoundFX(int id, int t, int volume, int rate, int pan, int cutoff);
 int Set_Sound_Volume(int ch,int vol);
 int Set_Sound_Freq(int ch,int freq);
 int Set_Sound_Pan(int ch,int pan);
@@ -337,3 +351,9 @@ void save_cur_music(char *fname);
 void load_cur_music(char *fname);
 void prep_music(int n); // copy from songs[] to song
 void plop_music(int n); // copy from song to songs[]
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_SND_H */

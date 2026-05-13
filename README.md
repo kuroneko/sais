@@ -1,4 +1,4 @@
-# Strange Adventures in Infinte Space (GPL) 1.6.3
+# Strange Adventures in Infinte Space (GPL) 1.7.0
 
 ![Screenshot on Raspian (ARM Linux)](screenshot.png)
 
@@ -10,9 +10,6 @@ however, is not official and should be treated as such.
 
 The legacy website and last legacy release are available at http://digital-eel.com/sais/.
 
-More about the Infinite Space games can be found at their official website, 
-http://www.infinitespacegames.com/.
-
 If you like SAIS GPL, please consider supporting Digital Eel by buying one 
 (or more!) of their newer games (or donating at the itch.io page) as this release would
 not have been possible without their generosity.
@@ -22,6 +19,20 @@ Digital Eel alone - they have no real responsibility for any (new) problems it m
 
 Likewise, there are no warranties, explicit or implied for this software
 (per the License).
+
+## New in 1.7.0
+
+* Migrated most of the sources to pure C and separated out most of the SDL related deep 
+  integration in preparation for porting to some interesting systems.  (Stay tuned...)
+
+* Updated build to work with Conan 2.x.  It's now assumed that Conan is used for all
+  builds (for better or worse)
+
+* Updated to SDL 2.32.10.
+
+* Updated to SDL_Mixer 2.8.1 
+
+* Updated to PhysFS 3.1.0
 
 ## New in 1.6.3
 
@@ -74,96 +85,6 @@ Key changes to the game source include:
   resizing (yet), but it will once the resize is complete.
   
 * Inclusion of the Retail Data (see below for information about the license)
-
-## Building on Windows
-
-If you're using MSVC, I strongly recommend using [Conan](https://conan.io/) to
-install the dependencies.  (see the notes on using Conan below).
-
-SAIS GPL has been tested as an x64 binary on Windows 10, built using the
-Visual Studio 2019 C++ compilers, using Conan to source and build the
-dependencies.
-
-## Building on Linux
-
-I suggest NOT using Conan and relying on your distributions shipped SDL2+physfs.
-
-There been issues with the conan built SDL2 on Linux not being able to reliably
-load audio drivers when it and it's dependencies are linked statically.
-  
-This has been tested with SDL 2.0.10 and PhysFS 3.0.1 on Raspbian (armhf) and
-has worked without issue.
-
-The precompilied binaries here on github are built using Ubuntu 18.04 LTS and
-its shipping libraries.  If they do not work for you, please build SAIS GPL from
-the source.
-
-### The 5 Second Guide to building from source on Linux
-
-This is not an exhaustive guide to how to deal with everything that can go wrong
-during the build, but should be enough for the simple case.
-
-1. Make sure you have make, a recent cmake (3.15 or newer), your C++ 
-   compilers, zip, and the development packages for SDL2, SDL2_mixer and 
-   physfs installed.  All of these are required to build from source.
-   
-2. Fetch the source tree.
-   ```shell script
-   git clone https://github.com/kuroneko/sais
-   ```
-
-3. Make yourself a build directory and switch to it
-   ```shell script
-   mkdir sais-build && cd sais-build
-   ```
-   
-4. Prepare the Project files
-   ```shell script
-   cmake -DCMAKE_INSTALL_PREFIX=${HOME}/games/sais ../sais
-   ```
-   
-   You can substitute the path above to set where you want to install SAIS GPL.
-   
-5. Compile the project
-   ```shell script
-   make all
-   ```
-  
-   This should produce a lot of output from the compiler and from zip as it
-   builds the game executable and assembles the data zipfile.
-    
-6. Install the project into it's final home.        
-
-   **NOTE:** You cannot run SAIS from the build-tree - you must install it.
-
-   ```shell script
-   # you will need to use sudo for the install if you're not installing into a
-   # user-writable directory 
-   make install
-   ```
-
-## Building on macOS
-
-Use Conan to perform the build - whilst you can use brew provided sdl2 and 
-physfs, you will have difficulties with rpaths and codesigning.
-
-## Using Conan
-
-You will need the [bincrafters](https://bincrafters.github.io/) repository
-enabled to get the SDL2 and PhysFS packages in use.
-
-You can do this by using the command:
-
-    conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan 
-
-Which will add the remote to your conan configuration.
-
-You need to set the `USE_CONAN` option to `ON` (`-DUSE_CONAN=ON` via the command
-line) to make the CMake project consider the Conan package data during build,
-otherwise it will search your system paths for the libraries required. 
-
-When using Conan with Windows, make sure that your profile uses the `MT` runtime
-library, and not `MD`.
 
 # Licensing
 

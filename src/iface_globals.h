@@ -15,8 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef SAIS_IFACE_GLOBALS_H
+#define SAIS_IFACE_GLOBALS_H
+
 /* macos: need to include at least one C++ header for the compiler to recognise nullptr, etc. */
+#ifdef __cplusplus
 #include <limits>
+
+extern "C" {
+#endif
 
 #define MIN(x,y)     (((x) < (y)) ? (x) : (y))
 #define MAX(x,y)     (((x) > (y)) ? (x) : (y))
@@ -56,8 +63,8 @@ extern t_globalsettings globalsettings;
 extern int  vid_reset_settings();
 int my_main();
 int ik_eventhandler();
-int Game_Init(void *parms=nullptr);
-int Game_Shutdown(void *parms=nullptr);
+int Game_Init(void *parms);
+int Game_Shutdown(void *parms);
 extern void load_globalsettings();
 extern void save_globalsettings();
 
@@ -96,3 +103,8 @@ extern int key_fire1;
 extern int key_fire2;
 extern int key_fire2b;
 
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* #ifndef SAIS_IFACE_GLOBALS_H */
