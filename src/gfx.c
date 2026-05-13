@@ -19,13 +19,13 @@
 #include <string.h>
 #include <math.h>
 #include <stdint.h>
-#include <SDL.h>
 
 #include "Typedefs.h"
 #include "iface_globals.h"
 #include "gfx.h"
 #include "is_fileio.h"
 #include "interface.h"
+#include "log.h"
 
 //#define THICK_MAGNIFIER
 
@@ -379,7 +379,7 @@ t_ik_image *ik_load_pcx(const char *fname, uint8 *pal) {
     // restrict to chunky 8bpp
     if (bpp != 8 && planecount != 1)  // can't load non-8bit pcx files ... use tga
     {
-        SDL_Log("tried to load PCX %s of bad format: bpp:%d, planes:%d", fname, bpp, planecount);
+        SYS_LogError("tried to load PCX %s of bad format: bpp:%d, planes:%d", fname, bpp, planecount);
         IS_Close(img);
         return NULL;
     }
@@ -453,7 +453,7 @@ t_ik_image *ik_load_tga(char *fname, uint8 *pal) {
 
     if (!p) {
         IS_Close(fil);
-        SDL_Log("ERROR: Bad TGA format %s", fname);
+        SYS_LogError("Bad TGA format %s", fname);
         return NULL;
     }
 

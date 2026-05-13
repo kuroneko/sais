@@ -27,6 +27,7 @@
 #include "iface_globals.h"
 #include "snd.h"
 #include "gfx.h"
+#include "log.h"
 
 #include "is_fileio.h"
 #include "physfsrwops.h"
@@ -66,7 +67,7 @@ Mix_Chunk *lsnd(int32 name)
 	{
 	    SDL_RWops * wavOps = PHYSFSRWOPS_openRead(wavesnd[name].name);
         if (wavOps == NULL) {
-            SDL_Log("Failed to find WAV %s: %s", wavesnd[name].name, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            SYS_Log("Failed to find WAV %s: %s", wavesnd[name].name, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return NULL;
         }
         wavesnd[name].wave = Mix_LoadWAV_RW(wavOps, 1);

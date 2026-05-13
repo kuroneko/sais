@@ -24,6 +24,7 @@
 #include "iface_globals.h"
 #include "is_fileio.h"
 #include "port.h"
+#include "log.h"
 
 int my_main();
 
@@ -102,7 +103,7 @@ save_globalsettings()
 {
     IS_FileHdl gsFile = IS_Open_Write("globalsettings.dat");
     if (NULL == gsFile) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't open globalsettings.dat for write: %s",
+        SYS_LogError( "Couldn't open globalsettings.dat for write: %s",
             PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return;
     }

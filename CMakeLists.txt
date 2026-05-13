@@ -52,23 +52,28 @@ set(SAIS_SRC
     src/w32_gfx.c
     src/w32_sound.c
     src/safe_cstr.h
-    src/port.h)
+    src/port.h
+    src/log.h
+    )
 
 ### OS specific sources
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
     set(SAIS_SYS_SRCS
             src/portable/safe_cstr.c
-            src/portable/abort.c
+            src/sdl/abort.c
+            src/sdl/log.c
     )
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
     set(SAIS_SYS_SRCS
             src/portable/safe_cstr.c
-            src/portable/abort.c
+            src/sdl/abort.c
+            src/sdl/log.c
     )
 else()
     set(SAIS_SYS_SRCS
             src/portable/safe_cstr.c
-            src/portable/abort.c
+            src/sdl/abort.c
+            src/sdl/log.c
     )
 endif()
 
@@ -79,7 +84,7 @@ if(BUILD_DEMO)
         PRIVATE
         ${SAIS_LIBS}
         ${LIBM})
-    target_include_directories(strangedemo PRIVATE ${SAIS_INCLUDES})
+    target_include_directories(strangedemo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
     target_compile_definitions(strangedemo PRIVATE DEMO_VERSION=1)
 
     install(TARGETS strangedemo RUNTIME DESTINATION . BUNDLE DESTINATION .)
@@ -93,7 +98,7 @@ else()
         PRIVATE
         ${SAIS_LIBS}
         ${LIBM})
-    target_include_directories(strange PRIVATE ${SAIS_INCLUDES})
+    target_include_directories(strange PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
     install(TARGETS strange RUNTIME DESTINATION . BUNDLE DESTINATION .)
     install(DIRECTORY full/ DESTINATION .)
 

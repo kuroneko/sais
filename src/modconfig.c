@@ -20,7 +20,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <SDL.h>
 #include <physfs.h>
 
 #include "Typedefs.h"
@@ -29,6 +28,7 @@
 #include "gfx.h"
 #include "interface.h"
 #include "snd.h"
+#include "log.h"
 
 #define MAX_MODDIRS 64
 #define MOD_INTERFACE_COLOR 11
@@ -80,14 +80,14 @@ modDirectory_mapInPHYSFS(struct modDirectory *modDir)
     if (realPath != NULL) {
         char modPath[MAX_PATH_LEN];
         sprintf(modPath, "%s%s%s", realPath, PHYSFS_getDirSeparator(), modDir->path);
-        SDL_Log("Mapping %s -> ROOT", modPath);
+        SYS_Log("Mapping %s -> ROOT", modPath);
         if (PHYSFS_mount(modPath, NULL, 0)) {
             modDir->isMapped = true;
         } else {
-            SDL_Log("Failed to mount mod: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            SYS_Log("Failed to mount mod: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         }
     } else {
-        SDL_Log("Couldn't find mod directory");
+        SYS_Log("Couldn't find mod directory");
     }
 }
 
@@ -104,7 +104,7 @@ modDirectory_unmapInPHYSFS(struct modDirectory *modDir)
 static PHYSFS_EnumerateCallbackResult
 modconfig_enumerate_cb(void *data, const char *origdir, const char *fname)
 {
-    SDL_Log("Found possible mod: %s", fname);
+    SYS_Log("Found possible mod: %s", fname);
     char fullFilename[MAX_PATH_LEN];
     char sfName[MAX_PATH_LEN];
     sprintf(fullFilename, "%s/%s", origdir, fname);
@@ -112,7 +112,7 @@ modconfig_enumerate_cb(void *data, const char *origdir, const char *fname)
     // is it a directory or an archive?
     PHYSFS_Stat fileStat;
     if (!PHYSFS_stat(fullFilename, &fileStat)) {
-        SDL_Log("Unable to stat \"%s\": %s", fullFilename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        SYS_Log("Unable to stat \"%s\": %s", fullFilename, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         return PHYSFS_ENUM_OK;
     }
     if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY) {
@@ -185,7 +185,7 @@ void modconfig_clearAllMods()
         modDirectory_unmapInPHYSFS(&allModDirectories[i]);
     }
     moddir[0] = '\0';
-    SDL_Log("Cleared all mods");
+    SYS_Log("Cleared all mods");
 }
 
 void modconfig_setMod(int modnumber)
@@ -193,8 +193,8 @@ void modconfig_setMod(int modnumber)
     modconfig_clearAllMods();
     modDirectory_mapInPHYSFS(&allModDirectories[modnumber]);
     strncpy(moddir, allModDirectories[modnumber].name, 255);
-    SDL_Log("Selected Mod: %s", allModDirectories[modnumber].name);
-    SDL_Log("Mod basepath: %s (mounted onto tree)", allModDirectories[modnumber].path);
+    SYS_Log("Selected Mod: %s", allModDirectories[modnumber].name);
+    SYS_Log("Mod basepath: %s (mounted onto tree)", allModDirectories[modnumber].path);
 }
 
 int modconfig_main()

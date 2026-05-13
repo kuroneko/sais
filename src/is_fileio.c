@@ -19,16 +19,17 @@
 // ----------------
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
 
 #include <physfs.h>
-#include <SDL.h>
 
 #include "Typedefs.h"
 #include "gfx.h"
 #include "is_fileio.h"
 #include "combat.h"
+#include "log.h"
 #include "starmap.h"
 
 IS_FileHdl logfile;
@@ -42,10 +43,10 @@ char moddir[256];
 
 void IS_DumpSearchPath()
 {
-    SDL_Log("PHYSFS Search Path");
+    SYS_Log("PHYSFS Search Path");
     char **searchPath = PHYSFS_getSearchPath();
     for (char **sIter = searchPath; *sIter != NULL; sIter++) {
-        SDL_Log("* %s", *sIter);
+        SYS_Log("* %s", *sIter);
     }
     PHYSFS_freeList(searchPath);
 }
@@ -53,7 +54,7 @@ void IS_DumpSearchPath()
 void IS_Close(IS_FileHdl fileHandle) {
     if (!PHYSFS_close(fileHandle)) {
         PHYSFS_ErrorCode physfsErr = PHYSFS_getLastErrorCode();
-        SDL_Log("Error trying to close file: %s", PHYSFS_getErrorByCode(physfsErr));
+        SYS_Log("Error trying to close file: %s", PHYSFS_getErrorByCode(physfsErr));
     }
 }
 
@@ -243,7 +244,7 @@ void ik_print_log(const char *format, ...) {
         }
         IS_VPrintf(logfile, format, ap);
     }
-    SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, format, ap2);
+    SYS_LogV(format, ap2);
     va_end(ap2);
     va_end(ap);
 }

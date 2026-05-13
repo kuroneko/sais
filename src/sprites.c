@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <math.h>
 #include <string.h>
 
@@ -28,8 +29,7 @@
 #include "gfx.h"
 #include "is_fileio.h"
 #include "snd.h"
-
-#include <SDL.h>
+#include "log.h"
 
 //		FILE *loggy;
 
@@ -159,11 +159,11 @@ sprite_override_cb(void *data, const char *origdir, const char *fname) {
     int fnum;
     struct spriteData *sd = data;
 
-    SDL_Log("considering %s", fname);
+    SYS_Log("considering %s", fname);
     if (strncmp("frame", fname, 5) == 0 && strcmp(fname+strlen(fname)-4, ".tga") == 0) {
         sscanf(fname + 5, "%03d", &fnum);
         if (fnum < 256) {
-            SDL_Log("found override frame %s: fnum=%d", fname, fnum);
+            SYS_Log("found override frame %s: fnum=%d", fname, fnum);
 
             sd->replacedFrames[fnum] = true;
             if (fnum + 1 > sd->lastFrame)
@@ -202,7 +202,7 @@ t_ik_spritepak *load_sprites(const char *fname) {
     strncpy(spritedir, fname, 255);
     sdp = spritedir + strlen(spritedir) - 4;
     sdp[0] = 0;
-    SDL_Log("Looking for sprite override frames in %s", spritedir);
+    SYS_Log("Looking for sprite override frames in %s", spritedir);
     // and if so, try to find the frames.
     PHYSFS_enumerate(spritedir, sprite_override_cb, &sd);
 

@@ -32,6 +32,7 @@ All DIRECTDRAW stuff here
 #include "Typedefs.h"
 #include "iface_globals.h"
 #include "gfx.h"
+#include "log.h"
 
 // DEFINES
 
@@ -106,7 +107,7 @@ void gfx_refresh_screen()
 
     // now, blit the 8I surface to the RGBA32 surface
     if (SDL_BlitSurface(sdlsurf, NULL, blitIntermedSurf, NULL)) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Blit to correct format failed: %s", SDL_GetError());
+        SYS_LogError( "Blit to correct format failed: %s", SDL_GetError());
         abort();
     }
 
