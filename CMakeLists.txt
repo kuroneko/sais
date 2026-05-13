@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 4.0)
 
 # This enables the new MSVC runtime library selection mechanism.
 cmake_policy(SET CMP0091 NEW)
@@ -6,9 +6,7 @@ cmake_policy(SET CMP0091 NEW)
 # on macos, target 10.11
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
 
-project(strange VERSION 1.6.3 LANGUAGES C)
-
-option(USE_CONAN "Use conan for dependencies" OFF)
+project(strange VERSION 1.7.0 LANGUAGES C CXX)
 
 # The demonstration version of SAIS is only kept for historical reference, and
 # is not the default, ever.
@@ -20,51 +18,39 @@ option(USE_LOG "Enable game logging" OFF)
 # work out if we need libm.
 find_library(LIBM NAMES m)
 
-if(USE_CONAN)
-    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-    conan_basic_setup(TARGETS)
-    set(SAIS_LIBS CONAN_PKG::sdl2 CONAN_PKG::sdl2_mixer CONAN_PKG::physfs)
-else()
-    include(FindPkgConfig)
-    pkg_check_modules(SDL2 REQUIRED sdl2)
-    pkg_check_modules(SDL2MIXER REQUIRED SDL2_mixer)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(PhysFS REQUIRED)
 
-    # physfs does not reliably have a pkg-config file - use path searching to find its bits.
-    find_library(PHYSFS NAMES physfs PATH_SUFFIXES physfs lib)
-    find_path(PHYSFS_INCLUDE_DIR NAMES physfs.h PATH_SUFFIXES physfs include Headers)
-
-    set(SAIS_LIBS ${SDL2_LIBRARIES} ${SDL2MIXER_LIBRARIES} ${PHYSFS})
-    set(SAIS_LIB_DIRS ${SDL2_LIBRARY_DIRS} ${SDL2MIXER_LIBRARY_DIRS})
-    set(SAIS_INCLUDES ${SDL2_INCLUDE_DIRS} ${SDL2MIXER_INCLUDE_DIRS} ${PHYSFS_INCLUDE_DIR})
-endif()
+set(SAIS_LIBS SDL2::SDL2 SDL2::SDL2main SDL2_mixer::SDL2_mixer physfs-static)
 
 set(SAIS_SRC
-        src/cards.c
-        src/combat.c
-        src/combat_display.c
-        src/combat_init.c
-        src/combat_sim.c
-        src/combat_weapons.c
-        src/endgame.c
-        src/font.c
-        src/gfx.c
-        src/interface.c
-        src/is_fileio.c
-        src/main.c
-        src/modconfig.c
+    src/cards.c
+    src/combat.c
+    src/combat_display.c
+    src/combat_init.c
+    src/combat_sim.c
+    src/combat_weapons.c
+    src/endgame.c
+    src/font.c
+    src/gfx.c
+    src/interface.c
+    src/is_fileio.c
+    src/main.c
+    src/modconfig.c
     src/physfsrwops.c
-        src/sdl_iface.c
-        src/sdl_main.c
-        src/sound.c
-        src/sprites.c
-        src/starmap.c
-        src/starmap_encounters.c
-        src/starmap_init.c
-        src/starmap_inventory.c
-        src/startgame.c
-        src/textstr.c
-        src/w32_gfx.c
-        src/w32_sound.c
+    src/sdl_iface.c
+    src/sdl_main.c
+    src/sound.c
+    src/sprites.c
+    src/starmap.c
+    src/starmap_encounters.c
+    src/starmap_init.c
+    src/starmap_inventory.c
+    src/startgame.c
+    src/textstr.c
+    src/w32_gfx.c
+    src/w32_sound.c
     src/safe_cstr.h
     src/port.h)
 
