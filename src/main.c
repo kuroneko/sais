@@ -22,8 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-
-#include <SDL.h>
+#include <math.h>
 
 #include "Typedefs.h"
 #include "is_fileio.h"
@@ -46,7 +45,6 @@ extern int movrecord;
 #endif
 
 //		extern FILE* loggy;
-extern SDL_Surface *sdlsurf;
 
 // ----------------
 // GLOBAL VARIABLES

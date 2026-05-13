@@ -38,8 +38,6 @@ set(SAIS_SRC
     src/is_fileio.c
     src/main.c
     src/modconfig.c
-    src/physfsrwops.c
-    src/sdl_iface.c
     src/sdl_main.c
     src/sound.c
     src/sprites.c
@@ -49,8 +47,6 @@ set(SAIS_SRC
     src/starmap_inventory.c
     src/startgame.c
     src/textstr.c
-    src/w32_gfx.c
-    src/w32_sound.c
     src/safe_cstr.h
     src/port.h
     src/log.h
@@ -62,18 +58,31 @@ if(CMAKE_SYSTEM_NAME MATCHES Windows)
             src/portable/safe_cstr.c
             src/sdl/abort.c
             src/sdl/log.c
+            src/sdl/sdl_iface.c
+            src/sdl/sdl_gfx.c
+            src/sdl/sdl_sound.c
+            src/sdl/physfsrwops.c
+
     )
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
     set(SAIS_SYS_SRCS
             src/portable/safe_cstr.c
             src/sdl/abort.c
             src/sdl/log.c
+            src/sdl/sdl_iface.c
+            src/sdl/sdl_gfx.c
+            src/sdl/sdl_sound.c
+            src/sdl/physfsrwops.c
     )
 else()
     set(SAIS_SYS_SRCS
             src/portable/safe_cstr.c
             src/sdl/abort.c
             src/sdl/log.c
+            src/sdl/sdl_iface.c
+            src/sdl/sdl_gfx.c
+            src/sdl/sdl_sound.c
+            src/sdl/physfsrwops.c
     )
 endif()
 
