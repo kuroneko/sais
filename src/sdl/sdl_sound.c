@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#include "snd.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -25,14 +27,13 @@
 
 #include "Typedefs.h"
 #include "iface_globals.h"
-#include "snd.h"
 #include "gfx.h"
 #include "log.h"
 
 #include "is_fileio.h"
 #include "physfsrwops.h"
 
-
+int s_nosound = 0;
 
 // GLOBALS ////////////////////////////////////////////////
 
@@ -42,9 +43,8 @@ t_wavesound wavesnd[WAV_MAX];
 // samples are sitting in the memory and cloned into channels when needed
 
 
-int sound_init()
+int sound_init(void)
 {
-
 	static int first_time = 1; // used to track the first time the function is entered
 
 	// initialize the sound fx array
@@ -79,8 +79,10 @@ Mix_Chunk *lsnd(int32 name)
 
 int Load_WAV(const char *filename, int id)
 {
-	strcpy(wavesnd[id].name, filename);
-	lsnd(id);
+	if (!s_nosound) {
+		strcpy(wavesnd[id].name, filename);
+		lsnd(id);
+	}
 	return id;
 }
 
@@ -88,6 +90,10 @@ int Load_WAV(const char *filename, int id)
 
 int Play_Sound(int id, int ch, int flags, int volume, int rate, int pan)
 {
+	if (s_nosound) {
+		return 0;
+	}
+
 	// this function plays a sound thru a channel, set flags to make it loop..
 	if (flags)
 		flags=9999;
@@ -113,6 +119,10 @@ int Play_SoundFX(int id, int t, int volume, int rate, int pan, int cutoff)
 	int ch,tt,ch0;
 	int l;
 	Mix_Chunk *chunk;
+
+	if (s_nosound) {
+		return 0;
+	}
 
 	t = get_ik_timer(2);
 
@@ -164,10 +174,12 @@ int Play_SoundFX(int id, int t, int volume, int rate, int pan, int cutoff)
 
 int Set_Sound_Volume(int ch,int vol)
 {
-	// this function sets the volume on a sound 0-100
-	vol = (vol * s_volume * 128) / 10000;
-	
-	Mix_Volume(ch, vol);
+	if (!s_nosound) {
+		// this function sets the volume on a sound 0-100
+		vol = (vol * s_volume * 128) / 10000;
+
+		Mix_Volume(ch, vol);
+	}
 
 	// return success
 	return(1);
@@ -190,17 +202,18 @@ int Set_Sound_Pan(int ch,int pan)
 	int lf, rt;
 	// this function sets the pan, -10,000 to 10,000
 
-	if (pan < 0)
-	{
-		lf = 255; rt = (int)(255 - sqrt(-pan)*2);
-	}
-	else
-	{
-		rt = 255; lf = (int)(255 - sqrt(pan)*2);
-	}
+	if (!s_nosound) {
+		if (pan < 0)
+		{
+			lf = 255; rt = (int)(255 - sqrt(-pan)*2);
+		}
+		else
+		{
+			rt = 255; lf = (int)(255 - sqrt(pan)*2);
+		}
 
-	Mix_SetPanning(ch, lf, rt);
-
+		Mix_SetPanning(ch, lf, rt);
+	}
 	return(1);
 }
 
@@ -208,10 +221,15 @@ int Set_Sound_Pan(int ch,int pan)
 
 int Stop_All_Sounds(void)
 {
-	for (int index=0; index<16; index++)
-		Stop_Sound(index);	
-	for (int x=0; x<NUM_SFX; x++)
-	{ sfxchan[x].et=0; sfxchan[x].st=0; sfxchan[x].id=-1; }
+	if (!s_nosound) {
+		for (int index=0; index<16; index++)
+			Stop_Sound(index);
+		for (int x=0; x<NUM_SFX; x++) {
+			sfxchan[x].et=0;
+			sfxchan[x].st=0;
+			sfxchan[x].id=-1;
+		}
+	}
 
 	return(1);
 }
@@ -220,7 +238,9 @@ int Stop_All_Sounds(void)
 
 int Stop_Sound(int ch)
 {
-	Mix_HaltChannel(ch);
+	if (!s_nosound) {
+		Mix_HaltChannel(ch);
+	}
 
 	return(1);
 } 
@@ -239,13 +259,14 @@ int Delete_All_Sounds(void)
 
 int Delete_Sound(int id)
 {
-	if (wavesnd[id].wave)
-	{
-		Mix_FreeChunk((Mix_Chunk*)wavesnd[id].wave);
-		wavesnd[id].wave = NULL;
-		return(1);
-  } 
-	
+	if (!s_nosound) {
+		if (wavesnd[id].wave)
+		{
+			Mix_FreeChunk((Mix_Chunk*)wavesnd[id].wave);
+			wavesnd[id].wave = NULL;
+			return(1);
+		}
+	}
 	return(1);
 } 
 
@@ -253,20 +274,23 @@ int Delete_Sound(int id)
 
 int Status_Sound(int ch)
 {
-	if (Mix_Playing(ch))
-		return 1;
+	if (!s_nosound) {
+		if (Mix_Playing(ch))
+			return 1;
+	}
 	return 0;
 } 
 
 int Get_Sound_Size(int id)
 {
-	Mix_Chunk *chunk;
-	if (wavesnd[id].wave)
-	{
-		chunk = (Mix_Chunk*)wavesnd[id].wave;
-		return chunk->alen;
+	if (!s_nosound) {
+		Mix_Chunk *chunk;
+		if (wavesnd[id].wave)
+		{
+			chunk = (Mix_Chunk*)wavesnd[id].wave;
+			return chunk->alen;
+		}
 	}
-
 	return 0;
 }
 

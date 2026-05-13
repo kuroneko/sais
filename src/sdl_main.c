@@ -25,10 +25,9 @@
 #include "is_fileio.h"
 #include "port.h"
 #include "log.h"
+#include "snd.h"
 
 int my_main();
-
-int sound_init();
 
 extern SDL_Window *sdlWind;
 extern SDL_Surface *sdlsurf;
@@ -167,10 +166,12 @@ main(int argc, char *argv[])
 
     // init SDL mixer
     if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) < 0) {
-        SYS_abort("Failed to open audio device: %s", Mix_GetError());
+        SYS_LogError("Failed to open audio device: %s", Mix_GetError());
+        s_nosound = 1;
+    } else {
+        Mix_AllocateChannels(16);
+        sound_init();
     }
-    Mix_AllocateChannels(16);
-    sound_init();
 
     // create the application window
     int sdlFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL;
