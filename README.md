@@ -22,6 +22,8 @@ Likewise, there are no warranties, explicit or implied for this software
 
 ## New in 1.7.0
 
+* Fix the issue where if sound fails to initialise at all, SAIS can't continue.
+
 * Migrated most of the sources to pure C and separated out most of the SDL related deep 
   integration in preparation for porting to some interesting systems.  (Stay tuned...)
 
