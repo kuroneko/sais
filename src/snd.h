@@ -17,9 +17,19 @@
 #ifndef SAIS_SND_H
 #define SAIS_SND_H
 
+#include "Typedefs.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/** global flag to indicate if the sound system is not available (and
+ * thus supress audio)
+ */
+extern int s_nosound;
+
+extern int sound_init(void);
+
 
 #define CHN_SFX 0
 #define NUM_SFX 15
