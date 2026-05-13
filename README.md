@@ -10,9 +10,6 @@ however, is not official and should be treated as such.
 
 The legacy website and last legacy release are available at http://digital-eel.com/sais/.
 
-More about the Infinite Space games can be found at their official website, 
-http://www.infinitespacegames.com/.
-
 If you like SAIS GPL, please consider supporting Digital Eel by buying one 
 (or more!) of their newer games (or donating at the itch.io page) as this release would
 not have been possible without their generosity.
